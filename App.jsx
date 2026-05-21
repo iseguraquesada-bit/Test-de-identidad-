@@ -79,7 +79,7 @@ function scoreAll(answers,reading){
 }
 
 async function pushGHL(ud,res){
-  try{await fetch(CONFIG.ghl_webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:ud.name,email:ud.email,birthdate:ud.birthdate,birth_time:ud.birthtime||"",gender:ud.gender,country:ud.country,province:ud.province||"",personaje:res.primary.name,personaje_secundario:res.secondary?.name||"",pain_score:res.avgPain,disposition:res.disp,willing_invest:res.willingToInvest,urgency:res.urgency||"",profession:res.profession||"",source:"diagnostico-identidad",ts:new Date().toISOString()})});}catch(e){}
+  try{await fetch(CONFIG.ghl_webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:ud.name,email:ud.email,phone:(ud.phoneCode||"")+(ud.phone||""),birthdate:ud.birthdate,birth_time:ud.birthtime||"",gender:ud.gender,country:ud.country,province:ud.province||"",personaje:res.primary.name,personaje_secundario:res.secondary?.name||"",pain_score:res.avgPain,disposition:res.disp,willing_invest:res.willingToInvest,urgency:res.urgency||"",profession:res.profession||"",source:"diagnostico-identidad",ts:new Date().toISOString()})});}catch(e){}
 }
 
 const css=`
@@ -140,9 +140,18 @@ function Hero({onStart}){return(
   </div>
 );}
 
+const PHONE_CODES=[
+  {c:"Costa Rica",d:"+506"},{c:"México",d:"+52"},{c:"Colombia",d:"+57"},{c:"Argentina",d:"+54"},
+  {c:"España",d:"+34"},{c:"Chile",d:"+56"},{c:"Perú",d:"+51"},{c:"Venezuela",d:"+58"},
+  {c:"Ecuador",d:"+593"},{c:"Guatemala",d:"+502"},{c:"Panamá",d:"+507"},{c:"Rep. Dominicana",d:"+1"},
+  {c:"Honduras",d:"+504"},{c:"El Salvador",d:"+503"},{c:"Nicaragua",d:"+505"},{c:"Bolivia",d:"+591"},
+  {c:"Paraguay",d:"+595"},{c:"Uruguay",d:"+598"},{c:"Cuba",d:"+53"},{c:"Puerto Rico",d:"+1"},
+  {c:"Estados Unidos",d:"+1"},{c:"Brasil",d:"+55"},
+];
+
 function Form({onSubmit}){
-  const[f,setF]=useState({name:"",email:"",birthdate:"",birthtime:"",gender:"",country:"",province:""});
-  const ok=f.name&&f.email&&f.birthdate&&f.gender&&f.country;
+  const[f,setF]=useState({name:"",email:"",phoneCode:"",phone:"",birthdate:"",birthtime:"",gender:"",country:"",province:""});
+  const ok=f.name&&f.email&&f.phoneCode&&f.phone&&f.birthdate&&f.gender&&f.country;
   const set=k=>e=>setF(p=>({...p,[k]:e.target.value}));
   return(
   <div className="screen" style={{justifyContent:"center",alignItems:"center",padding:"48px 20px",background:"#0a0a0a"}}>
@@ -151,6 +160,14 @@ function Form({onSubmit}){
       <p style={{fontSize:14,color:"rgba(245,240,232,.4)",marginBottom:30,lineHeight:1.5}}>Esta información personaliza tu lectura. No se comparte con nadie.</p>
       {[{k:"name",l:"Tu nombre",t:"text",ph:"¿Cómo te llamas?"},{k:"email",l:"Correo electrónico",t:"email",ph:"tu@correo.com"},{k:"birthdate",l:"Fecha de nacimiento",t:"date",ph:""}].map(({k,l,t,ph})=>(
         <div key={k} style={{marginBottom:20}}><label style={lS()}>{l}</label><input style={iS()} type={t} placeholder={ph} value={f[k]} onChange={set(k)}/></div>))}
+      <div style={{marginBottom:20}}><label style={lS()}>Teléfono</label>
+        <div style={{display:"flex",gap:10}}>
+          <select style={{...iS(),flex:"0 0 150px"}} value={f.phoneCode} onChange={set("phoneCode")}>
+            <option value="" style={{background:"#111"}}>Código</option>
+            {PHONE_CODES.map(({c,d})=><option key={c} value={d} style={{background:"#111"}}>{c} ({d})</option>)}
+          </select>
+          <input style={{...iS(),flex:1}} type="tel" placeholder="Número de teléfono" value={f.phone} onChange={set("phone")}/>
+        </div></div>
       <div style={{marginBottom:20}}><label style={lS()}>Hora de nacimiento</label>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
           <input type="time" style={{...iS(),flex:1}} value={f.birthtime==="no_conozco"?"":f.birthtime} onChange={set("birthtime")} disabled={f.birthtime==="no_conozco"}/>
