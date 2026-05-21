@@ -141,12 +141,12 @@ function Hero({onStart}){return(
 );}
 
 const PHONE_CODES=[
-  {c:"Costa Rica",d:"+506"},{c:"México",d:"+52"},{c:"Colombia",d:"+57"},{c:"Argentina",d:"+54"},
-  {c:"España",d:"+34"},{c:"Chile",d:"+56"},{c:"Perú",d:"+51"},{c:"Venezuela",d:"+58"},
-  {c:"Ecuador",d:"+593"},{c:"Guatemala",d:"+502"},{c:"Panamá",d:"+507"},{c:"Rep. Dominicana",d:"+1"},
-  {c:"Honduras",d:"+504"},{c:"El Salvador",d:"+503"},{c:"Nicaragua",d:"+505"},{c:"Bolivia",d:"+591"},
-  {c:"Paraguay",d:"+595"},{c:"Uruguay",d:"+598"},{c:"Cuba",d:"+53"},{c:"Puerto Rico",d:"+1"},
-  {c:"Estados Unidos",d:"+1"},{c:"Brasil",d:"+55"},
+  {c:"Costa Rica",d:"+506",iso:"CR"},{c:"México",d:"+52",iso:"MX"},{c:"Colombia",d:"+57",iso:"CO"},{c:"Argentina",d:"+54",iso:"AR"},
+  {c:"España",d:"+34",iso:"ES"},{c:"Chile",d:"+56",iso:"CL"},{c:"Perú",d:"+51",iso:"PE"},{c:"Venezuela",d:"+58",iso:"VE"},
+  {c:"Ecuador",d:"+593",iso:"EC"},{c:"Guatemala",d:"+502",iso:"GT"},{c:"Panamá",d:"+507",iso:"PA"},{c:"Rep. Dominicana",d:"+1",iso:"DO"},
+  {c:"Honduras",d:"+504",iso:"HN"},{c:"El Salvador",d:"+503",iso:"SV"},{c:"Nicaragua",d:"+505",iso:"NI"},{c:"Bolivia",d:"+591",iso:"BO"},
+  {c:"Paraguay",d:"+595",iso:"PY"},{c:"Uruguay",d:"+598",iso:"UY"},{c:"Cuba",d:"+53",iso:"CU"},{c:"Puerto Rico",d:"+1",iso:"PR"},
+  {c:"Estados Unidos",d:"+1",iso:"US"},{c:"Brasil",d:"+55",iso:"BR"},
 ];
 
 function Form({onSubmit}){
@@ -185,7 +185,7 @@ function Form({onSubmit}){
       <div style={{marginBottom:20}}><label style={lS()}>País de nacimiento</label>
         <select style={iS()} value={f.country} onChange={set("country")}>
           <option value="" style={{background:"#111"}}>Selecciona...</option>
-          {["Costa Rica","México","Colombia","Argentina","España","Chile","Perú","Venezuela","Ecuador","Guatemala","Otro"].map(c=><option key={c} value={c} style={{background:"#111"}}>{c}</option>)}
+          {PHONE_CODES.map(({c,iso})=><option key={iso} value={iso} style={{background:"#111"}}>{c}</option>)}
         </select></div>
       <div style={{marginBottom:28}}><label style={lS()}>Provincia o lugar de nacimiento</label>
         <input style={iS()} placeholder="¿Dónde naciste?" value={f.province} onChange={set("province")}/></div>
