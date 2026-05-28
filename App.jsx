@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const CONFIG = {
   ghl_webhook:    "https://services.leadconnectorhq.com/hooks/Uca0WrGfLlFUMtuPldnT/webhook-trigger/8f228e7e-e645-4ef1-af6e-e62f807ec7d5",
-  ghl_order_form: "https://YOUR-GHL-ORDER-FORM-URL",
+  ghl_order_form: "https://whop.com/checkout/plan_LsNiJ7wqZ80ve",
 };
 
 function getFullReading(bd, bt) {
@@ -111,6 +111,7 @@ export default function App(){
     const rd=getFullReading(ud.birthdate,ud.birthtime||"no_conozco");
     const r=scoreAll(answers,rd);r.reading=rd;
     setResult(r);pushGHL(ud,r);
+    if(window.fbq)window.fbq('track','Lead');
     setTimeout(()=>setScreen("teaser"),3200);
   };
   return(<div style={{minHeight:"100vh",background:"#0A0A0A"}}><style>{css}</style>
@@ -256,7 +257,7 @@ function Teaser({result,ud}){
         <p style={{fontSize:14,color:"rgba(245,240,232,.5)",marginBottom:8,lineHeight:1.65,maxWidth:320}}>Lo que sigue es lo que nadie te ha dicho — los patrones que están definiendo cómo te perciben en este momento, aunque tú no los veas.</p>
         <p style={{fontSize:14,color:"rgba(245,240,232,.5)",marginBottom:8,lineHeight:1.65,maxWidth:320}}>Y hay algo más: una lectura de quién realmente eres. Y de cuánto lo estás desperdiciando.</p>
         <p style={{fontSize:15,fontWeight:600,color:"rgba(245,240,232,.72)",marginBottom:26}}>¿Prefieres no saberlo?</p>
-        <button className="btn" style={{maxWidth:280}} onClick={()=>{window.location.href=CONFIG.ghl_order_form;}}>Quiero saber todo →</button>
+        <button className="btn" style={{maxWidth:280}} onClick={()=>{if(window.fbq)window.fbq('track','InitiateCheckout',{value:7,currency:'USD'});window.location.href=CONFIG.ghl_order_form;}}>Quiero saber todo →</button>
       </div>
     </div>
     <div className="foot">@ileanamentora · Ingeniería de Identidad</div>
