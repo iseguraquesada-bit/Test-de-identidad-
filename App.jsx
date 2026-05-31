@@ -2,8 +2,12 @@ import { useState, useEffect } from "react";
 
 const CONFIG = {
   ghl_webhook:    "https://services.leadconnectorhq.com/hooks/Uca0WrGfLlFUMtuPldnT/webhook-trigger/8f228e7e-e645-4ef1-af6e-e62f807ec7d5",
-  ghl_order_form: "https://whop.com/checkout/plan_LsNiJ7wqZ80ve" ,
+  ghl_order_form: "https://whop.com/checkout/plan_LsNiJ7wqZ80ve",
   whop_97:        "https://whop.com/checkout/plan_bwtIoO1mVOaWU",
+  whop_cuaderno:  "https://whop.com/checkout/plan_hWPjNf5uVD1Jj",
+  whop_manual:    "https://whop.com/checkout/plan_1DLfXvdo7ga4M",
+  whop_modulos:   "https://whop.com/checkout/plan_mVZthVXhRsKB8",
+  whop_account:   "https://whop.com/orders",
 };
 
 const LS_KEY = "ileana_diagnostic_v1";
@@ -112,11 +116,13 @@ export default function App(){
   useEffect(()=>{
     try{
       const p=new URLSearchParams(window.location.search);
-      if(p.get("screen")==="thankyou"){
+      const sc=p.get("screen");
+      const known=["thankyou","downsell","acceso_pack","acceso_cuaderno","acceso_manual","acceso_modulos"];
+      if(sc && known.includes(sc)){
         const s=localStorage.getItem(LS_KEY);
         if(s){const d=JSON.parse(s);setUd(d.ud);setResult(d.result);}
         else{const em=p.get("email");if(em&&em!=="{{customer_email}}")setUd({name:em.split("@")[0],email:em});}
-        setScreen("thankyou");
+        setScreen(sc);
       }
     }catch(e){}
   },[]);
@@ -135,6 +141,11 @@ export default function App(){
     {screen==="loading"  &&<Loading/>}
     {screen==="teaser"   &&<Teaser   result={result} ud={ud}/>}
     {screen==="thankyou" &&<ThankYou result={result} ud={ud}/>}
+    {screen==="downsell" &&<Downsell result={result} ud={ud}/>}
+    {screen==="acceso_pack"     &&<Acceso productName="el Pack Completo" productDesc="Tienes acceso al protocolo completo de Ingeniería de Identidad: cómo se construyó tu personaje y cómo desinstalarlo paso a paso."/>}
+    {screen==="acceso_cuaderno" &&<Acceso productName="el Cuaderno de Trabajo" productDesc="Los ejercicios prácticos para integrar tu diagnóstico en la vida diaria."/>}
+    {screen==="acceso_manual"   &&<Acceso productName="el Manual de Personajes" productDesc="La guía completa de los 6 personajes y cómo identificarlos en ti y los demás."/>}
+    {screen==="acceso_modulos"  &&<Acceso productName="los Módulos en Video" productDesc="Las sesiones grabadas con el método completo en video, paso a paso."/>}
   </div>);
 }
 
@@ -283,6 +294,8 @@ function ThankYou({result,ud}){
   const first=ud?.name?ud.name.split(" ")[0]:"Bienvenido";
   const p=result?.primary,s=result?.secondary,r=result?.reading,c=result?.constellation;
   const goUpsell=()=>{window.location.href=CONFIG.whop_97;};
+  const goDownsell=()=>{window.location.href="?screen=downsell";};
+  const linkBtn={display:"block",width:"100%",margin:"14px auto 0",background:"none",border:"none",color:"rgba(245,240,232,.45)",fontSize:13,textDecoration:"underline",cursor:"pointer",fontFamily:"'Poppins',sans-serif",padding:0};
   return(
   <div className="screen" style={{background:"#0a0a0a"}}>
     <div style={{background:"linear-gradient(160deg,#0d3a1f 0%,#0a0a0a 100%)",padding:"44px 24px 36px",textAlign:"center",borderBottom:"1px solid rgba(39,174,96,.2)"}}>
@@ -320,6 +333,7 @@ function ThankYou({result,ud}){
 
         <button className="btn" onClick={goUpsell}>Quiero el pack completo →</button>
         <p style={{textAlign:"center",fontSize:12,color:"rgba(245,240,232,.35)",marginTop:14}}>Pago seguro · Acceso inmediato</p>
+        <button onClick={goDownsell} style={linkBtn}>No quiero esta oferta, ver opciones individuales</button>
       </div>
 
       <p style={{textAlign:"center",fontSize:13,color:"rgba(245,240,232,.32)",marginTop:28,letterSpacing:1}}>O sigue bajando para ver tu diagnóstico ↓</p>
@@ -389,6 +403,7 @@ function ThankYou({result,ud}){
         <h3 style={{fontFamily:"'Lora',serif",fontSize:22,fontWeight:700,color:"#F5F0E8",lineHeight:1.3,marginBottom:12}}>Ahora ya sabes quién está viviendo tu vida.</h3>
         <p style={{fontSize:14,color:"rgba(245,240,232,.6)",lineHeight:1.65,marginBottom:22,maxWidth:400,margin:"0 auto 22px"}}>El siguiente paso es desinstalarlo. El pack completo te muestra exactamente cómo — con el método paso a paso.</p>
         <button className="btn" style={{maxWidth:320,margin:"0 auto"}} onClick={goUpsell}>Quiero el pack completo →</button>
+        <button onClick={goDownsell} style={linkBtn}>No quiero el pack, ver opciones individuales</button>
       </div>
     </div>
     ):(
@@ -399,4 +414,65 @@ function ThankYou({result,ud}){
     )}
 
     <div className="foot">@ileanamentora · Ingeniería de Identidad</div>
+  </div>);}
+
+function Downsell({result,ud}){
+  const first=ud?.name?ud.name.split(" ")[0]:"";
+  const items=[
+    {name:"Cuaderno de Trabajo",price:"27",url:CONFIG.whop_cuaderno,desc:"Ejercicios guiados para integrar tu diagnóstico en la vida diaria. Trabajo introspectivo paso a paso."},
+    {name:"Manual de Personajes",price:"27",url:CONFIG.whop_manual,desc:"Guía completa de los 6 personajes y cómo identificarlos en ti y en quienes te rodean."},
+    {name:"Módulos en Video",price:"97",url:CONFIG.whop_modulos,desc:"Las sesiones grabadas con el método completo, paso a paso, para desinstalar tu personaje dominante."},
+  ];
+  const goPack=()=>{window.location.href=CONFIG.whop_97;};
+  return(
+  <div className="screen" style={{background:"#0a0a0a"}}>
+    <div style={{background:"linear-gradient(160deg,#1c0606 0%,#0a0a0a 100%)",padding:"44px 24px 36px",textAlign:"center",borderBottom:"1px solid rgba(192,57,43,.16)"}}>
+      <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"rgba(245,240,232,.4)",marginBottom:14}}>Otra forma de empezar{first?`, ${first}`:""}</p>
+      <h1 style={{fontFamily:"'Lora',serif",fontSize:"clamp(28px,6vw,40px)",fontWeight:700,color:"#F5F0E8",lineHeight:1.15,marginBottom:14}}>Si el pack completo no es para ti ahora...</h1>
+      <p style={{fontSize:15,color:"rgba(245,240,232,.55)",maxWidth:480,margin:"0 auto",lineHeight:1.6}}>Puedes empezar por una pieza individual del método. Cada una funciona por sí sola y es un primer paso real.</p>
+    </div>
+
+    <div style={{padding:"36px 24px 16px",maxWidth:620,margin:"0 auto",width:"100%"}}>
+      {items.map((it,i)=>(
+        <div key={i} style={{background:"#111",border:"1px solid rgba(245,240,232,.1)",borderRadius:4,padding:"24px 22px",marginBottom:16}}>
+          <h3 style={{fontFamily:"'Lora',serif",fontSize:21,fontWeight:700,color:"#F5F0E8",marginBottom:8}}>{it.name}</h3>
+          <p style={{fontSize:14,color:"rgba(245,240,232,.6)",lineHeight:1.55,marginBottom:18}}>{it.desc}</p>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:14,flexWrap:"wrap"}}>
+            <p style={{fontFamily:"'Lora',serif",fontSize:28,fontWeight:700,color:"#F5F0E8"}}>${it.price}<span style={{fontSize:13,color:"rgba(245,240,232,.5)",fontWeight:400,marginLeft:4}}>USD</span></p>
+            <a className="btn" style={{width:"auto",padding:"14px 28px",fontSize:12}} href={it.url}>Comprar →</a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div style={{padding:"10px 24px 50px",maxWidth:620,margin:"0 auto",width:"100%"}}>
+      <div style={{background:"linear-gradient(160deg,#1c0606 0%,#150404 100%)",border:"2px solid #C0392B",borderRadius:6,padding:"30px 26px",boxShadow:"0 12px 40px rgba(192,57,43,.18)"}}>
+        <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"#E74C3C",marginBottom:14,textAlign:"center"}}>Última oportunidad</p>
+        <h3 style={{fontFamily:"'Lora',serif",fontSize:"clamp(22px,5vw,30px)",fontWeight:700,color:"#F5F0E8",lineHeight:1.25,marginBottom:14,textAlign:"center"}}>Pack Completo por $97</h3>
+        <p style={{fontSize:14,color:"rgba(245,240,232,.7)",lineHeight:1.65,marginBottom:20,textAlign:"center"}}>Las 3 piezas juntas + acceso al espacio privado de la comunidad. Comprándolas por separado pagas <strong style={{color:"#F5F0E8"}}>$151</strong>. Esta es la última vez que ves este precio.</p>
+        <div style={{textAlign:"center",marginBottom:22}}>
+          <p style={{fontSize:13,color:"rgba(245,240,232,.4)",textDecoration:"line-through",marginBottom:4}}>$151 USD por separado</p>
+          <p style={{fontFamily:"'Lora',serif",fontSize:42,fontWeight:700,color:"#F5F0E8",lineHeight:1}}>$97<span style={{fontSize:17,color:"rgba(245,240,232,.5)",fontWeight:400,marginLeft:6}}>USD</span></p>
+          <p style={{fontSize:12,color:"#E74C3C",marginTop:6,fontWeight:600,letterSpacing:1}}>Ahorras $54</p>
+        </div>
+        <button className="btn" onClick={goPack}>Quiero el pack completo →</button>
+        <p style={{textAlign:"center",fontSize:12,color:"rgba(245,240,232,.35)",marginTop:14}}>Pago seguro · Acceso inmediato</p>
+      </div>
+    </div>
+
+    <div className="foot">@ileanamentora · Ingeniería de Identidad</div>
+  </div>);}
+
+function Acceso({productName,productDesc}){
+  return(
+  <div className="screen" style={{background:"#0a0a0a",justifyContent:"center",alignItems:"center",padding:"60px 24px",textAlign:"center"}}>
+    <div style={{maxWidth:520,width:"100%"}}>
+      <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"#27AE60",marginBottom:18}}>✓ Compra confirmada</p>
+      <h1 style={{fontFamily:"'Lora',serif",fontSize:"clamp(28px,6vw,40px)",fontWeight:700,color:"#F5F0E8",lineHeight:1.15,marginBottom:18}}>Bienvenido a {productName}</h1>
+      <div style={{width:40,height:2,background:"#27AE60",margin:"0 auto 24px"}}/>
+      <p style={{fontSize:15,color:"rgba(245,240,232,.75)",lineHeight:1.7,marginBottom:16}}>{productDesc}</p>
+      <p style={{fontSize:14,color:"rgba(245,240,232,.5)",lineHeight:1.65,marginBottom:32,maxWidth:440,marginLeft:"auto",marginRight:"auto"}}>Tu acceso ya está activo. Te enviamos el enlace directo al correo que usaste en la compra — revisa tu bandeja de entrada y la carpeta de promociones.</p>
+      <a className="btn" href={CONFIG.whop_account} style={{maxWidth:340,margin:"0 auto"}}>Acceder a mi cuenta en Whop →</a>
+      <p style={{marginTop:18,fontSize:12,color:"rgba(245,240,232,.3)",letterSpacing:1}}>@ileanamentora · Ingeniería de Identidad</p>
+    </div>
   </div>);}
