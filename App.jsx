@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
 const CONFIG = {
-  ghl_webhook:    "https://YOUR-GHL-WEBHOOK-URL",
-  ghl_order_form: "https://YOUR-GHL-ORDER-FORM-URL",
-  whop_97:        "https://YOUR-WHOP-97-CHECKOUT-URL",
+  ghl_webhook:    "https://services.leadconnectorhq.com/hooks/Uca0WrGfLlFUMtuPldnT/webhook-trigger/8f228e7e-e645-4ef1-af6e-e62f807ec7d5",
+  ghl_order_form: "https://whop.com/checkout/plan_LsNiJ7wqZ80ve" ,
+  whop_97:        "https://whop.com/checkout/plan_bwtIoO1mVOaWU",
 };
 
 const LS_KEY = "ileana_diagnostic_v1";
