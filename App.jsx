@@ -7,7 +7,7 @@ const CONFIG = {
   whop_cuaderno:  "https://whop.com/checkout/plan_hWPjNf5uVD1Jj",
   whop_manual:    "https://whop.com/checkout/plan_1DLfXvdo7ga4M",
   whop_modulos:   "https://whop.com/checkout/plan_mVZthVXhRsKB8",
-  whop_account:   "https://whop.com/orders",
+  whop_account:   "https://whop.com/joined/ileana-mentora/",
 };
 
 const LS_KEY = "ileana_diagnostic_v1";
