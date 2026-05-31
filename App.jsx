@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 
 const CONFIG = {
-  ghl_webhook:    "https://services.leadconnectorhq.com/hooks/Uca0WrGfLlFUMtuPldnT/webhook-trigger/8f228e7e-e645-4ef1-af6e-e62f807ec7d5",
-  ghl_order_form: "https://whop.com/checkout/plan_LsNiJ7wqZ80ve",
+  ghl_webhook:    "https://YOUR-GHL-WEBHOOK-URL",
+  ghl_order_form: "https://YOUR-GHL-ORDER-FORM-URL",
+  whop_97:        "https://YOUR-WHOP-97-CHECKOUT-URL",
 };
+
+const LS_KEY = "ileana_diagnostic_v1";
 
 function getFullReading(bd, bt) {
   const d=new Date(bd),m=d.getMonth()+1,dy=d.getDate();
@@ -106,20 +109,32 @@ export default function App(){
   const[screen,setScreen]=useState("hero");
   const[ud,setUd]=useState(null);
   const[result,setResult]=useState(null);
+  useEffect(()=>{
+    try{
+      const p=new URLSearchParams(window.location.search);
+      if(p.get("screen")==="thankyou"){
+        const s=localStorage.getItem(LS_KEY);
+        if(s){const d=JSON.parse(s);setUd(d.ud);setResult(d.result);}
+        else{const em=p.get("email");if(em&&em!=="{{customer_email}}")setUd({name:em.split("@")[0],email:em});}
+        setScreen("thankyou");
+      }
+    }catch(e){}
+  },[]);
   const onQuizDone=answers=>{
     setScreen("loading");
     const rd=getFullReading(ud.birthdate,ud.birthtime||"no_conozco");
     const r=scoreAll(answers,rd);r.reading=rd;
     setResult(r);pushGHL(ud,r);
-    if(window.fbq)window.fbq('track','Lead');
+    try{localStorage.setItem(LS_KEY,JSON.stringify({ud,result:r}));}catch(e){}
     setTimeout(()=>setScreen("teaser"),3200);
   };
   return(<div style={{minHeight:"100vh",background:"#0A0A0A"}}><style>{css}</style>
-    {screen==="hero"    &&<Hero    onStart={()=>setScreen("form")}/>}
-    {screen==="form"    &&<Form    onSubmit={d=>{setUd(d);setScreen("quiz");}}/>}
-    {screen==="quiz"    &&<Quiz    onComplete={onQuizDone}/>}
-    {screen==="loading" &&<Loading/>}
-    {screen==="teaser"  &&<Teaser  result={result} ud={ud}/>}
+    {screen==="hero"     &&<Hero     onStart={()=>setScreen("form")}/>}
+    {screen==="form"     &&<Form     onSubmit={d=>{setUd(d);setScreen("quiz");}}/>}
+    {screen==="quiz"     &&<Quiz     onComplete={onQuizDone}/>}
+    {screen==="loading"  &&<Loading/>}
+    {screen==="teaser"   &&<Teaser   result={result} ud={ud}/>}
+    {screen==="thankyou" &&<ThankYou result={result} ud={ud}/>}
   </div>);
 }
 
@@ -230,6 +245,7 @@ function Teaser({result,ud}){
   if(!result)return null;
   const{primary:p,secondary:s}=result;
   const first=ud.name.split(" ")[0];
+  const goCheckout=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify({ud,result}));}catch(e){}window.location.href=CONFIG.ghl_order_form;};
   return(
   <div className="screen" style={{background:"#0a0a0a"}}>
     <div style={{background:"linear-gradient(160deg,#1c0606 0%,#0a0a0a 100%)",padding:"52px 24px 40px",textAlign:"center",borderBottom:"1px solid rgba(192,57,43,.16)"}}>
@@ -257,8 +273,130 @@ function Teaser({result,ud}){
         <p style={{fontSize:14,color:"rgba(245,240,232,.5)",marginBottom:8,lineHeight:1.65,maxWidth:320}}>Lo que sigue es lo que nadie te ha dicho — los patrones que están definiendo cómo te perciben en este momento, aunque tú no los veas.</p>
         <p style={{fontSize:14,color:"rgba(245,240,232,.5)",marginBottom:8,lineHeight:1.65,maxWidth:320}}>Y hay algo más: una lectura de quién realmente eres. Y de cuánto lo estás desperdiciando.</p>
         <p style={{fontSize:15,fontWeight:600,color:"rgba(245,240,232,.72)",marginBottom:26}}>¿Prefieres no saberlo?</p>
-        <button className="btn" style={{maxWidth:280}} onClick={()=>{if(window.fbq)window.fbq('track','InitiateCheckout',{value:7,currency:'USD'});window.location.href=CONFIG.ghl_order_form;}}>Quiero saber todo →</button>
+        <button className="btn" style={{maxWidth:280}} onClick={goCheckout}>Quiero saber todo →</button>
       </div>
     </div>
+    <div className="foot">@ileanamentora · Ingeniería de Identidad</div>
+  </div>);}
+
+function ThankYou({result,ud}){
+  const first=ud?.name?ud.name.split(" ")[0]:"Bienvenido";
+  const p=result?.primary,s=result?.secondary,r=result?.reading,c=result?.constellation;
+  const goUpsell=()=>{window.location.href=CONFIG.whop_97;};
+  return(
+  <div className="screen" style={{background:"#0a0a0a"}}>
+    <div style={{background:"linear-gradient(160deg,#0d3a1f 0%,#0a0a0a 100%)",padding:"44px 24px 36px",textAlign:"center",borderBottom:"1px solid rgba(39,174,96,.2)"}}>
+      <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"#27AE60",marginBottom:14}}>✓ Compra confirmada</p>
+      <h1 style={{fontFamily:"'Lora',serif",fontSize:"clamp(28px,6vw,42px)",fontWeight:700,color:"#F5F0E8",lineHeight:1.15,marginBottom:10}}>Gracias, {first}</h1>
+      <p style={{fontSize:15,color:"rgba(245,240,232,.55)",maxWidth:440,margin:"0 auto",lineHeight:1.6}}>Tu diagnóstico completo está abajo. Antes de leerlo, una última cosa importante:</p>
+    </div>
+
+    <div style={{padding:"44px 24px 52px",maxWidth:620,margin:"0 auto",width:"100%"}}>
+      <div style={{background:"linear-gradient(160deg,#1c0606 0%,#150404 100%)",border:"2px solid #C0392B",borderRadius:6,padding:"32px 26px",boxShadow:"0 12px 40px rgba(192,57,43,.18)"}}>
+        <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"#E74C3C",marginBottom:14,textAlign:"center"}}>Oferta única · Solo en esta página</p>
+        <h2 style={{fontFamily:"'Lora',serif",fontSize:"clamp(24px,5vw,32px)",fontWeight:700,color:"#F5F0E8",lineHeight:1.25,marginBottom:14,textAlign:"center"}}>El Pack Completo de Ingeniería de Identidad</h2>
+        <p style={{fontSize:15,lineHeight:1.7,color:"rgba(245,240,232,.78)",marginBottom:24,textAlign:"center"}}>El diagnóstico te muestra cuál es el personaje. El pack te muestra cómo desinstalarlo — paso a paso, con el método completo.</p>
+
+        <div style={{background:"rgba(0,0,0,.35)",borderRadius:4,padding:"22px 22px",marginBottom:26}}>
+          <p style={{fontSize:11,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:"rgba(245,240,232,.5)",marginBottom:16}}>Qué incluye:</p>
+          {[
+            "Lectura completa de cómo se construyó tu identidad — y cómo desinstalarla",
+            "Protocolo paso a paso para liberarte del personaje dominante",
+            "Mapa de tus relaciones — quién está activando tu personaje cada día",
+            "Audios guiados de integración (45 min)",
+            "Acceso al espacio privado de la comunidad",
+          ].map((t,i)=>(
+            <div key={i} style={{display:"flex",gap:12,marginBottom:i<4?12:0,fontSize:14,lineHeight:1.55,color:"rgba(245,240,232,.85)"}}>
+              <span style={{color:"#E74C3C",flexShrink:0,fontWeight:700}}>✓</span><span>{t}</span>
+            </div>
+          ))}
+        </div>
+
+        <div style={{textAlign:"center",marginBottom:22}}>
+          <p style={{fontSize:13,color:"rgba(245,240,232,.4)",textDecoration:"line-through",marginBottom:4}}>$297 USD</p>
+          <p style={{fontFamily:"'Lora',serif",fontSize:46,fontWeight:700,color:"#F5F0E8",lineHeight:1}}>$97<span style={{fontSize:18,color:"rgba(245,240,232,.5)",fontWeight:400,marginLeft:6}}>USD</span></p>
+          <p style={{fontSize:12,color:"#E74C3C",marginTop:6,fontWeight:600,letterSpacing:1}}>Solo disponible ahora</p>
+        </div>
+
+        <button className="btn" onClick={goUpsell}>Quiero el pack completo →</button>
+        <p style={{textAlign:"center",fontSize:12,color:"rgba(245,240,232,.35)",marginTop:14}}>Pago seguro · Acceso inmediato</p>
+      </div>
+
+      <p style={{textAlign:"center",fontSize:13,color:"rgba(245,240,232,.32)",marginTop:28,letterSpacing:1}}>O sigue bajando para ver tu diagnóstico ↓</p>
+    </div>
+
+    {p?(
+    <div style={{padding:"40px 24px 50px",maxWidth:620,margin:"0 auto",width:"100%",borderTop:"1px solid rgba(245,240,232,.08)"}}>
+      <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"rgba(245,240,232,.4)",marginBottom:14,textAlign:"center"}}>Tu diagnóstico</p>
+      <div style={{textAlign:"center",marginBottom:32}}>
+        <span style={{fontSize:44,display:"block",marginBottom:10}}>{p.emoji}</span>
+        <h2 style={{fontFamily:"'Lora',serif",fontSize:"clamp(26px,5vw,38px)",fontWeight:700,color:"#F5F0E8",lineHeight:1.2}}>{p.name}</h2>
+        {s&&<p style={{fontSize:14,color:"rgba(245,240,232,.45)",marginTop:10}}>con rasgos de <strong style={{color:"rgba(245,240,232,.7)"}}>{s.name}</strong></p>}
+      </div>
+
+      <div style={{marginBottom:30}}><p className="sl">De dónde viene</p><p className="st">{p.painHook}</p></div>
+      <div style={{marginBottom:30}}><p className="sl">Cómo se ve por dentro</p><p className="st">{p.core}</p></div>
+      <div style={{marginBottom:30}}><p className="sl">La sombra detrás del personaje</p><p className="st">{p.shadow}</p></div>
+      <div style={{marginBottom:30}}><p className="sl">Lo que te está costando</p><p className="st">{p.costBlood}</p></div>
+
+      <div style={{background:"rgba(192,57,43,.07)",borderLeft:"3px solid #C0392B",padding:"20px 22px",marginBottom:30}}>
+        <p className="sl">Los 3 momentos donde te controla</p>
+        <p style={{fontSize:15,lineHeight:1.75,color:"rgba(245,240,232,.85)",fontStyle:"italic"}}>{p.teaser3}</p>
+      </div>
+
+      <div style={{marginBottom:30}}><p className="sl">Cómo se manifiesta en tu día a día</p><p className="st">{p.manifestations}</p></div>
+      <div style={{marginBottom:30}}><p className="sl">Las frases que dice</p><p className="st" style={{fontStyle:"italic"}}>{p.phrases}</p></div>
+      <div style={{marginBottom:30}}><p className="sl">Lo que viene si no haces nada</p><p className="st">{p.futureBlock}</p></div>
+      <div style={{background:"rgba(245,240,232,.04)",borderLeft:"3px solid #F5F0E8",padding:"20px 22px",marginBottom:30}}>
+        <p className="sl" style={{color:"#F5F0E8"}}>El primer paso de liberación</p>
+        <p className="st">{p.liberation}</p>
+      </div>
+
+      {s&&(
+      <div style={{marginTop:40,paddingTop:32,borderTop:"1px solid rgba(245,240,232,.08)"}}>
+        <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"rgba(245,240,232,.4)",marginBottom:10,textAlign:"center"}}>Tu personaje secundario</p>
+        <div style={{textAlign:"center",marginBottom:24}}>
+          <span style={{fontSize:32,display:"block",marginBottom:8}}>{s.emoji}</span>
+          <h3 style={{fontFamily:"'Lora',serif",fontSize:24,fontWeight:700,color:"#F5F0E8"}}>{s.name}</h3>
+        </div>
+        <div style={{marginBottom:24}}><p className="sl">Su núcleo</p><p className="st">{s.core}</p></div>
+        <div><p className="sl">De dónde se activa</p><p className="st">{s.painHook}</p></div>
+      </div>
+      )}
+
+      {r&&(
+      <div style={{marginTop:40,paddingTop:32,borderTop:"1px solid rgba(245,240,232,.08)"}}>
+        <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"rgba(245,240,232,.4)",marginBottom:10,textAlign:"center"}}>Tu lectura energética</p>
+        <h3 style={{fontFamily:"'Lora',serif",fontSize:24,fontWeight:700,color:"#F5F0E8",textAlign:"center",marginBottom:28}}>{r.sign} · {r.element}</h3>
+        <div style={{marginBottom:24}}><p className="sl">Para qué viniste</p><p className="st">{r.destiny}</p></div>
+        <div style={{marginBottom:24}}><p className="sl">Lo que te bloquea</p><p className="st">{r.blocked}</p></div>
+        <div style={{marginBottom:24}}><p className="sl">Tu energía base ({r.element})</p><p className="st">{r.elementReading}</p></div>
+        <div style={{marginBottom:24}}><p className="sl">Camino de vida {r.lifePath} — {r.lifePathMeaning}</p><p className="st">{r.lifePathLesson}</p></div>
+        {r.timeLayer&&<div><p className="sl">La hora en que naciste</p><p className="st">{r.timeLayer}</p></div>}
+      </div>
+      )}
+
+      {c&&(
+      <div style={{marginTop:40,paddingTop:32,borderTop:"1px solid rgba(245,240,232,.08)"}}>
+        <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"rgba(245,240,232,.4)",marginBottom:10,textAlign:"center"}}>Tu constelación familiar</p>
+        <h3 style={{fontFamily:"'Lora',serif",fontSize:24,fontWeight:700,color:"#F5F0E8",textAlign:"center",marginBottom:26}}>{c.name}</h3>
+        <div style={{marginBottom:24}}><p className="sl">El rol que tomaste</p><p className="st">{c.desc}</p></div>
+        <div><p className="sl">Cómo se sigue activando</p><p className="st">{c.press}</p></div>
+      </div>
+      )}
+
+      <div style={{marginTop:48,padding:"30px 24px",background:"rgba(192,57,43,.08)",border:"1px solid rgba(192,57,43,.25)",borderRadius:6,textAlign:"center"}}>
+        <h3 style={{fontFamily:"'Lora',serif",fontSize:22,fontWeight:700,color:"#F5F0E8",lineHeight:1.3,marginBottom:12}}>Ahora ya sabes quién está viviendo tu vida.</h3>
+        <p style={{fontSize:14,color:"rgba(245,240,232,.6)",lineHeight:1.65,marginBottom:22,maxWidth:400,margin:"0 auto 22px"}}>El siguiente paso es desinstalarlo. El pack completo te muestra exactamente cómo — con el método paso a paso.</p>
+        <button className="btn" style={{maxWidth:320,margin:"0 auto"}} onClick={goUpsell}>Quiero el pack completo →</button>
+      </div>
+    </div>
+    ):(
+    <div style={{padding:"40px 24px 50px",maxWidth:560,margin:"0 auto",width:"100%",borderTop:"1px solid rgba(245,240,232,.08)",textAlign:"center"}}>
+      <p style={{fontSize:15,lineHeight:1.75,color:"rgba(245,240,232,.65)",marginBottom:10}}>Tu diagnóstico completo fue enviado al correo que usaste en la compra.</p>
+      <p style={{fontSize:14,color:"rgba(245,240,232,.45)"}}>Revisa tu bandeja de entrada y la carpeta de promociones.</p>
+    </div>
+    )}
+
     <div className="foot">@ileanamentora · Ingeniería de Identidad</div>
   </div>);}
