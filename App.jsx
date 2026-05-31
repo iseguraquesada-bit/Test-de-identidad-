@@ -117,7 +117,7 @@ export default function App(){
     try{
       const p=new URLSearchParams(window.location.search);
       const sc=p.get("screen");
-      const known=["thankyou","downsell","acceso_pack","acceso_cuaderno","acceso_manual","acceso_modulos"];
+      const known=["thankyou","downsell","acceso_pack","acceso_cuaderno","acceso_manual","acceso_modulos","disfruta"];
       if(sc && known.includes(sc)){
         const s=localStorage.getItem(LS_KEY);
         if(s){const d=JSON.parse(s);setUd(d.ud);setResult(d.result);}
@@ -146,6 +146,7 @@ export default function App(){
     {screen==="acceso_cuaderno" &&<Acceso productName="el Cuaderno de Trabajo" productDesc="Los ejercicios prácticos para integrar tu diagnóstico en la vida diaria."/>}
     {screen==="acceso_manual"   &&<Acceso productName="el Manual de Personajes" productDesc="La guía completa de los 6 personajes y cómo identificarlos en ti y los demás."/>}
     {screen==="acceso_modulos"  &&<Acceso productName="los Módulos en Video" productDesc="Las sesiones grabadas con el método completo en video, paso a paso."/>}
+    {screen==="disfruta" &&<Disfruta ud={ud}/>}
   </div>);
 }
 
@@ -424,6 +425,7 @@ function Downsell({result,ud}){
     {name:"Módulos en Video",price:"97",url:CONFIG.whop_modulos,desc:"Las sesiones grabadas con el método completo, paso a paso, para desinstalar tu personaje dominante."},
   ];
   const goPack=()=>{window.location.href=CONFIG.whop_97;};
+  const goSalir=()=>{window.location.href="?screen=disfruta";};
   return(
   <div className="screen" style={{background:"#0a0a0a"}}>
     <div style={{background:"linear-gradient(160deg,#1c0606 0%,#0a0a0a 100%)",padding:"44px 24px 36px",textAlign:"center",borderBottom:"1px solid rgba(192,57,43,.16)"}}>
@@ -458,9 +460,26 @@ function Downsell({result,ud}){
         <button className="btn" onClick={goPack}>Quiero el pack completo →</button>
         <p style={{textAlign:"center",fontSize:12,color:"rgba(245,240,232,.35)",marginTop:14}}>Pago seguro · Acceso inmediato</p>
       </div>
+
+      <button onClick={goSalir} style={{display:"block",width:"100%",margin:"28px auto 0",background:"none",border:"none",color:"rgba(245,240,232,.4)",fontSize:13,textDecoration:"underline",cursor:"pointer",fontFamily:"'Poppins',sans-serif",padding:0,textAlign:"center"}}>No quiero comprar nada por ahora</button>
     </div>
 
     <div className="foot">@ileanamentora · Ingeniería de Identidad</div>
+  </div>);}
+
+function Disfruta({ud}){
+  const first=ud?.name?ud.name.split(" ")[0]:"";
+  return(
+  <div className="screen" style={{background:"#0a0a0a",justifyContent:"center",alignItems:"center",padding:"60px 24px",textAlign:"center"}}>
+    <div style={{maxWidth:520,width:"100%"}}>
+      <p style={{fontSize:11,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"rgba(245,240,232,.5)",marginBottom:18}}>Hasta aquí, por ahora</p>
+      <h1 style={{fontFamily:"'Lora',serif",fontSize:"clamp(28px,6vw,40px)",fontWeight:700,color:"#F5F0E8",lineHeight:1.2,marginBottom:18}}>Gracias por estar{first?`, ${first}`:""}</h1>
+      <div style={{width:40,height:2,background:"#C0392B",margin:"0 auto 24px"}}/>
+      <p style={{fontSize:15,color:"rgba(245,240,232,.75)",lineHeight:1.75,marginBottom:18}}>Lo que descubriste hoy ya es tuyo. Tu diagnóstico te pertenece y puedes volver a leerlo cuando quieras desde tu cuenta de Whop.</p>
+      <p style={{fontSize:14,color:"rgba(245,240,232,.5)",lineHeight:1.7,marginBottom:32,maxWidth:440,marginLeft:"auto",marginRight:"auto"}}>Cuando estés listo para el siguiente paso — desinstalar el personaje y vivir desde quien realmente eres — aquí vamos a estar.</p>
+      <a className="btn" href={CONFIG.whop_account} style={{maxWidth:340,margin:"0 auto"}}>Ver mi diagnóstico en Whop →</a>
+      <p style={{marginTop:20,fontSize:12,color:"rgba(245,240,232,.3)",letterSpacing:1}}>@ileanamentora · Ingeniería de Identidad</p>
+    </div>
   </div>);}
 
 function Acceso({productName,productDesc}){
