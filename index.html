@@ -82,6 +82,12 @@ var LS_KEY="ileana_diagnostic_v3", B_KEY="ii_bought_v3";
 function track(ev,data){try{if(window.fbq)window.fbq("track",ev,data||{});}catch(e){}}
 function getBought(){try{return JSON.parse(localStorage.getItem(B_KEY))||[];}catch(e){return[];}}
 function addBought(x){try{var b=getBought();if(b.indexOf(x)<0){b.push(x);localStorage.setItem(B_KEY,JSON.stringify(b));}}catch(e){}}
+/* ---- Muro de pago: token de desbloqueo + verificación de compra ---- */
+var UNLOCKED=false;
+var UNLOCK_SECRET="iiVerdad2026x"; // cambiar si se filtra; debe ser igual en generación y validación
+function _iihash(s){var h=5381,i=s.length;while(i){h=(h*33)^s.charCodeAt(--i);}return (h>>>0).toString(36);}
+function tok(pk,sk,ck){return _iihash((pk||"")+"|"+(sk||"")+"|"+(ck||"")+"|"+UNLOCK_SECRET);}
+function hasPaid(){if(UNLOCKED)return true;var b=getBought();return b.indexOf("test")>=0||b.indexOf("completa")>=0||b.indexOf("manual")>=0||b.indexOf("cuaderno")>=0;}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function cut(s,n){if(!s)return"";if(s.length<=n)return s;var t=s.slice(0,n);return t.slice(0,t.lastIndexOf(" "))+"…";}
 
@@ -175,7 +181,8 @@ function scoreAll(answers,reading){
 function pushGHL(ud,res){
   try{
     var base=window.location.origin+window.location.pathname;
-    var resultUrl=base+"?screen=thankyou&p="+res.primaryKey+"&s="+(res.secondaryKey||"")+"&c="+res.constKey+"&n="+encodeURIComponent((ud.name||"").split(" ")[0])+"&bd="+(ud.birthdate||"")+"&bt="+encodeURIComponent(ud.birthtime||"");
+    var resultUrlTeaser=base+"?screen=thankyou&p="+res.primaryKey+"&s="+(res.secondaryKey||"")+"&c="+res.constKey+"&n="+encodeURIComponent((ud.name||"").split(" ")[0])+"&bd="+(ud.birthdate||"")+"&bt="+encodeURIComponent(ud.birthtime||"");
+    var resultUrl=resultUrlTeaser+"&t="+tok(res.primaryKey,res.secondaryKey||"",res.constKey);
     var r=res.reading||{};
     fetch(CONFIG.ghl_webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
       name:ud.name,email:ud.email,phone:(ud.phoneCode||"")+(ud.phone||""),birthdate:ud.birthdate,birth_time:ud.birthtime||"",
@@ -184,6 +191,7 @@ function pushGHL(ud,res){
       constelacion:res.constellation?res.constellation.name:"",constelacion_key:res.constKey,
       signo:r.sign||"",elemento:r.element||"",camino_vida:r.lifePath||"",camino_vida_don:r.lifePathMeaning||"",
       result_url:resultUrl,
+      result_url_teaser:resultUrlTeaser,
       pain_score:res.avgPain,disposition:res.disp,willing_invest:res.willingToInvest,urgency:res.urgency||"",profession:res.profession||"",
       source:"diagnostico-identidad-v3",ts:new Date().toISOString()
     })});
@@ -379,6 +387,11 @@ function rFinal(){
 function block(label,text,italic){return '<div style="margin-bottom:20px"><p class="sl">'+label+'</p><p class="st"'+(italic?' style="font-style:italic"':'')+'>'+esc(text)+'</p></div>';}
 function rThankyou(){
   var res=S.result;
+  if(!hasPaid()){
+    if(res&&res.primary){rTeaser();return;}
+    render('<div class="screen" style="background:#0a0a0a;justify-content:center;align-items:center;text-align:center;padding:36px 20px"><div style="max-width:480px"><span style="font-size:40px;display:block;margin-bottom:14px">🔒</span><h1 style="font-family:\'Lora\',serif;font-size:clamp(24px,5vw,32px);color:#F5F0E8;line-height:1.2;margin-bottom:12px">Tu diagnóstico está listo, pero bloqueado</h1><p style="font-size:15px;color:rgba(245,240,232,.85);line-height:1.7;margin-bottom:22px">Desbloquéalo completo por $7 y te lo enviamos también a tu correo.</p><button class="btn" style="max-width:340px;margin:0 auto" onclick="II.checkout()">Desbloquear mi diagnóstico → $7</button></div></div>'+foot());
+    return;
+  }
   var first=S.ud&&S.ud.name?esc(S.ud.name.split(" ")[0]):"Bienvenido";
   if(!res||!res.primary){render(
     '<div class="screen" style="background:#0a0a0a;justify-content:center;align-items:center;text-align:center;padding:36px 20px">'
@@ -514,6 +527,7 @@ window.II={
       else if(p.get("p")&&CHARS[p.get("p")]){
         var pk=p.get("p"),sk=p.get("s"),ck=p.get("c")||"hero";
         var res={primaryKey:pk,secondaryKey:sk||null,constKey:ck,primary:CHARS[pk],secondary:(sk&&CHARS[sk])?CHARS[sk]:null,constellation:CONST[ck]||CONST.hero};
+        if(p.get("t")&&p.get("t")===tok(pk,sk||"",ck))UNLOCKED=true;
         var bd=p.get("bd"),btm=p.get("bt");
         if(bd)res.reading=getFullReading(bd,btm||"no_conozco");
         S.result=res;S.ud={name:p.get("n")||"Bienvenido",email:p.get("email")||""};
