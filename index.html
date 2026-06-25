@@ -21,41 +21,50 @@
   · Webhook a GHL enriquecido (lectura energética incluida) para el
     email personalizado con el diagnóstico completo
 
-  REDIRECCIONES A CONFIGURAR EN WHOP (post-compra de cada producto):
-    Test $7      → TU-URL/?screen=oferta_manual&bought=test
-    Manual $27   → TU-URL/?screen=oferta_cuaderno&bought=manual
-    Cuaderno $27 → TU-URL/?screen=oferta_final&bought=cuaderno
-    Completa-90/63/36 → TU-URL/?screen=thankyou&bought=completa
+  v4 (jun 2026) — rediseño + nuevo flujo:
+  · Diseño claro: crema + azul/celeste + dorado (Cormorant/Jost). Fuera negro/rojo.
+  · Opt-in AL FINAL (después del test), como llave para revelar el resultado parcial.
+  · Tras pagar $7 → directo al VSL (el diagnóstico completo va SOLO por correo).
+  · Ofertas extra ($27/$97) fuera del flujo (downsell solo a quien vio el VSL y no agendó).
+
+  REDIRECCIÓN A CONFIGURAR EN WHOP (post-compra del Test $7):
+    Test $7 → https://ileanasegura.com/vsl
+  (El diagnóstico completo se entrega por correo vía el webhook → GHL.)
 ============================================================ -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap');
+:root{
+  --crema:#FAF4E8;--crema2:#F4EAD6;--blanco:#FFFDF8;--tinta:#1C3A5E;--azul:#2F6DA8;
+  --celeste:#8FC2DE;--celesteSuave:#DCEBF3;--oro:#C29B40;--oroOsc:#9A7A28;--oroSuave:#E8DCB6;
+  --texto:#46546A;--muted:#7E8898;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Poppins',sans-serif;background:#0A0A0A;color:#F5F0E8;min-height:100vh;-webkit-font-smoothing:antialiased;}
+body{font-family:'Jost',sans-serif;background:var(--crema);color:var(--tinta);min-height:100vh;-webkit-font-smoothing:antialiased;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes iiSpin{to{transform:rotate(360deg)}}
 .screen{min-height:100vh;display:flex;flex-direction:column;animation:fadeIn .4s ease;}
-.btn{display:block;width:100%;padding:16px 20px;background:#C0392B;border:none;border-radius:3px;color:#fff;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s;text-align:center;text-decoration:none;}
-.btn:hover:not(:disabled){background:#922B21;transform:translateY(-2px);}
+.serif{font-family:'Cormorant Garamond',serif;}
+.btn{display:block;width:100%;padding:17px 22px;background:var(--oro);border:none;border-radius:14px;color:#fff;font-family:'Jost',sans-serif;font-size:16px;font-weight:500;letter-spacing:.5px;cursor:pointer;transition:transform .15s,box-shadow .2s;text-align:center;text-decoration:none;box-shadow:0 10px 22px rgba(194,155,64,.26);}
+.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 28px rgba(194,155,64,.34);}
 .btn:active:not(:disabled){transform:translateY(0);}
-.btn:disabled{opacity:.3;cursor:not-allowed;}
-.sl{font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#E74C3C;margin-bottom:12px;}
-.st{font-size:16px;line-height:1.8;color:rgba(245,240,232,.94);}
-.foot{text-align:center;padding:14px 20px;font-size:12px;color:rgba(245,240,232,.55);letter-spacing:2px;text-transform:uppercase;}
-.inp{width:100%;padding:12px 16px;background:rgba(245,240,232,.05);border:1px solid rgba(245,240,232,.12);border-radius:3px;color:#F5F0E8;font-family:'Poppins',sans-serif;font-size:15px;outline:none;transition:border-color .2s;}
-.inp:focus{border-color:rgba(192,57,43,.5);}
-.lbl{display:block;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,.75);margin-bottom:8px;}
-.opt{width:100%;text-align:left;padding:16px 20px;background:rgba(245,240,232,.03);border:1px solid rgba(245,240,232,.09);border-radius:3px;color:rgba(245,240,232,.88);font-family:'Poppins',sans-serif;font-size:14px;line-height:1.5;cursor:pointer;transition:all .2s;animation:fadeUp .3s ease both;}
-.opt:hover{border-color:rgba(192,57,43,.5);color:#F5F0E8;}
-.opt.sel{background:rgba(192,57,43,.12);border-color:#C0392B;color:#F5F0E8;}
-.linkout{display:block;width:100%;margin:22px auto 0;background:none;border:none;color:rgba(245,240,232,.75);font-size:13px;text-decoration:underline;cursor:pointer;font-family:'Poppins',sans-serif;padding:0;text-align:center;}
-.cartbox{background:linear-gradient(160deg,#1c0606 0%,#150404 100%);border:2px solid #C0392B;border-radius:6px;padding:24px 22px;box-shadow:0 12px 40px rgba(192,57,43,.18);}
-.incl{background:rgba(0,0,0,.35);border-radius:4px;padding:20px;margin-bottom:16px;}
-.incl-t{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,.78);margin-bottom:14px;}
-.incl-i{display:flex;gap:12px;margin-bottom:11px;font-size:14px;line-height:1.5;color:rgba(245,240,232,.94);}
-.incl-i:last-child{margin-bottom:0;}
-.mirror{font-family:'Lora',serif;font-size:17px;font-style:italic;line-height:1.75;color:rgba(245,240,232,.92);}
+.btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;}
+.btn-azul{background:var(--azul);box-shadow:0 10px 22px rgba(47,109,168,.22);}
+.kicker{font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--azul);}
+.sl{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--oro);margin-bottom:10px;}
+.st{font-size:16px;line-height:1.75;color:var(--texto);}
+.foot{text-align:center;padding:22px 20px;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.inp{width:100%;padding:13px 16px;background:var(--blanco);border:1px solid var(--oroSuave);border-radius:12px;color:var(--tinta);font-family:'Jost',sans-serif;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s;}
+.inp:focus{border-color:var(--celeste);box-shadow:0 0 0 3px rgba(143,194,222,.25);}
+.lbl{display:block;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--azul);margin-bottom:8px;}
+.opt{width:100%;text-align:left;padding:16px 20px;background:var(--blanco);border:1px solid var(--oroSuave);border-radius:14px;color:var(--texto);font-family:'Jost',sans-serif;font-size:15px;line-height:1.55;cursor:pointer;transition:all .2s;animation:fadeUp .3s ease both;}
+.opt:hover{border-color:var(--celeste);background:var(--celesteSuave);color:var(--tinta);}
+.opt.sel{background:rgba(194,155,64,.1);border-color:var(--oro);color:var(--tinta);}
+.card{background:var(--blanco);border:1px solid var(--oroSuave);border-radius:18px;padding:26px 24px;}
+.lock{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--celesteSuave);color:var(--azul);display:flex;align-items:center;justify-content:center;font-size:11px;}
+.mirror{font-family:'Cormorant Garamond',serif;font-size:23px;font-style:italic;line-height:1.45;color:var(--tinta);}
 </style>
 </head>
 <body>
@@ -73,7 +82,7 @@ var CONFIG={
   whop_completa90: "https://whop.com/checkout/plan_lnnHSHjUP7dZd",
   whop_completa63: "https://whop.com/checkout/plan_9bGSeIf5yF0yi",
   whop_completa36: "https://whop.com/checkout/plan_0ZA7XT8DFilmQ",
-  vsl_url:         "https://ileanasegura.com/vsl-page",
+  vsl_url:         "https://ileanasegura.com/vsl",
   whop_account:    "https://whop.com/joined/ileana-mentora/"
 };
 var LS_KEY="ileana_diagnostic_v3", B_KEY="ii_bought_v3";
@@ -214,53 +223,52 @@ function foot(){return '<div class="foot">@ileanamentora · Ingeniería de Ident
 
 /* ---------- 1. HERO — compacto: golpe + promesa + botón SIN scroll. La historia del traje vive debajo para el que duda. ---------- */
 function rHero(){render(
-/* === PANTALLA 1: todo visible sin scroll === */
-'<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:36px 24px 18px;background:radial-gradient(ellipse at 50% 0%,#1c0606 0%,#0a0a0a 65%);animation:fadeIn .4s ease">'
-+'<p style="font-size:12px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:#C0392B;margin-bottom:16px">Ingeniería de Identidad</p>'
-+'<h1 style="font-family:\'Lora\',serif;font-size:clamp(32px,7.5vw,56px);font-weight:700;line-height:1.1;color:#F5F0E8;margin-bottom:18px;max-width:620px">Hiciste todo bien.<br><em style="color:#C0392B">¿Por qué se siente tan mal?</em></h1>'
-+'<div style="width:40px;height:2px;background:#C0392B;margin:0 auto 16px"></div>'
-+'<p style="font-size:16px;font-weight:400;color:rgba(245,240,232,.92);line-height:1.7;max-width:440px;margin:0 auto 10px">Hay un personaje que vive tu vida desde hace 20 años. Tú no lo elegiste — pero hoy decide todo: <strong style="color:#F5F0E8">tu trabajo, tu pareja, tu dinero, tu descanso.</strong></p>'
-+'<p style="font-size:15px;font-weight:300;color:rgba(245,240,232,.82);line-height:1.7;max-width:440px;margin:0 auto 18px">En 5 minutos te digo cuál es, cómo te controla y qué te está costando.</p>'
-+'<button class="btn" style="max-width:360px;font-size:14px" onclick="II.start()">Quiero saber quién me dirige →</button>'
-+'<p style="margin-top:14px;font-size:13px;color:rgba(245,240,232,.6);letter-spacing:1px">5 minutos · 14 preguntas · Resultado inmediato</p>'
-+'<p style="margin-top:18px;margin-bottom:0;font-size:13px;color:rgba(245,240,232,.65)">↓ ¿No me crees? Sigue bajando</p>'
+'<div class="screen" style="background:linear-gradient(180deg,var(--celesteSuave) 0%,var(--crema) 52%);justify-content:flex-start">'
++'<div style="text-align:center;padding:48px 24px 26px;max-width:600px;margin:0 auto">'
++'<p class="kicker" style="margin-bottom:18px">Ingeniería de Identidad</p>'
++'<h1 class="serif" style="font-size:clamp(34px,8vw,56px);font-weight:600;line-height:1.08;color:var(--tinta);margin-bottom:18px">Hiciste todo bien.<br><em style="color:var(--azul)">¿Por qué se siente tan mal?</em></h1>'
++'<div style="width:46px;height:2px;background:var(--oro);margin:0 auto 18px"></div>'
++'<p style="font-size:16px;line-height:1.75;color:var(--texto);max-width:440px;margin:0 auto 10px">Hay un personaje que vive tu vida desde hace 20 años. Tú no lo elegiste, pero hoy decide todo: <strong style="color:var(--tinta);font-weight:500">tu trabajo, tu pareja, tu dinero, tu descanso.</strong></p>'
++'<p style="font-size:15px;line-height:1.75;color:var(--muted);max-width:440px;margin:0 auto 22px">En 5 minutos te digo cuál es, cómo te controla y qué te está costando.</p>'
++'<button class="btn" style="max-width:360px;margin:0 auto" onclick="II.start()">Quiero saber quién me dirige</button>'
++'<p style="margin-top:14px;font-size:13px;color:var(--muted);letter-spacing:.5px">5 minutos · 14 preguntas · Resultado inmediato</p>'
++'<p style="margin-top:18px;font-size:13px;color:var(--azul)">↓ ¿No me crees? Sigue bajando</p>'
 +'</div>'
-
-/* === PANTALLA 2: el traje heredado (copy del VSL) para el que necesita dolerse antes de actuar === */
-+'<div style="padding:10px 20px 28px;background:#0a0a0a;text-align:center">'
-+'<div style="max-width:500px;margin:0 auto 18px;text-align:left;background:rgba(245,240,232,.03);border-left:3px solid #C0392B;padding:20px 22px;border-radius:0 4px 4px 0">'
-+'<p style="font-size:15px;line-height:1.8;color:rgba(245,240,232,.92);margin-bottom:14px">Te levantas. Respondes. Resuelves. Cumples. Sonríes en la foto. Y en la noche, cuando ya nadie te necesita, aparece la pregunta que llevas años esquivando:</p>'
-+'<p class="mirror" style="font-size:18px;color:#F5F0E8">¿Esto era todo?</p>'
++'<div style="padding:6px 22px 30px;text-align:center">'
++'<div class="card" style="max-width:500px;margin:0 auto 18px;text-align:left;border-left:4px solid var(--celeste)">'
++'<p style="font-size:15px;line-height:1.8;color:var(--texto);margin-bottom:12px">Te levantas. Respondes. Resuelves. Cumples. Sonríes en la foto. Y en la noche, cuando ya nadie te necesita, aparece la pregunta que llevas años esquivando:</p>'
++'<p class="mirror">¿Esto era todo?</p>'
 +'</div>'
-+'<p style="font-size:15px;font-weight:400;color:rgba(245,240,232,.92);line-height:1.8;max-width:500px;margin:0 auto 16px">Todos nacemos con un traje a la medida. Uno que nunca elegiste, pero en el que aprendiste a encajar: <em style="color:rgba(245,240,232,.9)">a controlar para mantener tu paz. A salvar para sentir que vales. A callar para evitar el rechazo. A sobreexigirte para que te vean.</em></p>'
-+'<p style="font-size:15px;font-weight:400;color:rgba(245,240,232,.92);line-height:1.8;max-width:500px;margin:0 auto 16px">La raíz de todos esos trajes es la misma: <strong style="color:#F5F0E8">el miedo.</strong> Y hoy ese traje se hizo chico. Pesa. Limita. No es que estés mal — es que ya no eres la persona que construyó esa vida. Pero tampoco sabes quién eres ahora.</p>'
-+'<p style="font-family:\'Lora\',serif;font-size:clamp(18px,4.2vw,23px);font-weight:600;font-style:italic;color:#F5F0E8;line-height:1.5;max-width:500px;margin:0 auto 16px">No es que te hayas perdido.<br>Pero tampoco sabes dónde carajos estás hoy.</p>'
-+'<p style="font-size:15px;font-weight:300;color:rgba(245,240,232,.85);line-height:1.8;max-width:500px;margin:0 auto 20px">Y no puedes soltar un traje que no puedes ver. Por eso los libros, las terapias y los retiros chocan contra el mismo muro: no te falta voluntad — te falta <strong style="color:#F5F0E8">claridad</strong>. El test le pone nombre a tu traje: cuál de los 6 personajes te dirige y qué te está costando hoy.</p>'
-+'<button class="btn" style="max-width:360px;font-size:14px;margin:0 auto" onclick="II.start()">Ponerle nombre a mi personaje →</button>'
-+'<p style="margin-top:14px;font-size:13px;color:rgba(245,240,232,.6);letter-spacing:1px">Llevas años posponiendo conversaciones contigo. Esta toma 5 minutos.</p>'
++'<p style="font-size:15px;line-height:1.8;color:var(--texto);max-width:500px;margin:0 auto 16px">Todos nacemos con un traje a la medida. Uno que nunca elegiste, pero en el que aprendiste a encajar: <em>a controlar para mantener tu paz, a salvar para sentir que vales, a callar para evitar el rechazo, a sobreexigirte para que te vean.</em></p>'
++'<p style="font-size:15px;line-height:1.8;color:var(--texto);max-width:500px;margin:0 auto 16px">La raíz de todos esos trajes es la misma: <strong style="color:var(--tinta);font-weight:500">el miedo.</strong> Y hoy ese traje se hizo chico. Pesa. Limita. No es que estés mal, es que ya no eres la persona que construyó esa vida, pero tampoco sabes quién eres ahora.</p>'
++'<p class="serif" style="font-size:clamp(20px,4.5vw,26px);font-weight:500;font-style:italic;color:var(--tinta);line-height:1.45;max-width:500px;margin:0 auto 16px">No es que te hayas perdido.<br>Pero tampoco sabes dónde carajos estás hoy.</p>'
++'<p style="font-size:15px;line-height:1.8;color:var(--muted);max-width:500px;margin:0 auto 20px">Y no puedes soltar un traje que no puedes ver. Por eso los libros, las terapias y los retiros chocan contra el mismo muro: no te falta voluntad, te falta <strong style="color:var(--tinta);font-weight:500">claridad.</strong> El test le pone nombre a tu traje: cuál de los 6 personajes te dirige y qué te está costando hoy.</p>'
++'<button class="btn" style="max-width:360px;margin:0 auto" onclick="II.start()">Ponerle nombre a mi personaje</button>'
++'<p style="margin-top:14px;font-size:13px;color:var(--muted)">Llevas años posponiendo conversaciones contigo. Esta toma 5 minutos.</p>'
 +'</div>'+foot());}
 
 /* ---------- 2. FORMULARIO ---------- */
 var PHONE_CODES=[["Costa Rica","+506"],["México","+52"],["Colombia","+57"],["Argentina","+54"],["España","+34"],["Chile","+56"],["Perú","+51"],["Venezuela","+58"],["Ecuador","+593"],["Guatemala","+502"],["Panamá","+507"],["Rep. Dominicana","+1"],["Honduras","+504"],["El Salvador","+503"],["Nicaragua","+505"],["Bolivia","+591"],["Paraguay","+595"],["Uruguay","+598"],["Cuba","+53"],["Puerto Rico","+1"],["Estados Unidos","+1"],["Brasil","+55"]];
 function rForm(){
-  var codes=PHONE_CODES.map(function(p){return '<option value="'+p[1]+'" style="background:#111">'+p[0]+' ('+p[1]+')</option>';}).join("");
+  var codes=PHONE_CODES.map(function(p){return '<option value="'+p[1]+'">'+p[0]+' ('+p[1]+')</option>';}).join("");
   render(
-'<div class="screen" style="justify-content:center;align-items:center;padding:30px 16px;background:#0a0a0a">'
-+'<div style="width:100%;max-width:460px;background:#111;border:1px solid rgba(192,57,43,.18);border-radius:4px;padding:26px 24px">'
-+'<h2 style="font-family:\'Lora\',serif;font-size:26px;font-weight:700;color:#F5F0E8;margin-bottom:8px">Antes de comenzar</h2>'
-+'<p style="font-size:14px;color:rgba(245,240,232,.72);margin-bottom:20px;line-height:1.5">Esta información personaliza tu lectura. No se comparte con nadie.</p>'
-+'<div style="margin-bottom:20px"><label class="lbl">Tu nombre</label><input class="inp" type="text" id="f-name" placeholder="¿Cómo te llamas?"></div>'
-+'<div style="margin-bottom:20px"><label class="lbl">Correo electrónico</label><input class="inp" type="email" id="f-email" placeholder="tu@correo.com"></div>'
-+'<div style="margin-bottom:20px"><label class="lbl">Fecha de nacimiento</label><input class="inp" type="date" id="f-bd"></div>'
-+'<div style="margin-bottom:20px"><label class="lbl">Hora de nacimiento <span style="color:rgba(245,240,232,.65);text-transform:none;letter-spacing:0">(hace tu lectura más precisa)</span></label>'
+'<div class="screen" style="justify-content:center;align-items:center;padding:30px 16px;background:linear-gradient(180deg,var(--celesteSuave) 0%,var(--crema) 40%)">'
++'<div style="width:100%;max-width:460px" class="card">'
++'<p class="kicker" style="text-align:center;margin-bottom:10px">Tu resultado está listo</p>'
++'<h2 class="serif" style="font-size:30px;font-weight:600;color:var(--tinta);margin-bottom:8px;text-align:center">Ya casi. Falta un paso.</h2>'
++'<p style="font-size:14.5px;color:var(--texto);margin-bottom:22px;line-height:1.6;text-align:center">Déjame dónde enviarte tu diagnóstico y lo revelamos ahora mismo. La fecha de nacimiento personaliza tu lectura.</p>'
++'<div style="margin-bottom:18px"><label class="lbl">Tu nombre</label><input class="inp" type="text" id="f-name" placeholder="¿Cómo te llamas?"></div>'
++'<div style="margin-bottom:18px"><label class="lbl">Correo electrónico</label><input class="inp" type="email" id="f-email" placeholder="tu@correo.com"></div>'
++'<div style="margin-bottom:18px"><label class="lbl">Fecha de nacimiento</label><input class="inp" type="date" id="f-bd"></div>'
++'<div style="margin-bottom:18px"><label class="lbl">Hora de nacimiento <span style="color:var(--muted);text-transform:none;letter-spacing:0">(hace tu lectura más precisa)</span></label>'
 +'<div style="display:flex;gap:10px;align-items:center"><input class="inp" type="time" id="f-bt" style="flex:1">'
-+'<label style="display:flex;align-items:center;gap:7px;font-size:13px;color:rgba(245,240,232,.78);cursor:pointer;flex-shrink:0;user-select:none"><input type="checkbox" id="f-nobt" onchange="II.toggleBt()" style="accent-color:#C0392B;width:16px;height:16px">No la conozco</label></div></div>'
++'<label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--texto);cursor:pointer;flex-shrink:0;user-select:none"><input type="checkbox" id="f-nobt" onchange="II.toggleBt()" style="accent-color:var(--oro);width:16px;height:16px">No la conozco</label></div></div>'
 +'<div style="margin-bottom:18px"><label class="lbl">Teléfono</label><div style="display:flex;gap:10px">'
-+'<select class="inp" id="f-code" style="flex:0 0 150px"><option value="" style="background:#111">Código</option>'+codes+'</select>'
++'<select class="inp" id="f-code" style="flex:0 0 150px"><option value="">Código</option>'+codes+'</select>'
 +'<input class="inp" type="tel" id="f-phone" placeholder="Número de teléfono" style="flex:1"></div></div>'
-+'<button class="btn" onclick="II.submitForm()">Comenzar diagnóstico →</button>'
-+'<p id="f-err" style="margin-top:12px;font-size:13px;color:#E74C3C;text-align:center;display:none">Completa todos los campos para continuar.</p>'
-+'<p style="margin-top:14px;font-size:13px;color:rgba(245,240,232,.6);text-align:center">Tu correo solo se usa para enviarte tu resultado</p>'
++'<button class="btn" onclick="II.submitForm()">Ver mi resultado</button>'
++'<p id="f-err" style="margin-top:12px;font-size:13px;color:#B0472F;text-align:center;display:none">Completa todos los campos para continuar.</p>'
++'<p style="margin-top:14px;font-size:13px;color:var(--muted);text-align:center">Tu correo solo se usa para enviarte tu resultado</p>'
 +'</div></div>');}
 
 /* ---------- 3. TEST ---------- */
@@ -268,24 +276,24 @@ function rQuiz(){
   var q=QS[S.qIdx];
   var opts=q.opts.map(function(o,i){return '<button class="opt" style="animation-delay:'+(i*0.06+0.04)+'s" onclick="II.pick('+i+',this)">'+esc(o.text)+'</button>';}).join("");
   render(
-'<div class="screen" style="padding:24px 18px 36px;align-items:center;background:#0a0a0a">'
+'<div class="screen" style="padding:34px 18px 36px;align-items:center;justify-content:center">'
 +'<div style="width:100%;max-width:560px">'
 +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
-+'<span style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,.62)">Diagnóstico</span>'
-+'<span style="font-size:12px;font-weight:600;color:#E74C3C">'+(S.qIdx+1)+' / '+QS.length+'</span></div>'
-+'<div style="width:100%;height:3px;background:rgba(245,240,232,.07);border-radius:2px;margin-bottom:22px">'
-+'<div style="height:100%;background:#C0392B;border-radius:2px;width:'+((S.qIdx/QS.length)*100)+'%;transition:width .4s ease"></div></div>'
-+'<p style="font-family:\'Lora\',serif;font-size:clamp(18px,4vw,25px);font-weight:600;line-height:1.45;color:#F5F0E8;margin-bottom:20px">'+esc(q.text)+'</p>'
++'<span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)">Diagnóstico</span>'
++'<span style="font-size:12px;font-weight:500;color:var(--azul)">'+(S.qIdx+1)+' / '+QS.length+'</span></div>'
++'<div style="width:100%;height:5px;background:var(--crema2);border-radius:3px;margin-bottom:24px">'
++'<div style="height:100%;background:var(--oro);border-radius:3px;width:'+((S.qIdx/QS.length)*100)+'%;transition:width .4s ease"></div></div>'
++'<p class="serif" style="font-size:clamp(20px,4.4vw,27px);font-weight:600;line-height:1.4;color:var(--tinta);margin-bottom:22px">'+esc(q.text)+'</p>'
 +'<div style="display:flex;flex-direction:column;gap:11px">'+opts+'</div>'
 +'</div></div>');}
 
 /* ---------- 4. ANÁLISIS ---------- */
 function rLoading(){
   render(
-'<div class="screen" style="justify-content:center;align-items:center;text-align:center;padding:40px 24px;background:#0a0a0a">'
-+'<div style="font-size:50px;margin-bottom:20px;animation:pulse 2s infinite">🔍</div>'
-+'<h2 id="load-msg" style="font-family:\'Lora\',serif;font-size:24px;font-weight:600;color:#F5F0E8;margin-bottom:12px">Analizando tus respuestas...</h2>'
-+'<p style="font-size:14px;color:rgba(245,240,232,.72);max-width:300px;line-height:1.65">Cada respuesta tiene una capa que no es visible a primera vista.</p></div>');
+'<div class="screen" style="justify-content:center;align-items:center;text-align:center;padding:40px 24px">'
++'<div style="width:46px;height:46px;border:3px solid var(--oroSuave);border-top-color:var(--oro);border-radius:50%;margin:0 auto 22px;animation:iiSpin .9s linear infinite"></div>'
++'<h2 id="load-msg" class="serif" style="font-size:27px;font-weight:600;color:var(--tinta);margin-bottom:12px">Analizando tus respuestas...</h2>'
++'<p style="font-size:14px;color:var(--muted);max-width:300px;line-height:1.65">Cada respuesta tiene una capa que no es visible a primera vista.</p></div>');
   var msgs=["Cruzando patrones de identidad...","Construyendo tu lectura..."];
   setTimeout(function(){var el=document.getElementById("load-msg");if(el)el.textContent=msgs[0];},1100);
   setTimeout(function(){var el=document.getElementById("load-msg");if(el)el.textContent=msgs[1];},2300);
@@ -297,32 +305,31 @@ function rTeaser(){
   var first=esc((S.ud.name||"").split(" ")[0]);
   var hookCut=esc(cut(p.painHook,150));
   var locked=["De dónde viene tu personaje — la herida exacta que lo creó (lo que acabas de empezar a leer)","Lo que te está costando hoy: en tus relaciones, tu cuerpo y tu dinero","Los 3 momentos exactos donde decide por ti sin pedirte permiso","Cómo se manifiesta cada día y las frases que dice por tu boca","Lo que viene si no haces nada","El primer paso de liberación","Bono: tu lectura energética — para qué viniste y qué lo está bloqueando"];
-  var lockedHtml=locked.map(function(t,i){return '<div class="incl-i"><span style="color:#E74C3C;flex-shrink:0;font-weight:700">🔒</span><span>'+t+'</span></div>';}).join("");
+  var lockedHtml=locked.map(function(t){return '<div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px"><div class="lock">&#9679;</div><span style="font-size:14.5px;line-height:1.5;color:var(--texto)">'+t+'</span></div>';}).join("");
   render(
-'<div class="screen" style="background:#0a0a0a">'
-+'<div style="background:linear-gradient(160deg,#1c0606 0%,#0a0a0a 100%);padding:34px 20px 26px;text-align:center;border-bottom:1px solid rgba(192,57,43,.16)">'
-+'<p style="font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.72);margin-bottom:12px">Tu diagnóstico, '+first+'</p>'
-+'<span style="font-size:46px;display:block;margin-bottom:14px">'+p.emoji+'</span>'
-+'<h1 style="font-family:\'Lora\',serif;font-size:clamp(30px,7vw,52px);font-weight:700;color:#F5F0E8;line-height:1.1;margin-bottom:10px">'+esc(p.name)+'</h1>'
-+(sec?'<p style="font-size:14px;color:rgba(245,240,232,.72);margin-bottom:14px">con rasgos de <strong style="color:rgba(245,240,232,.85)">'+esc(sec.name)+'</strong></p>':"")
-+'<span style="display:inline-block;padding:6px 18px;background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.22);border-radius:20px;font-size:13px;font-weight:600;color:#E74C3C;letter-spacing:1px">Personaje dominante</span>'
-+'<p style="font-family:\'Lora\',serif;font-size:clamp(19px,4.5vw,26px);font-style:italic;color:rgba(245,240,232,.95);line-height:1.5;max-width:480px;margin:22px auto 0">"'+esc(p.shadow)+'"</p>'
+'<div class="screen">'
++'<div style="background:linear-gradient(180deg,var(--celesteSuave) 0%,var(--crema) 72%);padding:44px 28px 30px;text-align:center">'
++'<p class="kicker" style="margin-bottom:14px">Tu diagnóstico</p>'
++'<p class="serif" style="font-size:22px;font-weight:500;color:var(--azul);margin-bottom:2px">'+first+',</p>'
++'<h1 class="serif" style="font-size:clamp(38px,11vw,56px);font-weight:600;color:var(--tinta);line-height:1.04;margin-bottom:16px">'+esc(p.name)+'</h1>'
++(sec?'<p style="font-size:14px;color:var(--muted);margin-bottom:14px">con rasgos de <strong style="color:var(--azul);font-weight:500">'+esc(sec.name)+'</strong></p>':"")
++'<span style="display:inline-block;padding:7px 18px;border:1px solid var(--oro);color:var(--oroOsc);background:rgba(194,155,64,.06);border-radius:30px;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase">Personaje dominante</span>'
++'<p class="serif" style="font-size:clamp(21px,5vw,26px);font-style:italic;color:var(--tinta);line-height:1.42;max-width:360px;margin:26px auto 0">&#8220;'+esc(p.shadow)+'&#8221;</p>'
 +'</div>'
-+'<div style="padding:24px 20px 34px;max-width:580px;margin:0 auto;width:100%">'
-+'<div style="margin-bottom:6px"><p class="sl">De dónde viene</p>'
-+'<p class="st">'+hookCut+'</p></div>'
-+'<div style="filter:blur(6px);user-select:none;pointer-events:none;opacity:.4;padding:4px 0 22px">'
-+'<p style="font-size:15px;line-height:1.75;color:rgba(245,240,232,.88)">Y ahí está la raíz de todo: la decisión que tomaste sin darte cuenta y que sigue gobernando cómo amas, cómo trabajas y cómo te tratas a ti mismo. Tu lectura completa muestra exactamente cómo ese momento sigue operando hoy — y qué hacer con él...</p></div>'
-+'<div style="background:#111;border:1px solid rgba(192,57,43,.3);border-radius:6px;padding:24px 22px;margin-top:-30px;position:relative">'
-+'<div style="text-align:center"><span style="font-size:30px;display:block;margin-bottom:12px">🔒</span>'
-+'<h3 style="font-family:\'Lora\',serif;font-size:21px;font-weight:700;color:#F5F0E8;margin-bottom:10px;line-height:1.3">Te quedaste justo donde empieza lo importante.</h3>'
-+'<p style="font-size:14px;color:rgba(245,240,232,.8);margin:0 auto 8px;line-height:1.65;max-width:380px">Lo que sigue es lo que nadie te ha dicho — los patrones que están definiendo tus decisiones en este momento, aunque tú no los veas.</p>'
-+'<p style="font-size:14px;color:rgba(245,240,232,.8);margin:0 auto 18px;line-height:1.65;max-width:380px">Y hay algo más: una lectura de quién realmente eres. <strong style="color:rgba(245,240,232,.94)">Y de cuánto lo estás desperdiciando.</strong></p></div>'
-+'<div class="incl"><p class="incl-t">Tu diagnóstico completo incluye:</p>'+lockedHtml+'</div>'
-+'<p style="text-align:center;font-size:15px;font-weight:600;color:rgba(245,240,232,.92);margin-bottom:22px">¿Prefieres no saberlo?</p>'
-+'<button class="btn" onclick="II.checkout()">Quiero saber todo → $7</button>'
-+'<p style="text-align:center;font-size:13px;color:rgba(245,240,232,.68);margin-top:14px">Acceso inmediato · Te lo enviamos también a tu correo</p>'
-+'</div></div>'+foot());}
++'<div style="padding:30px 28px 0;max-width:560px;margin:0 auto;width:100%">'
++'<p class="sl">De dónde viene</p>'
++'<p class="st">'+hookCut+'</p>'
++'<div style="position:relative;max-height:78px;overflow:hidden;margin-top:6px"><p class="st" style="color:var(--muted)">Y ahí está la raíz de todo: la decisión que tomaste sin darte cuenta y que sigue gobernando cómo amas, cómo trabajas y cómo te tratas a ti…</p><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent,var(--crema))"></div></div>'
++'<div class="card" style="margin-top:24px">'
++'<h3 class="serif" style="font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--azul);font-weight:600;margin-bottom:18px">Tu diagnóstico completo incluye</h3>'+lockedHtml
++'</div>'
++'</div>'
++'<div style="padding:30px 28px 42px;max-width:560px;margin:0 auto;width:100%;text-align:center">'
++'<p class="serif" style="font-size:22px;color:var(--tinta);line-height:1.4;margin-bottom:6px">¿Vas a quedarte con las ganas de saber quién está tomando las decisiones más importantes de tu vida?</p>'
++'<p class="serif" style="font-size:24px;font-style:italic;color:var(--oro);margin-bottom:20px">Porque, en definitiva, no eres tú.</p>'
++'<button class="btn" onclick="II.checkout()">Quiero saberlo todo&nbsp;&nbsp;·&nbsp;&nbsp;$7</button>'
++'<p style="font-size:13px;color:var(--muted);margin-top:14px;line-height:1.5">El resultado será enviado de inmediato a tu correo (si no lo ves, revisa tu bandeja de spam)</p>'
++'</div>'+foot());}
 
 /* ---------- 6/7. CARRITOS $27 — mini landings ---------- */
 function rOferta(tipo){
@@ -389,56 +396,53 @@ function rThankyou(){
   var res=S.result;
   if(!hasPaid()){
     if(res&&res.primary){rTeaser();return;}
-    render('<div class="screen" style="background:#0a0a0a;justify-content:center;align-items:center;text-align:center;padding:36px 20px"><div style="max-width:480px"><span style="font-size:40px;display:block;margin-bottom:14px">🔒</span><h1 style="font-family:\'Lora\',serif;font-size:clamp(24px,5vw,32px);color:#F5F0E8;line-height:1.2;margin-bottom:12px">Tu diagnóstico está listo, pero bloqueado</h1><p style="font-size:15px;color:rgba(245,240,232,.85);line-height:1.7;margin-bottom:22px">Desbloquéalo completo por $7 y te lo enviamos también a tu correo.</p><button class="btn" style="max-width:340px;margin:0 auto" onclick="II.checkout()">Desbloquear mi diagnóstico → $7</button></div></div>'+foot());
+    render('<div class="screen" style="justify-content:center;align-items:center;text-align:center;padding:36px 20px"><div style="max-width:480px"><div style="font-size:30px;color:var(--oro);margin-bottom:14px">&#128274;</div><h1 class="serif" style="font-size:clamp(26px,5vw,34px);color:var(--tinta);line-height:1.2;margin-bottom:12px">Tu diagnóstico está listo, pero bloqueado</h1><p style="font-size:15px;color:var(--texto);line-height:1.7;margin-bottom:22px">Desbloquéalo completo por $7 y te lo enviamos también a tu correo.</p><button class="btn" style="max-width:340px;margin:0 auto" onclick="II.checkout()">Desbloquear mi diagnóstico&nbsp;·&nbsp;$7</button></div></div>'+foot());
     return;
   }
   var first=S.ud&&S.ud.name?esc(S.ud.name.split(" ")[0]):"Bienvenido";
   if(!res||!res.primary){render(
-    '<div class="screen" style="background:#0a0a0a;justify-content:center;align-items:center;text-align:center;padding:36px 20px">'
-    +'<div style="max-width:520px"><p style="font-size:15px;line-height:1.75;color:rgba(245,240,232,.85);margin-bottom:10px">Tu diagnóstico completo fue enviado al correo que usaste en la compra.</p>'
-    +'<p style="font-size:14px;color:rgba(245,240,232,.75)">Revisa tu bandeja de entrada y la carpeta de promociones.</p></div></div>'+foot());return;}
+    '<div class="screen" style="justify-content:center;align-items:center;text-align:center;padding:36px 20px">'
+    +'<div style="max-width:520px"><p style="font-size:16px;line-height:1.75;color:var(--texto);margin-bottom:10px">Tu diagnóstico completo fue enviado al correo que usaste en la compra.</p>'
+    +'<p style="font-size:14px;color:var(--muted)">Revisa tu bandeja de entrada y la carpeta de spam.</p></div></div>'+foot());return;}
   var p=res.primary,sec=res.secondary,r=res.reading,c=res.constellation;
-  var html='<div class="screen" style="background:#0a0a0a">'
-+'<div style="background:linear-gradient(160deg,#0d3a1f 0%,#0a0a0a 100%);padding:28px 20px 24px;text-align:center;border-bottom:1px solid rgba(39,174,96,.2)">'
-+'<p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#27AE60;margin-bottom:14px">✓ Compra confirmada</p>'
-+'<h1 style="font-family:\'Lora\',serif;font-size:clamp(28px,6vw,42px);font-weight:700;color:#F5F0E8;line-height:1.15;margin-bottom:10px">Gracias, '+first+'</h1>'
-+'<p style="font-size:15px;color:rgba(245,240,232,.8);max-width:440px;margin:0 auto;line-height:1.6">Este es tu diagnóstico completo. También va camino a tu correo, para que lo releas las veces que haga falta.</p></div>'
-+'<div style="padding:26px 20px 34px;max-width:620px;margin:0 auto;width:100%">'
-+'<div style="text-align:center;margin-bottom:20px"><span style="font-size:44px;display:block;margin-bottom:10px">'+p.emoji+'</span>'
-+'<h2 style="font-family:\'Lora\',serif;font-size:clamp(26px,5vw,38px);font-weight:700;color:#F5F0E8;line-height:1.2">'+esc(p.name)+'</h2>'
-+(sec?'<p style="font-size:14px;color:rgba(245,240,232,.75);margin-top:10px">con rasgos de <strong style="color:rgba(245,240,232,.88)">'+esc(sec.name)+'</strong></p>':"")+'</div>'
+  var html='<div class="screen">'
++'<div style="background:linear-gradient(180deg,var(--celesteSuave) 0%,var(--crema) 78%);padding:34px 24px 26px;text-align:center">'
++'<p style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#3B8C6E;margin-bottom:12px">Compra confirmada</p>'
++'<h1 class="serif" style="font-size:clamp(30px,7vw,44px);font-weight:600;color:var(--tinta);line-height:1.1;margin-bottom:10px">Gracias, '+first+'</h1>'
++'<p style="font-size:15px;color:var(--texto);max-width:440px;margin:0 auto;line-height:1.6">Este es tu diagnóstico completo. También va camino a tu correo, para que lo releas las veces que haga falta.</p></div>'
++'<div style="padding:28px 24px 36px;max-width:620px;margin:0 auto;width:100%">'
++'<div style="text-align:center;margin-bottom:22px"><h2 class="serif" style="font-size:clamp(30px,6vw,44px);font-weight:600;color:var(--tinta);line-height:1.1">'+esc(p.name)+'</h2>'
++(sec?'<p style="font-size:14px;color:var(--muted);margin-top:8px">con rasgos de <strong style="color:var(--azul);font-weight:500">'+esc(sec.name)+'</strong></p>':"")+'</div>'
 +block("De dónde viene",p.painHook)
 +block("Cómo se ve por dentro",p.core)
 +block("La sombra detrás del personaje",p.shadow)
 +block("Lo que te está costando",p.costBlood)
-+'<div style="background:rgba(192,57,43,.07);border-left:3px solid #C0392B;padding:20px 22px;margin-bottom:20px"><p class="sl">Los 3 momentos donde te controla</p><p style="font-size:15px;line-height:1.75;color:rgba(245,240,232,.94);font-style:italic">'+esc(p.teaser3)+'</p></div>'
++'<div class="card" style="border-left:4px solid var(--oro);margin-bottom:20px"><p class="sl">Los 3 momentos donde te controla</p><p class="st" style="font-style:italic">'+esc(p.teaser3)+'</p></div>'
 +block("Cómo se manifiesta en tu día a día",p.manifestations)
 +block("Las frases que dice",p.phrases,true)
 +block("Lo que viene si no haces nada",p.futureBlock)
-+'<div style="background:rgba(245,240,232,.04);border-left:3px solid #F5F0E8;padding:20px 22px;margin-bottom:20px"><p class="sl" style="color:#F5F0E8">El primer paso de liberación</p><p class="st">'+esc(p.liberation)+'</p></div>';
-  if(sec)html+='<div style="margin-top:26px;padding-top:20px;border-top:1px solid rgba(245,240,232,.08)">'
-+'<p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.72);margin-bottom:10px;text-align:center">Tu personaje secundario</p>'
-+'<div style="text-align:center;margin-bottom:16px"><span style="font-size:32px;display:block;margin-bottom:8px">'+sec.emoji+'</span><h3 style="font-family:\'Lora\',serif;font-size:24px;font-weight:700;color:#F5F0E8">'+esc(sec.name)+'</h3></div>'
++'<div class="card" style="border-left:4px solid var(--celeste);margin-bottom:20px"><p class="sl" style="color:var(--azul)">El primer paso de liberación</p><p class="st">'+esc(p.liberation)+'</p></div>';
+  if(sec)html+='<div style="margin-top:26px;padding-top:20px;border-top:1px solid var(--oroSuave)">'
++'<p style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;text-align:center">Tu personaje secundario</p>'
++'<div style="text-align:center;margin-bottom:16px"><h3 class="serif" style="font-size:26px;font-weight:600;color:var(--tinta)">'+esc(sec.name)+'</h3></div>'
 +block("Su núcleo",sec.core)+block("De dónde se activa",sec.painHook)+'</div>';
-  if(r&&r.sign)html+='<div style="margin-top:26px;padding-top:20px;border-top:1px solid rgba(245,240,232,.08)">'
-+'<p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.72);margin-bottom:10px;text-align:center">Bono · Tu lectura energética</p>'
-+'<h3 style="font-family:\'Lora\',serif;font-size:24px;font-weight:700;color:#F5F0E8;text-align:center;margin-bottom:18px">'+esc(r.sign)+' · '+esc(r.element)+'</h3>'
+  if(r&&r.sign)html+='<div style="margin-top:26px;padding-top:20px;border-top:1px solid var(--oroSuave)">'
++'<p style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--oro);margin-bottom:10px;text-align:center">Bono · Tu lectura energética</p>'
++'<h3 class="serif" style="font-size:26px;font-weight:600;color:var(--tinta);text-align:center;margin-bottom:18px">'+esc(r.sign)+' · '+esc(r.element)+'</h3>'
 +block("Para qué viniste",r.destiny)+block("Lo que te bloquea",r.blocked)
 +block("Tu energía base ("+r.element+")",r.elementReading)
 +block("Camino de vida "+r.lifePath+" — "+r.lifePathMeaning,r.lifePathLesson)
 +(r.timeLayer?block("La hora en que naciste",r.timeLayer):"")+'</div>';
-  if(c)html+='<div style="margin-top:26px;padding-top:20px;border-top:1px solid rgba(245,240,232,.08)">'
-+'<p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.72);margin-bottom:10px;text-align:center">Tu constelación familiar</p>'
-+'<h3 style="font-family:\'Lora\',serif;font-size:24px;font-weight:700;color:#F5F0E8;text-align:center;margin-bottom:18px">'+esc(c.name)+'</h3>'
+  if(c)html+='<div style="margin-top:26px;padding-top:20px;border-top:1px solid var(--oroSuave)">'
++'<p style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;text-align:center">Tu constelación familiar</p>'
++'<h3 class="serif" style="font-size:26px;font-weight:600;color:var(--tinta);text-align:center;margin-bottom:18px">'+esc(c.name)+'</h3>'
 +block("El rol que tomaste",c.desc)+block("Cómo se sigue activando",c.press)+'</div>';
-  html+='<div style="margin-top:30px;padding:26px 22px;background:linear-gradient(160deg,#1c0606 0%,#150404 100%);border:2px solid #C0392B;border-radius:6px;text-align:center;box-shadow:0 12px 40px rgba(192,57,43,.18)">'
-+'<h3 style="font-family:\'Lora\',serif;font-size:clamp(22px,5vw,28px);font-weight:700;color:#F5F0E8;line-height:1.3;margin-bottom:14px">Ahora ya sabes quién está viviendo tu vida.</h3>'
-+'<p style="font-size:15px;color:rgba(245,240,232,.88);line-height:1.7;margin:0 auto 8px;max-width:440px">La pregunta ya no es cuál es tu personaje. Es cuánto tiempo más vas a dejarlo en control.</p>'
-+'<p style="font-size:15px;color:rgba(245,240,232,.88);line-height:1.7;margin:0 auto 16px;max-width:440px">Grabé un video donde te muestro exactamente cómo se desinstala — y cómo saber si estás en el punto para hacerlo de verdad.</p>'
-+'<a class="btn" style="max-width:340px;margin:0 auto" href="'+CONFIG.vsl_url+'">Ver el video ahora →</a>'
-+'<p style="margin-top:14px;font-size:13px;color:rgba(245,240,232,.68)">12 minutos · Sin costo</p></div>';
-  if(getBought().indexOf("completa")<0)html+='<div style="margin-top:18px;padding:18px 20px;background:rgba(245,240,232,.03);border:1px solid rgba(245,240,232,.1);border-radius:6px">'
-+'<p style="font-size:14px;line-height:1.65;color:rgba(245,240,232,.82)"><strong style="color:rgba(245,240,232,.94)">PS:</strong> si quieres empezar a trabajar tu personaje por tu cuenta hoy mismo, todavía puedes completar el método entero y que tu total cierre en $97 en vez de $158. <a href="?screen=oferta_final" style="color:#E74C3C;text-decoration:underline">Completar mi pack →</a></p></div>';
+  html+='<div class="card" style="margin-top:30px;text-align:center;border:1px solid var(--oro)">'
++'<h3 class="serif" style="font-size:clamp(24px,5vw,30px);font-weight:600;color:var(--tinta);line-height:1.3;margin-bottom:14px">Ahora ya sabes quién está viviendo tu vida.</h3>'
++'<p style="font-size:15px;color:var(--texto);line-height:1.7;margin:0 auto 8px;max-width:440px">La pregunta ya no es cuál es tu personaje. Es cuánto tiempo más vas a dejarlo en control.</p>'
++'<p style="font-size:15px;color:var(--texto);line-height:1.7;margin:0 auto 18px;max-width:440px">Grabé un video donde te muestro exactamente cómo se desinstala, y cómo saber si estás en el punto para hacerlo de verdad.</p>'
++'<a class="btn" style="max-width:340px;margin:0 auto" href="'+CONFIG.vsl_url+'">Ver el video ahora</a>'
++'<p style="margin-top:14px;font-size:13px;color:var(--muted)">12 minutos · Sin costo</p></div>';
   html+='</div>'+foot()+'</div>';
   render(html);}
 
@@ -468,50 +472,35 @@ function rDisfruta(){
 
 /* ================= NAVEGACIÓN / HANDLERS ================= */
 window.II={
-  start:function(){track("ViewContent");S.screen="form";rForm();},
+  start:function(){track("ViewContent");S.qIdx=0;S.answers=[];rQuiz();},
   toggleBt:function(){var cb=document.getElementById("f-nobt"),t=document.getElementById("f-bt");t.disabled=cb.checked;if(cb.checked)t.value="";},
-  submitForm:function(){
-    var g=function(id){var el=document.getElementById(id);return el?el.value.trim():"";};
-    var nobt=document.getElementById("f-nobt").checked;
-    var ud={name:g("f-name"),email:g("f-email"),birthdate:g("f-bd"),birthtime:nobt?"no_conozco":g("f-bt"),phoneCode:g("f-code"),phone:g("f-phone")};
-    if(!ud.name||!ud.email||ud.email.indexOf("@")<0||!ud.birthdate||!ud.phoneCode||!ud.phone){document.getElementById("f-err").style.display="block";return;}
-    S.ud=ud;track("Lead");S.qIdx=0;S.answers=[];rQuiz();
-  },
   pick:function(oi,btn){
     btn.className="opt sel";
     setTimeout(function(){
       S.answers.push({qid:QS[S.qIdx].id,oi:oi});
       if(S.qIdx<QS.length-1){S.qIdx++;rQuiz();}
-      else{
-        rLoading();
-        var rd=getFullReading(S.ud.birthdate,S.ud.birthtime||"no_conozco");
-        var res=scoreAll(S.answers,rd);res.reading=rd;
-        S.result=res;pushGHL(S.ud,res);
-        try{localStorage.setItem(LS_KEY,JSON.stringify({ud:S.ud,result:res}));}catch(e){}
-        setTimeout(function(){rTeaser();},3200);
-      }
+      else{rForm();}
     },280);
+  },
+  submitForm:function(){
+    var g=function(id){var el=document.getElementById(id);return el?el.value.trim():"";};
+    var nobt=document.getElementById("f-nobt").checked;
+    var ud={name:g("f-name"),email:g("f-email"),birthdate:g("f-bd"),birthtime:nobt?"no_conozco":g("f-bt"),phoneCode:g("f-code"),phone:g("f-phone")};
+    if(!ud.name||!ud.email||ud.email.indexOf("@")<0||!ud.birthdate||!ud.phoneCode||!ud.phone){document.getElementById("f-err").style.display="block";return;}
+    S.ud=ud;track("Lead");
+    rLoading();
+    var rd=getFullReading(ud.birthdate,ud.birthtime||"no_conozco");
+    var res=scoreAll(S.answers,rd);res.reading=rd;
+    S.result=res;pushGHL(ud,res);
+    try{localStorage.setItem(LS_KEY,JSON.stringify({ud:ud,result:res}));}catch(e){}
+    setTimeout(function(){rTeaser();},2600);
   },
   checkout:function(){
     try{localStorage.setItem(LS_KEY,JSON.stringify({ud:S.ud,result:S.result}));}catch(e){}
     track("InitiateCheckout",{value:7,currency:"USD"});
     window.location.href=CONFIG.whop_7;
   },
-  buy:function(tipo,precio){
-    track("AddToCart",{value:precio,currency:"USD"});
-    window.location.href=tipo==="manual"?CONFIG.whop_manual:CONFIG.whop_cuaderno;
-  },
-  buyFinal:function(){
-    var o=finalOffer();
-    track("AddToCart",{value:o.price,currency:"USD"});
-    window.location.href=o.link;
-  },
-  go:function(sc){
-    S.screen=sc;
-    if(sc==="oferta_cuaderno")rOferta("cuaderno");
-    else if(sc==="oferta_final")rFinal();
-    else if(sc==="thankyou")rThankyou();
-  }
+  go:function(sc){if(sc==="thankyou")rThankyou();}
 };
 
 /* ================= ARRANQUE (lee la URL: redirects de Whop y links de email) ================= */
@@ -520,8 +509,7 @@ window.II={
     var p=new URLSearchParams(window.location.search);
     var sc=p.get("screen");
     var bt=p.get("bought");if(bt)addBought(bt);
-    var known=["oferta_manual","oferta_cuaderno","oferta_final","thankyou","acceso_pack","acceso_cuaderno","acceso_manual","acceso_modulos","disfruta"];
-    if(sc&&known.indexOf(sc)>=0){
+    if(sc==="thankyou"){
       var s=null;try{s=localStorage.getItem(LS_KEY);}catch(e){}
       if(s){var d=JSON.parse(s);S.ud=d.ud;S.result=d.result;}
       else if(p.get("p")&&CHARS[p.get("p")]){
@@ -532,17 +520,7 @@ window.II={
         if(bd)res.reading=getFullReading(bd,btm||"no_conozco");
         S.result=res;S.ud={name:p.get("n")||"Bienvenido",email:p.get("email")||""};
       }
-      else{var em=p.get("email");if(em&&em!=="{{customer_email}}")S.ud={name:em.split("@")[0],email:em};}
-      if(sc==="oferta_manual")rOferta("manual");
-      else if(sc==="oferta_cuaderno")rOferta("cuaderno");
-      else if(sc==="oferta_final")rFinal();
-      else if(sc==="thankyou")rThankyou();
-      else if(sc==="disfruta")rDisfruta();
-      else if(sc==="acceso_pack")rAcceso("el Pack Completo","Tienes acceso al protocolo completo de Ingeniería de Identidad: cómo se construyó tu personaje y cómo desinstalarlo paso a paso.");
-      else if(sc==="acceso_cuaderno")rAcceso("el Cuaderno de Ejercicios","Los ejercicios prácticos para integrar tu diagnóstico en la vida diaria.");
-      else if(sc==="acceso_manual")rAcceso("el Manual de Trabajo","La guía completa de los 6 personajes y cómo identificarlos en ti y los demás.");
-      else if(sc==="acceso_modulos")rAcceso("los Módulos en Video","Las sesiones grabadas con el método completo en video, paso a paso.");
-      return;
+      rThankyou();return;
     }
   }catch(e){}
   rHero();
