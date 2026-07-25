@@ -132,8 +132,8 @@ var CONFIG={
   ghl_webhook:  "https://services.leadconnectorhq.com/hooks/Uca0WrGfLlFUMtuPldnT/webhook-trigger/8f228e7e-e645-4ef1-af6e-e62f807ec7d5",
   whatsapp:     "50683464541",
   claridad_url: "https://www.ileanasegura.com/claridad",
-  /* Enlace público del test — se usa al compartir. Cámbialo si el dominio cambia. */
-  public_url:   "https://test-de-identidad.vercel.app"
+  /* Enlace público del test — es el que viaja cuando alguien lo comparte. */
+  public_url:   "https://www.ileanasegura.com/test"
 };
 var LS_KEY="ileana_diagnostic_v6";
 
@@ -435,8 +435,8 @@ function rResult(){
   var first=S.ud&&S.ud.name?esc(S.ud.name.split(" ")[0]):"Bienvenida";
   var dest=(S.ud&&S.ud.dest)||"whatsapp";
   var waUrl="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ileana, acabo de terminar el diagnóstico. Mi personaje dominante es "+p.name+" y quiero saber cuál es el siguiente paso.");
-  /* compartir: abre WhatsApp con el mensaje y el enlace del test ya escritos */
-  var pageUrl=(location.protocol==="http:"||location.protocol==="https:")?(location.origin+location.pathname):CONFIG.public_url;
+  /* compartir: abre WhatsApp con el mensaje y el enlace de marca ya escritos */
+  var pageUrl=CONFIG.public_url;
   var shareUrl="https://wa.me/?text="+encodeURIComponent("Amiga, hice este test y me encantó. Aquí te lo dejo: "+pageUrl);
   var ctaUrl=dest==="whatsapp"?waUrl:CONFIG.claridad_url;
   var meters=res.meters.map(function(m){return '<div class="meter"><div class="mtop"><span class="mnm" style="color:#fff">'+esc(m.name)+'</span><span class="mpc">'+m.pct+'%</span></div><div class="mbar"><i data-w="'+m.pct+'"></i></div></div>';}).join("");
