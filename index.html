@@ -5,167 +5,261 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>¿Quién está viviendo tu vida? · Ingeniería de Identidad</title>
 <!-- ============================================================
-  INGENIERÍA DE IDENTIDAD — Test de Personaje Dominante v3
-  UN SOLO ARCHIVO: HTML + CSS + JS. Sin React, sin build, sin dependencias.
-  Se puede: (a) subir tal cual a Vercel/hosting, o (b) pegar el contenido
-  de <body> (div + style + script) en un elemento de código de GHL
-  sobre una página de funnel EN BLANCO.
-
-  v3 (11 jun 2026) — cambios pedidos por Ileana:
-  · Hero = mini landing espejo (te veo, te conozco, falta de claridad)
-  · Test reducido de 18 a 14 preguntas (filtros de inversión intactos)
-  · Teaser con más carnada (frase espejo + origen truncado) sin saciar
-  · Cada carrito = mini landing de venta con gatillos
-  · Carrito final inteligente: vende el programa de 10 módulos y ajusta
-    el precio ($90/$63/$36) para que el total SIEMPRE cierre en $97
-  · Webhook a GHL enriquecido (lectura energética incluida) para el
-    email personalizado con el diagnóstico completo
-
-  v4 (jun 2026) — rediseño + nuevo flujo:
-  · Diseño claro: crema + azul/celeste + dorado (Cormorant/Jost). Fuera negro/rojo.
-  · Opt-in AL FINAL (después del test), como llave para revelar el resultado parcial.
-  · Tras pagar $7 → directo al VSL (el diagnóstico completo va SOLO por correo).
-  · Ofertas extra ($27/$97) fuera del flujo (downsell solo a quien vio el VSL y no agendó).
-
-  REDIRECCIÓN A CONFIGURAR EN WHOP (post-compra del Test $7):
-    Test $7 → https://ileanasegura.com/vsl
-  (El diagnóstico completo se entrega por correo vía el webhook → GHL.)
+  INGENIERÍA DE IDENTIDAD — Test de Personaje Dominante v6 (premium · interactivo)
+  UN SOLO ARCHIVO. Reemplaza index.html del repo y Vercel lo despliega solo.
+  · Fotografía real (Pexels, uso libre) en hero, tarjetas y bandas del resultado.
+  · Interactivo: tarjetas de personajes desplegables, test animado con barra y botón atrás,
+    medidores animados de tu perfil, acordeones en el resultado, revelado al hacer scroll,
+    barra fija de acción y botón para compartir.
+  · Redacción 100% femenina, sin frases cortadas, tipografía grande.
+  · Test gratis, sin muro de pago. Filtro en el opt-in: WhatsApp o Landing de Claridad.
+  · Webhook GHL intacto: todo el opt-in y el resultado entran al CRM.
 ============================================================ -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap');
 :root{
-  --crema:#FAF4E8;--crema2:#F4EAD6;--blanco:#FFFDF8;--tinta:#1C3A5E;--azul:#2F6DA8;
-  --celeste:#8FC2DE;--celesteSuave:#DCEBF3;--oro:#C29B40;--oroOsc:#9A7A28;--oroSuave:#E8DCB6;
-  --texto:#46546A;--muted:#7E8898;
+  --crema:#FAF4E8;--crema2:#F2E7D2;--blanco:#FFFDF8;--tinta:#12283F;--tinta2:#1C3A5E;--azul:#2F6DA8;
+  --celeste:#8FC2DE;--celesteSuave:#DDEBF3;--oro:#C29B40;--oroClaro:#E8DCB6;--texto:#43536B;--muted:#6B7789;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:'Jost',sans-serif;background:var(--crema);color:var(--tinta);min-height:100vh;-webkit-font-smoothing:antialiased;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-@keyframes iiSpin{to{transform:rotate(360deg)}}
-.screen{min-height:100vh;display:flex;flex-direction:column;animation:fadeIn .4s ease;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{font-family:'Jost',sans-serif;background:var(--crema);color:var(--tinta);font-size:21px;line-height:1.78;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+img{display:block;max-width:100%;}
 .serif{font-family:'Cormorant Garamond',serif;}
-.btn{display:block;width:100%;padding:17px 22px;background:var(--oro);border:none;border-radius:14px;color:#fff;font-family:'Jost',sans-serif;font-size:16px;font-weight:500;letter-spacing:.5px;cursor:pointer;transition:transform .15s,box-shadow .2s;text-align:center;text-decoration:none;box-shadow:0 10px 22px rgba(194,155,64,.26);}
-.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 28px rgba(194,155,64,.34);}
-.btn:active:not(:disabled){transform:translateY(0);}
-.btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;}
-.btn-azul{background:var(--azul);box-shadow:0 10px 22px rgba(47,109,168,.22);}
-.kicker{font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--azul);}
-.sl{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--oro);margin-bottom:10px;}
-.st{font-size:16px;line-height:1.75;color:var(--texto);}
-.foot{text-align:center;padding:22px 20px;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
-.inp{width:100%;padding:13px 16px;background:var(--blanco);border:1px solid var(--oroSuave);border-radius:12px;color:var(--tinta);font-family:'Jost',sans-serif;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s;}
-.inp:focus{border-color:var(--celeste);box-shadow:0 0 0 3px rgba(143,194,222,.25);}
-.lbl{display:block;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--azul);margin-bottom:8px;}
-.opt{width:100%;text-align:left;padding:16px 20px;background:var(--blanco);border:1px solid var(--oroSuave);border-radius:14px;color:var(--texto);font-family:'Jost',sans-serif;font-size:15px;line-height:1.55;cursor:pointer;transition:all .2s;animation:fadeUp .3s ease both;}
-.opt:hover{border-color:var(--celeste);background:var(--celesteSuave);color:var(--tinta);}
-.opt.sel{background:rgba(194,155,64,.1);border-color:var(--oro);color:var(--tinta);}
-.card{background:var(--blanco);border:1px solid var(--oroSuave);border-radius:18px;padding:26px 24px;}
-.lock{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--celesteSuave);color:var(--azul);display:flex;align-items:center;justify-content:center;font-size:11px;}
-.mirror{font-family:'Cormorant Garamond',serif;font-size:23px;font-style:italic;line-height:1.45;color:var(--tinta);}
+.wrap{max-width:680px;margin:0 auto;padding:0 26px;}
+.wrapW{max-width:1120px;margin:0 auto;padding:0 26px;}
+
+/* ---------- animaciones ---------- */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:translateX(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1);}
+.rv.on{opacity:1;transform:none;}
+.screen{min-height:100vh;animation:fadeIn .45s ease;}
+
+/* ---------- botones ---------- */
+.btn{display:inline-block;width:100%;max-width:460px;padding:23px 28px;background:linear-gradient(135deg,#D4AB4C,#B08830);border:none;border-radius:4px;color:#fff;font-family:'Jost',sans-serif;font-size:21px;font-weight:500;letter-spacing:.4px;cursor:pointer;text-align:center;text-decoration:none;box-shadow:0 14px 34px rgba(150,115,35,.32);transition:transform .18s,box-shadow .25s,filter .2s;}
+.btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 20px 42px rgba(150,115,35,.42);filter:brightness(1.06);}
+.btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;}
+.btn-line{background:none;border:1px solid rgba(250,244,232,.5);color:var(--crema);box-shadow:none;font-size:19px;padding:17px 24px;}
+.btn-line:hover{background:rgba(250,244,232,.1);transform:none;box-shadow:none;}
+.linkback{background:none;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:19px;cursor:pointer;padding:8px 0;text-decoration:underline;text-underline-offset:4px;}
+
+/* ---------- tipografía ---------- */
+.kicker{font-size:17px;font-weight:500;letter-spacing:4.5px;text-transform:uppercase;color:var(--oro);}
+.h1{font-family:'Cormorant Garamond',serif;font-size:clamp(46px,9vw,80px);font-weight:600;line-height:1.03;letter-spacing:-.5px;}
+.h2{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,6.2vw,50px);font-weight:600;line-height:1.14;}
+.h3{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,38px);font-weight:600;line-height:1.24;}
+.lead{font-size:24px;line-height:1.8;}
+.body{font-size:22px;line-height:1.85;color:var(--texto);}
+.sl{font-size:17px;font-weight:600;letter-spacing:3.4px;text-transform:uppercase;color:var(--oro);}
+.quote{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,5.8vw,44px);font-style:italic;font-weight:500;line-height:1.34;}
+.rule{width:54px;height:2px;background:var(--oro);}
+
+/* ---------- bloques ---------- */
+.dark{background:var(--tinta);color:var(--crema);}
+.dark .body,.dark .lead{color:rgba(250,244,232,.86);}
+.dark .sl{color:var(--oroClaro);}
+.light{background:var(--crema);}
+.blue{background:var(--celesteSuave);}
+.card{background:var(--blanco);border:1px solid var(--crema2);border-radius:5px;padding:32px 30px;box-shadow:0 3px 22px rgba(18,40,63,.05);}
+.hero-scrim{position:absolute;inset:0;background:linear-gradient(103deg,rgba(10,20,32,.9) 0%,rgba(10,20,32,.66) 48%,rgba(10,20,32,.3) 100%);}
+@media(max-width:760px){.hero-scrim{background:linear-gradient(180deg,rgba(10,20,32,.62) 0%,rgba(10,20,32,.84) 42%,rgba(10,20,32,.94) 100%);}}
+.photo{width:100%;height:100%;object-fit:cover;}
+.figcap{font-size:17px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted);}
+
+/* ---------- test ---------- */
+.pbar{height:3px;background:rgba(18,40,63,.12);border-radius:2px;overflow:hidden;}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--oro),#D9B85F);transition:width .5s cubic-bezier(.3,.8,.3,1);}
+.opt{width:100%;text-align:left;padding:23px 26px;background:var(--blanco);border:1px solid var(--crema2);border-radius:4px;color:var(--texto);font-family:'Jost',sans-serif;font-size:21px;line-height:1.6;cursor:pointer;transition:border-color .2s,background .2s,transform .18s,box-shadow .25s;animation:slideIn .42s cubic-bezier(.2,.7,.3,1) both;}
+.opt:hover{border-color:var(--oro);background:#fff;transform:translateX(4px);box-shadow:0 8px 26px rgba(18,40,63,.07);}
+.opt.sel{background:rgba(194,155,64,.13);border-color:var(--oro);color:var(--tinta);}
+
+/* ---------- formulario ---------- */
+.inp{width:100%;padding:18px 18px;background:var(--blanco);border:1px solid var(--crema2);border-radius:4px;color:var(--tinta);font-family:'Jost',sans-serif;font-size:20px;outline:none;transition:border-color .2s,box-shadow .2s;}
+.inp:focus{border-color:var(--oro);box-shadow:0 0 0 3px rgba(194,155,64,.16);}
+.lbl{display:block;font-size:16px;font-weight:500;letter-spacing:2.6px;text-transform:uppercase;color:var(--azul);margin-bottom:9px;}
+.optf{width:100%;text-align:left;padding:18px 20px;background:var(--blanco);border:1px solid var(--crema2);border-radius:4px;color:var(--texto);font-family:'Jost',sans-serif;font-size:19px;line-height:1.55;cursor:pointer;transition:all .2s;}
+.optf:hover{border-color:var(--oro);}
+.optf.sel{background:rgba(194,155,64,.13);border-color:var(--oro);color:var(--tinta);}
+
+/* ---------- medidores del perfil ---------- */
+.meter{margin-bottom:20px;}
+.meter .mtop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.meter .mnm{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:600;}
+.meter .mpc{font-size:19px;letter-spacing:2px;color:var(--oroClaro);}
+.meter .mbar{height:7px;background:rgba(250,244,232,.14);border-radius:4px;overflow:hidden;}
+.meter .mbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--oro),#E6C874);border-radius:4px;transition:width 1.5s cubic-bezier(.2,.8,.2,1);}
+
+/* ---------- acordeón ---------- */
+.acc{border-top:1px solid var(--crema2);}
+.acc:last-of-type{border-bottom:1px solid var(--crema2);}
+.acc>button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:18px;background:none;border:none;padding:28px 2px;cursor:pointer;text-align:left;font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4.8vw,34px);font-weight:600;color:var(--tinta);line-height:1.26;}
+.acc>button span.ic{flex-shrink:0;width:34px;height:34px;border:1px solid var(--oro);border-radius:50%;position:relative;transition:transform .35s,background .3s;}
+.acc>button span.ic::before,.acc>button span.ic::after{content:"";position:absolute;background:var(--oro);left:50%;top:50%;transform:translate(-50%,-50%);}
+.acc>button span.ic::before{width:13px;height:1.5px;}
+.acc>button span.ic::after{width:1.5px;height:13px;transition:opacity .3s;}
+.acc.on>button span.ic{background:rgba(194,155,64,.14);transform:rotate(180deg);}
+.acc.on>button span.ic::after{opacity:0;}
+.acc .accb{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.3,.8,.3,1);}
+.acc.on .accb{max-height:1800px;}
+.acc .accb-in{padding:0 2px 30px;}
+
+/* ---------- barra fija ---------- */
+.stick{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(12,29,46,.96);backdrop-filter:blur(9px);border-top:1px solid rgba(194,155,64,.4);padding:14px 18px;transform:translateY(120%);transition:transform .45s cubic-bezier(.2,.8,.2,1);}
+.stick.on{transform:none;}
+.stick .sin{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:18px;}
+.stick p{flex:1;font-size:19px;line-height:1.45;color:rgba(250,244,232,.9);}
+.stick a{flex-shrink:0;max-width:290px;padding:17px 22px;font-size:19px;margin:0;}
+@media(max-width:640px){.stick p{display:none}.stick a{max-width:none}}
+
+/* ---------- pie ---------- */
+.foot{text-align:center;padding:34px 20px;font-size:16px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+.chip{background:var(--blanco);border-left:3px solid var(--oro);border-radius:3px;padding:20px 24px;margin-bottom:13px;}
 </style>
 </head>
 <body>
-<div id="ii-app"></div>
+<div id="app"></div>
+<div id="stick" class="stick"><div class="sin"><p id="stick-t"></p><a id="stick-a" class="btn" href="#">Dar el paso</a></div></div>
 <script>
 (function(){
 "use strict";
 
-/* ================= CONFIG — reemplazar los 3 links nuevos ================= */
+/* ================= CONFIG ================= */
 var CONFIG={
-  ghl_webhook:     "https://services.leadconnectorhq.com/hooks/Uca0WrGfLlFUMtuPldnT/webhook-trigger/8f228e7e-e645-4ef1-af6e-e62f807ec7d5",
-  whop_7:          "https://whop.com/checkout/plan_LsNiJ7wqZ80ve",
-  whop_manual:     "https://whop.com/checkout/plan_1DLfXvdo7ga4M",
-  whop_cuaderno:   "https://whop.com/checkout/plan_hWPjNf5uVD1Jj",
-  whop_completa90: "https://whop.com/checkout/plan_lnnHSHjUP7dZd",
-  whop_completa63: "https://whop.com/checkout/plan_9bGSeIf5yF0yi",
-  whop_completa36: "https://whop.com/checkout/plan_0ZA7XT8DFilmQ",
-  vsl_url:         "https://ileanasegura.com/vsl",
-  whop_account:    "https://whop.com/joined/ileana-mentora/"
+  ghl_webhook:  "https://services.leadconnectorhq.com/hooks/Uca0WrGfLlFUMtuPldnT/webhook-trigger/8f228e7e-e645-4ef1-af6e-e62f807ec7d5",
+  whatsapp:     "50683464541",
+  claridad_url: "https://www.ileanasegura.com/claridad",
+  /* Enlace público del test — se usa al compartir. Cámbialo si el dominio cambia. */
+  public_url:   "https://test-de-identidad.vercel.app"
 };
-var LS_KEY="ileana_diagnostic_v3", B_KEY="ii_bought_v3";
+var LS_KEY="ileana_diagnostic_v6";
+
+/* ================= FOTOGRAFÍA (Pexels · uso libre · verificada una por una) ================= */
+var PH={
+  hero:        "https://images.pexels.com/photos/3299317/pexels-photo-3299317.jpeg",
+  espejo:      "https://images.pexels.com/photos/1871342/pexels-photo-1871342.jpeg",
+  ventana:     "https://images.pexels.com/photos/4447142/pexels-photo-4447142.jpeg",
+  origen:      "https://images.pexels.com/photos/3922819/pexels-photo-3922819.jpeg",
+  puerta:      "https://images.pexels.com/photos/10496905/pexels-photo-10496905.jpeg",
+  controladora:"https://images.pexels.com/photos/4098260/pexels-photo-4098260.jpeg",
+  salvadora:   "https://images.pexels.com/photos/6383158/pexels-photo-6383158.jpeg",
+  invisible:   "https://images.pexels.com/photos/7298237/pexels-photo-7298237.jpeg",
+  proveedora:  "https://images.pexels.com/photos/9063397/pexels-photo-9063397.jpeg",
+  exitosaVacia:"https://images.pexels.com/photos/3926205/pexels-photo-3926205.jpeg",
+  espiritualReprimida:"https://images.pexels.com/photos/9032696/pexels-photo-9032696.jpeg"
+};
+function px(k,w){return (PH[k]||PH.hero)+"?auto=compress&cs=tinysrgb&w="+(w||1200);}
 
 /* ================= HELPERS ================= */
-function track(ev,data){try{if(window.fbq)window.fbq("track",ev,data||{});}catch(e){}}
-function getBought(){try{return JSON.parse(localStorage.getItem(B_KEY))||[];}catch(e){return[];}}
-function addBought(x){try{var b=getBought();if(b.indexOf(x)<0){b.push(x);localStorage.setItem(B_KEY,JSON.stringify(b));}}catch(e){}}
-/* ---- Muro de pago: token de desbloqueo + verificación de compra ---- */
-var UNLOCKED=false;
-var UNLOCK_SECRET="iiVerdad2026x"; // cambiar si se filtra; debe ser igual en generación y validación
-function _iihash(s){var h=5381,i=s.length;while(i){h=(h*33)^s.charCodeAt(--i);}return (h>>>0).toString(36);}
-function tok(pk,sk,ck){return _iihash((pk||"")+"|"+(sk||"")+"|"+(ck||"")+"|"+UNLOCK_SECRET);}
-function hasPaid(){if(UNLOCKED)return true;var b=getBought();return b.indexOf("test")>=0||b.indexOf("completa")>=0||b.indexOf("manual")>=0||b.indexOf("cuaderno")>=0;}
+function track(ev,d){try{if(window.fbq)window.fbq("track",ev,d||{});}catch(e){}}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function cut(s,n){if(!s)return"";if(s.length<=n)return s;var t=s.slice(0,n);return t.slice(0,t.lastIndexOf(" "))+"…";}
 
-/* ================= LECTURA ENERGÉTICA ================= */
-function getFullReading(bd,bt){
-  var d=new Date(bd),m=d.getMonth()+1,dy=d.getDate();
-  var S=[
-    {s:"Capricornio",r:[[12,22],[1,19]],e:"Tierra",destiny:"Viniste a construir algo que trascienda tu nombre. No desde la obligación — desde la maestría. Tu vida fue diseñada para dejar estructura, orden y legado. No el tipo que se mide en cifras — el tipo que cambia la forma en que otros se sostienen.",blocked:"te mantiene construyendo para demostrar, no para trascender. Convierte tu legado en una carrera sin fin."},
-    {s:"Acuario",r:[[1,20],[2,18]],e:"Aire",destiny:"Viniste a ver lo que otros no ven. A pensar diferente, a crear desde lo que aún no existe. Tu mente fue diseñada para innovar, conectar ideas que parecen inconexas y abrir caminos donde otros solo ven paredes.",blocked:"te desconecta de las personas mientras intentas conectar con las ideas. Te aleja del cuerpo y del sentir."},
-    {s:"Piscis",r:[[2,19],[3,20]],e:"Agua",destiny:"Viniste a sentir la vida en una frecuencia que muy pocos alcanzan. Tu sensibilidad no es debilidad — es tu superpoder. Fuiste diseñado para crear desde la intuición pura, para sanar con tu presencia, para ver más allá de lo visible.",blocked:"convierte esa sensibilidad en una carga. Te hace absorber el dolor de todos y perder el tuyo propio en el proceso."},
-    {s:"Aries",r:[[3,21],[4,19]],e:"Fuego",destiny:"Viniste a abrir camino. A ser el primero en atreverse. Tu energía fue diseñada para iniciar lo que otros no se animan, para liderar con coraje, para encender fuegos que iluminen — no que destruyan.",blocked:"convierte ese fuego en prisa. Te hace actuar sin sentir, avanzar sin mirar, y quemar lo que más importa en nombre de la velocidad."},
-    {s:"Tauro",r:[[4,20],[5,20]],e:"Tierra",destiny:"Viniste a demostrar que la abundancia real se construye con calma. Tu vida fue diseñada para crear belleza, estabilidad y gozo. No el gozo rápido — el profundo. El que se siente en el cuerpo.",blocked:"convierte la calma en resistencia. Te ancla a lo conocido por miedo a lo que puede ser. Y lo que puede ser es más grande de lo que imaginas."},
-    {s:"Géminis",r:[[5,21],[6,20]],e:"Aire",destiny:"Viniste a comunicar verdades que otros no saben nombrar. Tu mente fue diseñada para conectar mundos, traducir lo complejo en simple, y hacer que otros se entiendan a sí mismos a través de tus palabras.",blocked:"dispersa esa energía en mil direcciones. Te hace vivir en la superficie de muchas cosas sin profundizar en ninguna."},
-    {s:"Cáncer",r:[[6,21],[7,22]],e:"Agua",destiny:"Viniste a crear espacios donde otros puedan ser vulnerables sin miedo. Tu corazón fue diseñado para nutrir, contener y dar hogar — no solo físico, sino emocional. Donde tú estás, otros se sienten seguros de ser.",blocked:"te hace cargar con todos y olvidarte de ti. Convierte tu hogar en una fortaleza donde nadie entra y tú no sales."},
-    {s:"Leo",r:[[7,23],[8,22]],e:"Fuego",destiny:"Viniste a inspirar. Tu presencia fue diseñada para recordarle a otros lo que es posible cuando alguien decide ser completamente auténtico. No necesitas aplausos — necesitas expresarte. Y cuando lo haces desde la verdad, todo se alinea.",blocked:"convierte esa necesidad de expresión en necesidad de validación. Te hace brillar para que te vean en lugar de brillar porque es lo que eres."},
-    {s:"Virgo",r:[[8,23],[9,22]],e:"Tierra",destiny:"Viniste a perfeccionar lo que importa — no todo. Tu mente fue diseñada para ver los detalles que otros ignoran, para crear sistemas que funcionen, para servir desde la excelencia sin perderte en ella.",blocked:"convierte la excelencia en autoexigencia destructiva. Te hace creer que nunca es suficiente — y eso te roba el gozo de lo que ya creaste."},
-    {s:"Libra",r:[[9,23],[10,22]],e:"Aire",destiny:"Viniste a crear equilibrio donde hay caos. Tu presencia fue diseñada para mediar, armonizar y mostrar que se puede ser justo sin ser frío. Donde tú estás, las cosas encuentran su lugar.",blocked:"te hace buscar la paz de los demás sacrificando la tuya. Convierte la armonía en sumisión disfrazada de diplomacia."},
-    {s:"Escorpio",r:[[10,23],[11,21]],e:"Agua",destiny:"Viniste a transformar. No lo superficial — lo profundo. Tu energía fue diseñada para mirar donde otros no se atreven, para tocar las heridas que nadie quiere nombrar, y para renacer tantas veces como sea necesario.",blocked:"convierte esa profundidad en control. Te hace manipular desde la sombra lo que podrías sanar desde la luz."},
-    {s:"Sagitario",r:[[11,22],[12,21]],e:"Fuego",destiny:"Viniste a expandir los límites de lo posible. Tu espíritu fue diseñado para explorar, enseñar y mostrar que hay más allá de lo que se ve. No eres de un solo lugar ni de una sola verdad.",blocked:"convierte la expansión en huida. Te hace correr hacia lo nuevo para no enfrentar lo que dejaste atrás."}
-  ];
-  var astro=null;
-  for(var i=0;i<S.length;i++){var sm=S[i].r[0][0],sd=S[i].r[0][1],em=S[i].r[1][0],ed=S[i].r[1][1];
-    if(sm>em){if((m===sm&&dy>=sd)||(m===em&&dy<=ed)){astro=S[i];break;}}
-    else if((m===sm&&dy>=sd)||(m===em&&dy<=ed)||(m>sm&&m<em)){astro=S[i];break;}}
-  astro=astro||S[0];
-  var lp=bd.replace(/-/g,"").split("").map(Number).reduce(function(a,b){return a+b;},0);
-  while(lp>9&&lp!==11&&lp!==22){lp=String(lp).split("").map(Number).reduce(function(a,b){return a+b;},0);}
-  var lpR={1:{g:"liderazgo natural",l:"Tu vida te pide que aprendas a liderar sin necesitar controlar. A ir primero sin dejar atrás a quienes importan."},2:{g:"sensibilidad extraordinaria",l:"Tu vida te pide que aprendas a conectar profundamente sin perderte en el otro. A ser puente sin dejar de ser orilla."},3:{g:"expresión creativa poderosa",l:"Tu vida te pide que aprendas a crear sin necesitar aprobación. A expresarte porque es tu naturaleza, no porque necesitas ser visto."},4:{g:"capacidad de construir lo que perdura",l:"Tu vida te pide que aprendas a construir con gozo, no con obligación. A crear estructura sin convertirla en cárcel."},5:{g:"libertad como motor de vida",l:"Tu vida te pide que aprendas a ser libre sin huir. A fluir con el cambio sin que sea una forma de escapar de lo que duele."},6:{g:"capacidad de nutrir y sostener",l:"Tu vida te pide que aprendas a cuidar sin vaciarte. A dar desde la elección, no desde la obligación que te enseñaron."},7:{g:"profundidad espiritual e intelectual",l:"Tu vida te pide que aprendas a confiar en lo que no se ve. A soltar la necesidad de entender todo antes de sentirlo."},8:{g:"poder de manifestación real",l:"Tu vida te pide que aprendas a usar el poder para crear, no para controlar. A construir abundancia que incluya paz interior."},9:{g:"sabiduría compasiva",l:"Tu vida te pide que aprendas a soltar lo que ya cumplió su ciclo. A servir sin martyrizarte. A cerrar capítulos sin que te definan."},11:{g:"intuición elevada",l:"Tu vida te pide que confíes en lo que percibes aunque nadie más lo vea. Que dejes de racionalizar tu intuición para encajar."},22:{g:"potencial de impacto masivo",l:"Tu vida te pide que materialices lo que ves posible. Que dejes de prepararte eternamente y empieces a construir el mundo que sabes que es posible."}};
-  var ld=lpR[lp]||{g:"una capacidad única de transformación",l:"Tu vida te pide que te atrevas a ser quien viniste a ser."};
-  var timeLayer="";
-  if(bt&&bt!=="no_conozco"){var hh=parseInt(bt.split(":")[0],10);var per=hh<6?"madrugada":hh<12?"mañana":hh<18?"tarde":"noche";
-    var tQ={madrugada:"Quienes nacen en la madrugada cargan una sensibilidad que otros no entienden. Llegaste al mundo en silencio, y eso marcó tu forma de procesar: profunda, interna, a veces solitaria. Tu mayor poder está en lo que percibes cuando todo está quieto.",mañana:"Quienes nacen en la mañana llegan con energía de acción. Viniste listo para hacer, crear, mover. Tu impulso natural es hacia adelante. El riesgo es que confundas avanzar con escapar, y hacer con ser.",tarde:"Quienes nacen en la tarde cargan una dualidad: la energía del día que se transforma en reflexión. Viniste a integrar acción y conciencia. Tu poder está en ver ambos lados — pero eso mismo te puede paralizar si no decides desde cuál actuar.",noche:"Quienes nacen en la noche llegan con una conexión natural con lo invisible. No todo se explica. Y tú lo sabes. Tu mayor poder está en confiar en lo que sientes aunque no puedas demostrarlo. Tu intuición es más precisa de lo que le das crédito."};
-    timeLayer=tQ[per];}
-  var eR={Tierra:"Tu energía base es de construcción y materialización. Viniste a crear cosas reales, tangibles, que se puedan tocar. El riesgo es quedarte atrapado en lo concreto y olvidar que lo más importante no se ve.",Agua:"Tu energía base es emocional e intuitiva. Viniste a sentir profundamente y a usar esa sensibilidad como brújula. El riesgo es que las emociones te manejen en lugar de guiarte.",Fuego:"Tu energía base es de transformación y acción. Viniste a encender cosas nuevas, a inspirar, a mover lo estático. El riesgo es quemar lo que importa en nombre de la intensidad.",Aire:"Tu energía base es mental y comunicativa. Viniste a conectar ideas, personas y mundos. El riesgo es vivir en la cabeza y desconectarte del cuerpo y del sentir."};
-  return{sign:astro.s,element:astro.e,destiny:astro.destiny,blocked:astro.blocked,lifePath:lp,lifePathMeaning:ld.g,lifePathLesson:ld.l,timeLayer:timeLayer,elementReading:eR[astro.e]||""};
-}
-
-/* ================= CONSTELACIONES Y PERSONAJES ================= */
-var CONST={parentification:{name:"El Hijo Parentalizado",desc:"Aprendiste a cuidar antes de que alguien te cuidara. Ese rol no desapareció — se convirtió en tu modo por defecto.",press:"Seguirás atrayendo personas que necesitan ser salvadas hasta que decidas que tu valor no depende de lo que das."},hero:{name:"El Héroe de la Familia",desc:"Fuiste quien resolvía, quien lograba, quien no podía fallar. Te construiste hacia afuera. Por dentro hay mucho que no tocaste.",press:"El éxito externo seguirá sintiéndose vacío hasta que te preguntes para quién lo construiste."},invisible:{name:"El Invisible",desc:"Aprendiste que lo más seguro era no ser visto. No hacer ruido. No necesitar.",press:"Seguirás reduciéndote en espacios donde mereces tomar lugar."},perfectionist:{name:"El Perfecto",desc:"El amor llegaba condicionado a tu rendimiento. Ahora te exiges sin parar porque inconscientemente sigues ganando ese amor.",press:"La autocrítica te seguirá saboteando justo cuando estés más cerca de lo que genuinamente deseas."},scapegoat:{name:"El Chivo Expiatorio",desc:"Creciste creyendo que tú eras el problema. Eso dejó marca: o te sobre-esfuerzas o te saboteas para confirmarlo.",press:"El patrón se activará cada vez que alguien necesite a quién culpar."}};
-
-var CHARS={
-  controladora:{name:"El/La Controlador/a",emoji:"🔒",painHook:"Porque en tu casa todo era un caos. Alguien no cumplió, alguien falló, alguien se fue. Y la única opción que encontraste fue hacerte cargo. Sostener a todos. Menos a ti. Desde entonces no sabes cómo dejar de hacerlo sin sentir que todo se derrumba.",core:"Necesitas que todo esté en orden para poder respirar. Lideras, organizas, planificas y anticipas. Desde afuera pareces admirable. Desde adentro vives agotado, cargado y profundamente solo. No porque te guste mandar — sino porque no sabes cómo dejar de hacerlo sin sentir que estás fallando.",shadow:"No es fuerza. Es miedo disfrazado de organización.",costBlood:"Estás agotando a quienes más quieres. Tu pareja se aleja. Tus hijos se cierran. Tu cuerpo grita. Lo que se está cayendo es tu vida — mientras tú sostienes la de todos los demás.",teaser3:"Hay 3 momentos exactos donde este personaje decide por ti sin pedirte permiso: 1) Cuando alguien que amas toma una decisión sin consultarte y tu cuerpo reacciona como si fuera una traición. 2) Cuando algo se sale del plan y entras en modo emergencia aunque no lo sea. 3) Cuando estás a punto de descansar y tu mente te dice que aún no mereces parar.",manifestations:"Te cuesta delegar. Te frustras cuando las cosas no salen como las planeaste. Estás siempre ocupado, incluso cuando no hace falta. Te metes en todo, incluso en lo que no te corresponde. Te cuesta fluir con la incertidumbre.",phrases:"'Si no lo hago yo, nadie lo hará bien.' 'No puedo soltar, todo depende de mí.' 'Después descanso, ahora hay que resolver.' 'No puedo confiar del todo, ya me fallaron antes.'",futureBlock:"El control seguirá cerrando puertas: relaciones profundas, decisiones valientes, momentos de gozo real. Nadie puede vivir libremente bajo supervisión constante.",liberation:"Soltar no es perder. Es confiar. Y eso empieza con una sola cosa pequeña."},
-  salvadora:{name:"El/La Salvador/a",emoji:"🛡️",painHook:"Porque nadie te cuidó cuando lo necesitaste. Y aprendiste que la única forma de que te vieran era siendo útil. Dando. Siempre dando. Hasta que un día te miraste y ya no quedaba nada para ti. Pero seguiste dando, porque no sabías qué otra cosa ser.",core:"Vives con el radar emocional encendido las 24 horas. Siempre disponible para todos, menos para ti. Aprendiste que el amor se gana. Que si das lo suficiente, te verán. Te elegirán.",shadow:"No es generosidad. Es una forma sofisticada de no sentir. Nace de la herida de no haber sido cuidado.",costBlood:"Te vacías completamente. Tu energía, tu tiempo, tu identidad — todo se fue en sostener a otros. Y cuando al fin necesitas algo, no hay nadie. Porque les enseñaste que tú no necesitas.",teaser3:"Este personaje tiene un intercambio secreto que hace contigo: te da la ilusión de que eres indispensable a cambio de que nunca te mires. Mientras estás ocupado salvando a otros, no tienes que enfrentar lo que realmente te duele.",manifestations:"Te ofreces a resolver todo. Das consejos aunque nadie los pida. Sientes culpa si no ayudas. Toleras vínculos desgastantes porque 'esa persona me necesita'. Te cuesta poner límites sin sentirte egoísta.",phrases:"'No me cuesta nada, yo puedo.' 'Si no lo hago yo, ¿quién lo va a ayudar?' 'Lo hago por amor.' 'Después me ocupo de lo mío.'",futureBlock:"Seguirás dando desde el vacío, atrayendo personas que se nutren de ti sin devolverte nada, alejando a quienes podrían darte lo que realmente necesitas.",liberation:"Ayudar desde la elección es diferente a ayudar desde el miedo. Solo tú sabes cuál de los dos es el tuyo."},
-  invisible:{name:"El/La Invisible",emoji:"👁️",painHook:"Porque alguien te hizo sentir que eras demasiado. Demasiado intenso. Demasiado sensible. Demasiado tú. Y decidiste achicarte para que te quisieran. Bajaste la voz. Bajaste la mirada. Bajaste tus sueños. Desde entonces nadie te busca — porque tú les enseñaste a no hacerlo.",core:"Aprendiste a hacerte pequeño para que no te rechazaran. No es que no tengas poder — es que lo escondes. Por miedo a ser demasiado. Desde adentro vives en una cárcel construida por todas las veces que creíste que ser auténtico era un peligro.",shadow:"No es humildad. Es una herida que aprendiste a llamar virtud.",costBlood:"Las personas no te ven porque tú les enseñaste a no buscarte. Y lo más doloroso: un día despiertas rodeado de personas que no conocen quién eres — porque nunca te mostraste.",teaser3:"Este personaje cobra un precio invisible que pagas todos los días: en las palabras que no dices, los límites que no pones, los sueños que achicaste para caber en la vida de otros.",manifestations:"No dices lo que realmente piensas o sientes para no generar conflicto. Cedes fácilmente, incluso cuando algo te duele. Te minimizas en conversaciones. Hablas bajito, no por timidez, sino por costumbre de no molestar.",phrases:"'No quiero causar problemas.' 'Mejor no digo nada.' 'No es tan grave, yo puedo aguantar.' 'Si me muestro mucho, seguro me critican.'",futureBlock:"El resentimiento silencioso se acumula. Un día explota — o se convierte en algo que ya no puedes ignorar. Lo que te bloquea no es el mundo. Eres tú eligiendo no aparecer.",liberation:"Tu presencia no molesta. Ocupar el espacio que te pertenece es el primer acto de quien decide vivir."},
-  proveedora:{name:"El/La Proveedor/a",emoji:"💼",painHook:"Porque desde muy chico te enseñaron que tu valor estaba en lo que hacías, no en lo que eras. Rendimiento, disciplina, resultados. Y cuando no producías, nadie te miraba. Entonces convertiste el trabajo en tu identidad. Y ahora no sabes cómo existir sin hacer.",core:"Tu rol es funcionar. Producir. Sostener. El descanso te genera culpa. La inactividad te inquieta. Tu cuerpo pide tregua pero tu mente exige más.",shadow:"No es ambición. Es identidad construida sobre el hacer — y sin el hacer, no sabes existir.",costBlood:"Tu cuerpo está avisando que pare. Tus relaciones son superficiales porque mostrar la verdad da miedo. El burnout no avisa. Y cuando llega, todo lo que construiste se siente como una condena.",teaser3:"Este personaje tiene un límite — y tu cuerpo ya lleva tiempo tratando de decírtelo. Cada noche que no duermes, cada comida que te saltas, cada momento de descanso que conviertes en productividad — es una señal que estás ignorando.",manifestations:"No sabes descansar sin sentir que pierdes tiempo. Siempre persigues la próxima meta. No celebras tus logros. Tu agenda está llena — y tú estás vacío.",phrases:"'No puedo parar ahora, después descanso.' 'Si dejo de producir, dejo de merecer.' 'Necesito demostrar que valgo.' 'Todo depende de mí.'",futureBlock:"El burnout no avisa. Llega cuando ya no puedes más. Y entonces todo lo que construiste se siente como una condena, no como un logro.",liberation:"SER precede al HACER. Pero eso requiere sentarse con el silencio sin escapar hacia la próxima tarea."},
-  exitosaVacia:{name:"El/La Exitoso/a Vacío/a",emoji:"🏆",painHook:"Lo lograste todo. El título, el puesto, el dinero, el reconocimiento. Y hay un silencio que nadie ve. Porque por fuera eres el ejemplo. Por dentro te preguntas: ¿esto era todo? Construiste según el plano de otra persona. Ahora vives en esa casa y no se siente tuya.",core:"Lo tienes todo — menos a ti. Este personaje no nació del éxito. Nació de la herida de no sentirse suficiente.",shadow:"No es ingratitud. Es que el mapa que seguiste no era el tuyo.",costBlood:"El vacío no desaparece con más logros. Con cada nuevo éxito, la pregunta crece. Estás perdiendo tu humanidad, tu derecho a quebrarte. Y nadie sabe lo solo que te sientes en realidad.",teaser3:"Este personaje tiene una grieta que el próximo logro no va a cerrar. Lo sientes cada vez que recibes un aplauso que por dentro suena vacío. Cada vez que alguien dice 'qué envidia tu vida' y tú piensas: si supieran.",manifestations:"Estás constantemente ocupado. No sabes recibir reconocimiento sin justificarlo. No celebras tus logros. No te permites quebrarte. Lloras en silencio. Tus vínculos son superficiales.",phrases:"'Lo tengo todo… pero me siento solo.' 'No puedo parar ahora.' 'Me felicitan, pero no me conocen de verdad.' '¿Esto era todo? Pensé que se iba a sentir distinto.'",futureBlock:"La siguiente crisis no será de cansancio — será existencial. Una pregunta que no tiene respuesta en los logros: ¿para qué construí todo esto?",liberation:"Lo que construiste no está mal. Lo que falta es saber quién eres cuando no tienes que demostrar nada."},
-  espiritualReprimida:{name:"El/La Espiritual Reprimido/a",emoji:"🔮",painHook:"Encontraste en la espiritualidad una tabla de salvación. Estabas tan herido, tan roto, tan vacío que necesitabas algo que te sostuviera. Y lo encontraste. Pero con el tiempo convertiste la espiritualidad en un nuevo personaje. Uno que habla de amor pero no se ama. Que habla de luz pero no se permite ser humano.",core:"Meditas, visualizas, afirmas, estudias conciencia. Pero por dentro sigues sintiéndote vacío o desconectado. Dices 'todo pasa por algo' cuando en realidad no te permites sentir el duelo. Estás 'alineado' pero no sientes. 'Conectado' pero no encarnado.",shadow:"No es sabiduría. Es represión disfrazada de conciencia. Cuando reprimes tu sombra, también te alejas de tu luz verdadera.",costBlood:"Estás perdiendo tu humanidad. Tu capacidad de sentir sin censura. Tu conexión con el cuerpo, el placer, la rabia, el deseo. Hace tiempo que no te sientas con tu sombra. Y esa es la conexión que más necesitas recuperar.",teaser3:"Este personaje usa la luz como escondite. Cada vez que dices 'ya lo solté' sin haberlo sentido, cada vez que 'proteges tu energía' en lugar de enfrentar lo que te incomoda — el disfraz se refuerza.",manifestations:"Usas frases espirituales como defensa emocional. Evitas el conflicto disfrazándolo de 'preservar tu paz'. No te permites sentir rabia o miedo porque 'baja la vibración'. Buscas respuestas afuera pero te cuesta escucharte adentro.",phrases:"'Todo es perfecto.' 'Ya lo trabajé, eso está sanado.' 'No debo engancharme, debo soltar.' 'Estoy bien.' (porque no sabes cómo decir: me siento perdido)",futureBlock:"Seguirás usando la espiritualidad como anestesia. Y un día la anestesia ya no va a alcanzar. Y lo que estaba debajo — la rabia, la soledad, el miedo — va a salir todo junto. Sin filtro.",liberation:"Soltar este personaje no es dejar de ser espiritual. Es permitirte ser espiritual sin dejar de ser humano. Baja al cuerpo. Siéntelo. Eso es conexión real."}
+/* ================= EL ORIGEN DEL PERSONAJE ================= */
+var CONST={
+  parentification:{name:"La niña que cuidó a todos",desc:"Aprendiste a cuidar antes de que alguien te cuidara a ti, y ese rol no desapareció con los años: se convirtió en tu modo por defecto.",press:"Vas a seguir atrayendo personas que necesitan ser salvadas hasta que decidas que tu valor no depende de lo que das."},
+  hero:{name:"La heroína de la familia",desc:"Fuiste la que resolvía, la que lograba y la que no podía fallar, así que te construiste enteramente hacia afuera mientras por dentro quedaba muchísimo sin tocar.",press:"El éxito de afuera va a seguir sintiéndose vacío hasta que te preguntes para quién lo construiste."},
+  invisible:{name:"La niña invisible",desc:"Aprendiste que lo más seguro era no ser vista, así que dejaste de hacer ruido, de pedir y de necesitar.",press:"Vas a seguir reduciéndote en espacios donde mereces tomar tu lugar."},
+  perfectionist:{name:"La niña perfecta",desc:"El amor te llegaba condicionado a tu rendimiento, y por eso hoy te exiges sin parar: sin darte cuenta sigues intentando ganarte ese amor.",press:"La autocrítica te va a seguir saboteando justo cuando estés más cerca de lo que de verdad deseas."},
+  scapegoat:{name:"La que cargó con la culpa",desc:"Creciste creyendo que tú eras el problema, y eso te dejó marca: o te sobreexiges para compensarlo, o te saboteas para confirmarlo.",press:"El patrón se va a activar cada vez que alguien necesite a quién culpar."}
 };
 
-/* ================= TEST — 14 preguntas (reducido de 18; filtros intactos) ================= */
+/* ================= LOS PERSONAJES ================= */
+var CHARS={
+  controladora:{name:"La Controladora",tag:"Sostengo todo para que nada se caiga",
+    painHook:"Porque en tu casa todo era un caos, alguien no cumplió, alguien falló o alguien se fue, y la única opción que encontraste fue hacerte cargo de todos menos de ti. Desde entonces no sabes cómo soltar sin sentir que todo se derrumba.",
+    core:"Necesitas que todo esté en orden para poder respirar, así que lideras, organizas, planificas y anticipas. Desde afuera pareces admirable, pero por dentro vives agotada, cargada y profundamente sola: no porque te guste mandar, sino porque no sabes cómo dejar de hacerlo sin sentir que estás fallando.",
+    shadow:"No es fuerza, es miedo disfrazado de organización.",
+    costBlood:"Estás agotando a las personas que más quieres: tu pareja se aleja, tus hijos se cierran y tu cuerpo lleva tiempo gritando. Lo que se está cayendo es tu vida, mientras tú sostienes la de todos los demás.",
+    teaser3:"Hay tres momentos exactos donde este personaje decide por ti sin pedirte permiso: cuando alguien que amas toma una decisión sin consultarte y tu cuerpo lo vive como una traición, cuando algo se sale del plan y entras en modo emergencia aunque no lo sea, y cuando estás a punto de descansar y tu mente te dice que todavía no mereces parar.",
+    manifestations:"Te cuesta delegar y te frustras cuando las cosas no salen como las planeaste. Vives ocupada aunque no haga falta, te metes en todo incluso en lo que no te corresponde, y fluir con la incertidumbre te resulta casi imposible.",
+    phrases:"'Si no lo hago yo, nadie lo hará bien.' 'No puedo soltar, todo depende de mí.' 'Después descanso, ahora hay que resolver.' 'No puedo confiar del todo, ya me fallaron antes.'",
+    futureBlock:"El control va a seguir cerrándote puertas, y con ellas las relaciones profundas, las decisiones valientes y los momentos de gozo real, porque nadie puede vivir libremente bajo supervisión constante, ni siquiera tú.",
+    liberation:"Aquí va la verdad que nadie se ha atrevido a decirte: tú no controlas porque seas fuerte, controlas porque un día, siendo una niña, decidiste que si tú no sostenías el mundo el mundo se caía, y nadie llegó nunca a decirte que ese no era tu trabajo. Llevas décadas pagando una deuda que jamás fue tuya. Y lo más duro de ver es que las personas que amas no necesitan que las controles, necesitan que estés ahí: presente, tranquila y tuya. El día que sueltas el control no pierdes a nadie, te recuperas a ti, y eso es precisamente lo que el personaje nunca va a dejarte hacer sola, porque soltarlo significa su muerte."},
+  salvadora:{name:"La Salvadora",tag:"Si soy útil, entonces valgo",
+    painHook:"Porque nadie te cuidó cuando lo necesitaste, y aprendiste que la única forma de que te vieran era siendo útil y dando siempre, hasta que un día te miraste y ya no quedaba nada para ti. Aun así seguiste dando, porque no sabías qué otra cosa ser.",
+    core:"Vives con el radar emocional encendido las veinticuatro horas, disponible para todos menos para ti, porque aprendiste que el amor se gana y que si das lo suficiente al fin te van a ver y te van a elegir.",
+    shadow:"No es generosidad, es una forma sofisticada de no sentir, y nace de la herida de no haber sido cuidada.",
+    costBlood:"Te vacías por completo, porque tu energía, tu tiempo y tu identidad se fueron en sostener a otros, y cuando por fin eres tú la que necesita algo no hay nadie, porque tú misma les enseñaste que no necesitas.",
+    teaser3:"Este personaje hace un intercambio secreto contigo: te da la ilusión de que eres indispensable a cambio de que nunca te mires, porque mientras estás ocupada salvando a otros no tienes que enfrentar lo que de verdad te duele.",
+    manifestations:"Te ofreces a resolverlo todo, das consejos aunque nadie los pida y sientes culpa cuando no ayudas. Toleras vínculos que te desgastan porque esa persona te necesita, y poner límites te hace sentir egoísta.",
+    phrases:"'No me cuesta nada, yo puedo.' 'Si no lo hago yo, ¿quién la va a ayudar?' 'Lo hago por amor.' 'Después me ocupo de lo mío.'",
+    futureBlock:"Vas a seguir dando desde el vacío, atrayendo personas que se nutren de ti sin devolverte nada y alejando sin querer a las que sí podrían darte lo que necesitas.",
+    liberation:"La revelación que va a dolerte y a liberarte al mismo tiempo es esta: nunca fuiste tan indispensable como creías, y las personas que de verdad te aman no te aman por lo que das, llevan años esperando conocer a la mujer que se esconde detrás de tanto dar. Salvas a otros porque fue la única forma que encontraste de justificar tu lugar en el mundo, como si existir así, sin más, no fuera suficiente. Y aquí está lo que lo cambia todo: el día que dejas de salvar no te quedas sola, te quedas contigo, y esa es exactamente la persona que llevas toda la vida abandonando por ir a rescatar a los demás."},
+  invisible:{name:"La Invisible",tag:"Mejor no molesto, mejor no incomodo",
+    painHook:"Porque alguien te hizo sentir que eras demasiado, demasiado intensa, demasiado sensible, demasiado tú, y decidiste achicarte para que te quisieran bajando la voz, la mirada y tus sueños. Desde entonces nadie te busca, porque tú misma les enseñaste a no hacerlo.",
+    core:"Aprendiste a hacerte pequeña para que no te rechazaran. No es que no tengas poder, es que lo escondes por miedo a ser demasiado, y por dentro vives en una cárcel construida por todas las veces que creíste que ser auténtica era un peligro.",
+    shadow:"No es humildad, es una herida que aprendiste a llamar virtud.",
+    costBlood:"Las personas no te ven porque tú les enseñaste a no buscarte, y lo más doloroso es que un día despiertas rodeada de gente que no tiene idea de quién eres, porque nunca te mostraste.",
+    teaser3:"Este personaje te cobra un precio invisible todos los días, y lo pagas en las palabras que no dices, en los límites que no pones y en los sueños que achicaste para caber en la vida de otros.",
+    manifestations:"No dices lo que realmente piensas para no generar conflicto, cedes aunque algo te duela y te minimizas en las conversaciones. Hablas bajito, no por timidez sino por costumbre de no molestar.",
+    phrases:"'No quiero causar problemas.' 'Mejor no digo nada.' 'No es tan grave, yo puedo aguantar.' 'Si me muestro mucho, seguro me critican.'",
+    futureBlock:"El resentimiento silencioso se va acumulando hasta que un día explota, o se convierte en algo que ya no puedes ignorar, y lo que te bloquea no es el mundo, eres tú eligiendo no aparecer.",
+    liberation:"Esta es la revelación que el personaje nunca quiso que leyeras: nadie te está pidiendo que seas menos, la única persona que sigue firmando ese contrato eres tú, cada día, por miedo a un rechazo que pasó hace décadas y que sigues reviviendo como si fuera hoy. Aquella niña que era demasiado no tenía nada malo, le tocó gente que no supo recibirla, que es algo muy distinto. Hoy tienes algo que ella no tenía y es la capacidad de elegir: cada vez que te achicas le confirmas a esa niña que tenía razón en esconderse, y cada vez que ocupas tu lugar la liberas un poco más. Tu presencia nunca fue el problema, tu ausencia es lo que te está costando la vida."},
+  proveedora:{name:"La Proveedora",tag:"Valgo por lo que produzco",
+    painHook:"Porque desde muy niña te enseñaron que tu valor estaba en lo que hacías y no en lo que eras, con rendimiento, disciplina y resultados, porque cuando no producías nadie te miraba. Entonces convertiste el trabajo en tu identidad y hoy no sabes cómo existir sin estar haciendo.",
+    core:"Tu rol es funcionar, producir y sostener, así que el descanso te genera culpa y la inactividad te inquieta. Tu cuerpo lleva tiempo pidiendo tregua, pero tu mente le exige cada vez más.",
+    shadow:"No es ambición, es una identidad construida sobre el hacer, y sin el hacer no sabes existir.",
+    costBlood:"Tu cuerpo está avisando que pares y tus relaciones se quedaron en la superficie porque mostrar la verdad da miedo. El burnout no avisa, y cuando llega, todo lo que construiste se siente como una condena.",
+    teaser3:"Este personaje tiene un límite y tu cuerpo lleva tiempo tratando de decírtelo, porque cada noche que no duermes, cada comida que te saltas y cada descanso que convertiste en productividad es una señal que estás ignorando.",
+    manifestations:"No sabes descansar sin sentir que pierdes tiempo, vives persiguiendo la próxima meta y no celebras nada de lo que logras. Tu agenda está llena y tú estás vacía.",
+    phrases:"'No puedo parar ahora, después descanso.' 'Si dejo de producir, dejo de merecer.' 'Necesito demostrar que valgo.' 'Todo depende de mí.'",
+    futureBlock:"El burnout no avisa, llega cuando ya no puedes más, y entonces todo lo que construiste se siente como una condena en vez de un logro.",
+    liberation:"La revelación es esta, y te pido que la leas dos veces: llevas toda la vida trabajando para ganarte un amor que ya era tuyo. Nadie te iba a querer más por producir más, eso fue lo que entendió una niña a la que solo miraban cuando rendía, y esa niña sigue administrando tu agenda el día de hoy. Por eso ninguna meta te llena, porque no estás persiguiendo logros, estás persiguiendo una mirada que te faltó, y esa mirada no está en el próximo proyecto. Tu valor no se produce, se reconoce, y el día que te lo creas el descanso deja de ser una amenaza y tu vida deja de ser una lista de pendientes. Eres valiosa quieta, en silencio y sin nada que mostrar, y mientras no lo veas el personaje te va a seguir cobrando en salud lo que no te atreves a cobrarte en verdad."},
+  exitosaVacia:{name:"La Exitosa Vacía",tag:"Lo tengo todo y no siento nada",
+    painHook:"Lo lograste todo, el título, el puesto, el dinero y el reconocimiento, y aun así hay un silencio que nadie ve. Por fuera eres el ejemplo, pero por dentro te preguntas si esto era todo, porque construiste según el plano de otra persona y ahora vives en esa casa y no se siente tuya.",
+    core:"Lo tienes todo menos a ti, porque este personaje no nació del éxito, nació de la herida de no sentirte suficiente.",
+    shadow:"No es ingratitud, es que el mapa que seguiste nunca fue el tuyo.",
+    costBlood:"El vacío no desaparece con más logros, porque con cada nuevo éxito la pregunta crece, y mientras tanto vas perdiendo tu humanidad y tu derecho a quebrarte sin que nadie sepa lo sola que te sientes en realidad.",
+    teaser3:"Este personaje tiene una grieta que el próximo logro no va a cerrar, y la sientes cada vez que recibes un aplauso que por dentro suena vacío, o cuando alguien te dice qué envidia tu vida y tú piensas: si supieran.",
+    manifestations:"Vives constantemente ocupada, no sabes recibir un reconocimiento sin justificarlo y no celebras lo que logras. No te permites quebrarte, lloras en silencio y tus vínculos se quedaron en la superficie.",
+    phrases:"'Lo tengo todo… pero me siento sola.' 'No puedo parar ahora.' 'Me felicitan, pero no me conocen de verdad.' '¿Esto era todo? Pensé que se iba a sentir distinto.'",
+    futureBlock:"La siguiente crisis no va a ser de cansancio, va a ser existencial, con una pregunta que no tiene respuesta en los logros: ¿para qué construí todo esto?",
+    liberation:"Aquí está la revelación completa: el vacío que sientes no es señal de que algo ande mal contigo, es la prueba de que cumpliste al pie de la letra un sueño que nunca fue tuyo. Te entregaron un mapa a los veinte y fuiste tan capaz que llegaste a la cima, pero era la montaña equivocada, y eso no se arregla escalando más alto. La buena noticia que el personaje no quiere que sepas es que no tienes que quemar tu vida para recuperarte, porque no se trata de tirar el éxito por la borda, se trata de dejar de habitarlo como un disfraz. Cuando descubres quién eres sin el aplauso, todo lo que construiste por fin se puede disfrutar, porque ya no lo necesitas para valer, y esa es la diferencia entre tener una vida impresionante y tener una vida tuya."},
+  espiritualReprimida:{name:"La Espiritual Reprimida",tag:"Hablo de luz para no mirar mi sombra",
+    painHook:"Encontraste en la espiritualidad una tabla de salvación cuando estabas tan herida, tan rota y tan vacía que necesitabas algo que te sostuviera, y lo encontraste. Pero con el tiempo la espiritualidad se convirtió en un nuevo personaje, uno que habla de amor pero no se ama y que habla de luz pero no se permite ser humana.",
+    core:"Meditas, visualizas, afirmas y estudias conciencia, pero por dentro sigues sintiéndote vacía o desconectada. Dices que todo pasa por algo cuando en realidad no te permites sentir el duelo, y vives alineada pero sin sentir, conectada pero sin habitar tu cuerpo.",
+    shadow:"No es sabiduría, es represión disfrazada de conciencia, y cuando reprimes tu sombra también te alejas de tu luz verdadera.",
+    costBlood:"Estás perdiendo tu humanidad, tu capacidad de sentir sin censura y tu conexión con el cuerpo, el placer, la rabia y el deseo. Hace tiempo que no te sientas con tu sombra, y esa es justamente la conexión que más necesitas recuperar.",
+    teaser3:"Este personaje usa la luz como escondite, y cada vez que dices que ya lo soltaste sin haberlo sentido, o que estás protegiendo tu energía en lugar de enfrentar lo que te incomoda, el disfraz se refuerza un poco más.",
+    manifestations:"Usas frases espirituales como defensa emocional y evitas el conflicto disfrazándolo de preservar tu paz. No te permites sentir rabia ni miedo porque bajan la vibración, y buscas respuestas afuera cuando lo que en realidad te cuesta es escucharte adentro.",
+    phrases:"'Todo es perfecto.' 'Ya lo trabajé, eso está sanado.' 'No debo engancharme, debo soltar.' 'Estoy bien.'",
+    futureBlock:"Vas a seguir usando la espiritualidad como anestesia hasta el día en que la anestesia no alcance, y entonces lo que estaba debajo, la rabia, la soledad y el miedo, va a salir todo junto y sin filtro.",
+    liberation:"La revelación que ningún retiro te ha dado es esta: no llegaste a la espiritualidad buscando despertar, llegaste buscando un lugar donde no doliera, y la convertiste en el escondite más elegante que has tenido. Por eso después de tanto curso, tanta meditación y tanto soltar sigues sintiendo el mismo vacío, porque la luz que persigues está enterrada exactamente en lo que no quieres mirar. Tu rabia no es baja vibración, es información, y tu tristeza no es falta de conciencia, es una parte tuya pidiendo permiso para entrar. El día que bajas de la mente al cuerpo y te permites sentir lo humano completo, lo lindo y lo feo, descubres que nunca necesitaste elevarte para sanar: necesitabas aterrizar."}
+};
+var ORDER=["controladora","salvadora","invisible","proveedora","exitosaVacia","espiritualReprimida"];
+
+/* ================= TEST ================= */
 var QS=[
-  {id:1,type:"i",text:"Cuando algo no sale como lo planeaste, ¿qué es lo primero que sientes?",opts:[{text:"Ansiedad. Necesito retomar el control rápido.",chars:["controladora","proveedora"],w:3,pain:2},{text:"Frustración, pero lo proceso y sigo.",chars:[],w:0,pain:1},{text:"Soy flexible. Los cambios no me afectan mucho.",chars:[],w:0},{text:"Culpa. Siento que fallé en algo.",chars:["salvadora"],w:2,pain:2}]},
-  {id:2,type:"i",text:"¿Con qué frecuencia priorizas las necesidades de otros sobre las tuyas?",opts:[{text:"Casi siempre. Es automático, ni lo pienso.",chars:["salvadora","invisible"],w:3,pain:3,disp:-1},{text:"Con frecuencia, aunque a veces me cuido.",chars:["salvadora"],w:2,pain:2},{text:"Lo balanceo bien.",chars:[],w:0,disp:1},{text:"Me cuido a mí primero sin culpa.",chars:[],w:0,disp:2}]},
+  {id:1,type:"i",text:"Cuando algo no sale como lo planeaste, ¿qué es lo primero que sientes?",opts:[{text:"Ansiedad. Necesito retomar el control rápido.",chars:["controladora","proveedora"],w:3,pain:2},{text:"Frustración, pero lo proceso y sigo.",chars:[],w:0,pain:1},{text:"Soy flexible, los cambios no me afectan mucho.",chars:[],w:0},{text:"Culpa. Siento que fallé en algo.",chars:["salvadora"],w:2,pain:2}]},
+  {id:2,type:"i",text:"¿Con qué frecuencia priorizas las necesidades de otros sobre las tuyas?",opts:[{text:"Casi siempre. Es automático, ni lo pienso.",chars:["salvadora","invisible"],w:3,pain:3,disp:-1},{text:"Con frecuencia, aunque a veces me cuido.",chars:["salvadora"],w:2,pain:2},{text:"Lo balanceo bien.",chars:[],w:0,disp:1},{text:"Me cuido a mí primero y sin culpa.",chars:[],w:0,disp:2}]},
   {id:3,type:"i",text:"Cuando hay conflicto en tus relaciones importantes, ¿qué haces?",opts:[{text:"Me callo para no empeorar la situación.",chars:["invisible"],w:3,pain:3,disp:-1,con:"invisible"},{text:"Intento resolver para que todos estén bien.",chars:["salvadora","controladora"],w:2,pain:2},{text:"Lo enfrento directamente, aunque sea incómodo.",chars:[],w:0,pain:1,disp:2},{text:"Me alejo en silencio y vuelvo cuando baja la tensión.",chars:["invisible"],w:1,pain:2}]},
-  {id:4,type:"f",text:"¿Cómo describirías tu situación profesional hoy?",opts:[{text:"Tengo empleo o negocio establecido, pero algo no encaja.",filter:"employed",pain:2,disp:2},{text:"Soy emprendedor o trabajo de manera independiente.",filter:"entrepreneur",pain:2,disp:3},{text:"Estoy en transición — dejé algo o estoy buscando qué sigue.",filter:"transition",pain:3,disp:4},{text:"No estoy trabajando en este momento.",filter:"unemployed",pain:1,disp:0}]},
-  {id:5,type:"i",text:"¿Qué pasa en tu cuerpo cuando no tienes nada pendiente o en qué ocuparte?",opts:[{text:"Inquietud. Me siento culpable si no estoy produciendo.",chars:["proveedora","controladora"],w:3,pain:2},{text:"Un poco incómodo, pero lo tolero.",chars:["proveedora"],w:1,pain:1},{text:"Disfruto descansar sin problema.",chars:[],w:0},{text:"No sé. Hace tanto que no paro que no recuerdo.",chars:["proveedora","exitosaVacia"],w:3,pain:3}]},
-  {id:6,type:"i",text:"¿Cuándo fue la última vez que hiciste algo solo para ti, sin justificarlo o sentir culpa?",opts:[{text:"No recuerdo.",chars:["salvadora","proveedora","exitosaVacia"],w:3,pain:3,disp:3},{text:"Hace mucho. Casi no me pasa.",chars:["salvadora","proveedora"],w:2,pain:2,disp:2},{text:"Hace poco. Intento hacerlo.",chars:[],w:1,disp:1},{text:"Regularmente. Me cuido sin culpa.",chars:[],w:0}]},
-  {id:9,type:"f",text:"¿Qué tan urgente se siente para ti hacer algo diferente en tu vida ahora mismo?",opts:[{text:"Muy urgente. Si no es ahora, voy a seguir igual para siempre.",filter:"urgent",pain:3,disp:4},{text:"Urgente. Sé que necesito moverme pero no sé por dónde.",filter:"ready",pain:3,disp:3},{text:"Lo sé, pero todavía no me siento listo.",filter:"notready",pain:2,disp:1},{text:"Estoy explorando, no hay urgencia real.",filter:"exploring",pain:1,disp:0}]},
-  {id:10,type:"i",text:"¿Cómo describes tu relación con el éxito y los logros hoy?",opts:[{text:"Logré mucho pero no siento lo que esperaba sentir.",chars:["exitosaVacia"],w:3,pain:3,disp:3},{text:"Sigo trabajando duro porque temo perder lo que tengo.",chars:["proveedora","controladora"],w:2,pain:2,disp:2},{text:"Estoy en proceso. No tengo claridad todavía.",chars:["exitosaVacia"],w:1,pain:2,disp:2},{text:"Equilibrado. Disfruto lo que construí.",chars:[],w:0}]},
-  {id:12,type:"i",text:"Cuando piensas en tu infancia, ¿cuál de estas frases resuena más?",opts:[{text:"Había que ser fuerte. No se podía fallar.",chars:["controladora","proveedora"],w:3,pain:3,con:"hero"},{text:"Era mejor no molestar. Estar callado era más seguro.",chars:["invisible"],w:3,pain:3,con:"invisible"},{text:"Yo cuidaba de los demás antes que de mí.",chars:["salvadora"],w:3,pain:3,con:"parentification"},{text:"El amor llegaba cuando cumplía las expectativas.",chars:["exitosaVacia","controladora"],w:3,pain:3,con:"perfectionist"}]},
-  {id:13,type:"i",text:"¿Cuándo fue la última vez que alguien te vio o te mostraste — de verdad — como eres?",opts:[{text:"Hace mucho. O quizás nunca.",chars:["invisible","exitosaVacia"],w:3,pain:3,disp:3},{text:"Hay pocas personas que me conocen de verdad.",chars:["invisible"],w:2,pain:2,disp:2},{text:"Me siento comprendido con frecuencia.",chars:[],w:0},{text:"La gente me ve, pero solo por mis logros.",chars:["exitosaVacia","proveedora"],w:2,pain:2,disp:2}]},
-  {id:14,type:"f",text:"Si supieras exactamente qué está bloqueando tu vida y tuvieras un proceso claro para desbloquearlo, ¿estarías dispuesto a invertir en eso?",opts:[{text:"Sí, sin duda. Si es lo que necesito, invierto.",filter:"investor_high",pain:3,disp:4,invest:true},{text:"Sí, dependiendo del monto y lo que incluya.",filter:"investor_mid",pain:2,disp:2,invest:true},{text:"Tal vez, pero ahora no es el momento económico.",filter:"investor_low",pain:2,disp:1,invest:false},{text:"Prefiero explorar opciones gratuitas primero.",filter:"investor_none",pain:1,disp:0,invest:false}]},
-  {id:16,type:"i",text:"Cuando algo te duele, ¿cuál es tu primera reacción?",opts:[{text:"Me repito que 'todo pasa por algo' e intento soltarlo rápido.",chars:["espiritualReprimida"],w:3,pain:2},{text:"Busco una señal, una carta o una respuesta afuera de mí.",chars:["espiritualReprimida"],w:2,pain:2},{text:"Lo siento, lloro si hace falta y después lo proceso.",chars:[],w:0,disp:2},{text:"Me lo trago y sigo funcionando.",chars:["proveedora","invisible"],w:2,pain:2}]},
-  {id:17,type:"i",text:"¿Alguna vez has sentido que la imagen que proyectas por fuera no coincide con lo que sientes por dentro?",opts:[{text:"Siempre. Proyecto calma o conciencia pero por dentro estoy destruido.",chars:["espiritualReprimida","exitosaVacia"],w:3,pain:3,disp:3},{text:"A veces. Sobre todo cuando tengo que mostrarme fuerte ante otros.",chars:["proveedora","controladora"],w:2,pain:2,disp:2},{text:"Rara vez. Suelo ser bastante transparente.",chars:[],w:0},{text:"Siempre me muestro fuerte, pero nadie sabe lo que realmente cargo.",chars:["exitosaVacia","invisible"],w:2,pain:2,disp:2}]},
-  {id:18,type:"i",text:"Cuando estás solo o sola, sin distracciones, ¿qué aparece?",opts:[{text:"Ruido mental. Necesito hacer algo para no sentir.",chars:["proveedora","controladora"],w:2,pain:2},{text:"Vacío. Como si faltara algo que no sé nombrar.",chars:["exitosaVacia"],w:3,pain:3,disp:3},{text:"Ansiedad de que debería estar haciendo algo productivo.",chars:["proveedora"],w:2,pain:2},{text:"Nada particular. Disfruto estar conmigo.",chars:[],w:0}]}
+  {id:4,type:"f",text:"¿Cómo describirías tu situación profesional hoy?",opts:[{text:"Tengo empleo o negocio establecido, pero algo no encaja.",filter:"employed",pain:2,disp:2},{text:"Soy emprendedora o trabajo de manera independiente.",filter:"entrepreneur",pain:2,disp:3},{text:"Estoy en transición, dejé algo o estoy buscando qué sigue.",filter:"transition",pain:3,disp:4},{text:"No estoy trabajando en este momento.",filter:"unemployed",pain:1,disp:0}]},
+  {id:5,type:"i",text:"¿Qué pasa en tu cuerpo cuando no tienes nada pendiente ni en qué ocuparte?",opts:[{text:"Inquietud. Me siento culpable si no estoy produciendo.",chars:["proveedora","controladora"],w:3,pain:2},{text:"Me incomoda un poco, pero lo tolero.",chars:["proveedora"],w:1,pain:1},{text:"Disfruto descansar sin problema.",chars:[],w:0},{text:"No sé. Hace tanto que no paro que no recuerdo.",chars:["proveedora","exitosaVacia"],w:3,pain:3}]},
+  {id:6,type:"i",text:"¿Cuándo fue la última vez que hiciste algo solo para ti, sin justificarlo ni sentir culpa?",opts:[{text:"No recuerdo.",chars:["salvadora","proveedora","exitosaVacia"],w:3,pain:3,disp:3},{text:"Hace mucho, casi no me pasa.",chars:["salvadora","proveedora"],w:2,pain:2,disp:2},{text:"Hace poco, intento hacerlo.",chars:[],w:1,disp:1},{text:"Regularmente. Me cuido sin culpa.",chars:[],w:0}]},
+  {id:9,type:"f",text:"¿Qué tan urgente se siente para ti hacer algo diferente en tu vida ahora mismo?",opts:[{text:"Muy urgente. Si no es ahora, voy a seguir igual para siempre.",filter:"urgent",pain:3,disp:4},{text:"Urgente. Sé que necesito moverme pero no sé por dónde.",filter:"ready",pain:3,disp:3},{text:"Lo sé, pero todavía no me siento lista.",filter:"notready",pain:2,disp:1},{text:"Estoy explorando, no hay urgencia real.",filter:"exploring",pain:1,disp:0}]},
+  {id:10,type:"i",text:"¿Cómo describes tu relación con el éxito y los logros hoy?",opts:[{text:"Logré mucho pero no siento lo que esperaba sentir.",chars:["exitosaVacia"],w:3,pain:3,disp:3},{text:"Sigo trabajando duro porque temo perder lo que tengo.",chars:["proveedora","controladora"],w:2,pain:2,disp:2},{text:"Estoy en proceso, no tengo claridad todavía.",chars:["exitosaVacia"],w:1,pain:2,disp:2},{text:"Equilibrado. Disfruto lo que construí.",chars:[],w:0}]},
+  {id:12,type:"i",text:"Cuando piensas en tu infancia, ¿cuál de estas frases resuena más?",opts:[{text:"Había que ser fuerte y no se podía fallar.",chars:["controladora","proveedora"],w:3,pain:3,con:"hero"},{text:"Era mejor no molestar, estar callada era más seguro.",chars:["invisible"],w:3,pain:3,con:"invisible"},{text:"Yo cuidaba de los demás antes que de mí.",chars:["salvadora"],w:3,pain:3,con:"parentification"},{text:"El amor llegaba cuando cumplía las expectativas.",chars:["exitosaVacia","controladora"],w:3,pain:3,con:"perfectionist"}]},
+  {id:13,type:"i",text:"¿Cuándo fue la última vez que alguien te vio, o te mostraste de verdad como eres?",opts:[{text:"Hace mucho, o quizás nunca.",chars:["invisible","exitosaVacia"],w:3,pain:3,disp:3},{text:"Hay pocas personas que me conocen de verdad.",chars:["invisible"],w:2,pain:2,disp:2},{text:"Me siento comprendida con frecuencia.",chars:[],w:0},{text:"La gente me ve, pero solo por mis logros.",chars:["exitosaVacia","proveedora"],w:2,pain:2,disp:2}]},
+  {id:16,type:"i",text:"Cuando algo te duele, ¿cuál es tu primera reacción?",opts:[{text:"Me repito que todo pasa por algo e intento soltarlo rápido.",chars:["espiritualReprimida"],w:3,pain:2},{text:"Busco una señal, una carta o una respuesta afuera de mí.",chars:["espiritualReprimida"],w:2,pain:2},{text:"Lo siento, lloro si hace falta y después lo proceso.",chars:[],w:0,disp:2},{text:"Me lo trago y sigo funcionando.",chars:["proveedora","invisible"],w:2,pain:2}]},
+  {id:17,type:"i",text:"¿Has sentido que la imagen que proyectas por fuera no coincide con lo que sientes por dentro?",opts:[{text:"Siempre. Proyecto calma o conciencia pero por dentro estoy destruida.",chars:["espiritualReprimida","exitosaVacia"],w:3,pain:3,disp:3},{text:"A veces, sobre todo cuando tengo que mostrarme fuerte ante otros.",chars:["proveedora","controladora"],w:2,pain:2,disp:2},{text:"Rara vez, suelo ser bastante transparente.",chars:[],w:0},{text:"Siempre me muestro fuerte, pero nadie sabe lo que realmente cargo.",chars:["exitosaVacia","invisible"],w:2,pain:2,disp:2}]},
+  {id:18,type:"i",text:"Cuando estás sola, sin distracciones, ¿qué aparece?",opts:[{text:"Ruido mental. Necesito hacer algo para no sentir.",chars:["proveedora","controladora"],w:2,pain:2},{text:"Vacío, como si faltara algo que no sé nombrar.",chars:["exitosaVacia"],w:3,pain:3,disp:3},{text:"Ansiedad de que debería estar haciendo algo productivo.",chars:["proveedora"],w:2,pain:2},{text:"Nada particular, disfruto estar conmigo.",chars:[],w:0}]}
 ];
 
+var FILTER_Q={
+  text:"Si este diagnóstico te muestra exactamente qué está bloqueando tu vida, ¿estás en un momento de invertir tiempo y dinero en resolverlo?",
+  opts:[
+    {text:"Sí. Si es lo que necesito, invierto.",dest:"whatsapp",tag:"investor_high"},
+    {text:"Sí, dependiendo del monto y lo que incluya.",dest:"whatsapp",tag:"investor_mid"},
+    {text:"Quiero resolverlo, pero ahora no puedo invertir dinero.",dest:"claridad",tag:"investor_low"},
+    {text:"Solo quiero conocer mi resultado.",dest:"claridad",tag:"curious"}
+  ]
+};
+
 /* ================= SCORING ================= */
-function scoreAll(answers,reading){
+function scoreAll(answers){
   var ch={controladora:0,salvadora:0,invisible:0,proveedora:0,exitosaVacia:0,espiritualReprimida:0};
   var cv={},pain=0,pn=0,disp=0,fd={};
   answers.forEach(function(a){
@@ -176,351 +270,308 @@ function scoreAll(answers,reading){
     if(o.pain!==undefined){pain+=o.pain;pn++;}
     if(o.disp!==undefined)disp+=o.disp;
   });
-  var mods={Tierra:{controladora:1,proveedora:1},Agua:{salvadora:1,invisible:1},Fuego:{proveedora:1,exitosaVacia:1},Aire:{invisible:1,espiritualReprimida:1}};
-  if(reading&&reading.element&&mods[reading.element]){var mm=mods[reading.element];for(var k in mm)ch[k]+=mm[k];}
-  var sorted=Object.keys(ch).map(function(k){return[k,ch[k]];}).sort(function(a,b){return b[1]-a[1];});
+  var sorted=ORDER.map(function(k){return[k,ch[k]];}).sort(function(a,b){return b[1]-a[1];});
+  var max=sorted[0][1]||1;
+  var meters=sorted.filter(function(s){return s[1]>0;}).slice(0,4).map(function(s){return{key:s[0],name:CHARS[s[0]].name,pct:Math.max(14,Math.round(s[1]/max*100))};});
   var priKey=sorted[0][0];
   var secKey=sorted[1][1]>=sorted[0][1]*0.55?sorted[1][0]:null;
   var tcArr=Object.keys(cv).map(function(k){return[k,cv[k]];}).sort(function(a,b){return b[1]-a[1];});
   var constKey=tcArr.length?tcArr[0][0]:"hero";
-  return{primaryKey:priKey,secondaryKey:secKey,constKey:constKey,primary:CHARS[priKey],secondary:secKey?CHARS[secKey]:null,constellation:CONST[constKey],avgPain:pn>0?pain/pn:0,disp:disp,willingToInvest:fd[14]?fd[14].invest===true:false,urgency:fd[9]?fd[9].filter:"",profession:fd[4]?fd[4].filter:""};
+  return{primaryKey:priKey,secondaryKey:secKey,constKey:constKey,primary:CHARS[priKey],secondary:secKey?CHARS[secKey]:null,constellation:CONST[constKey],
+    meters:meters,avgPain:pn>0?pain/pn:0,disp:disp,urgency:fd[9]?fd[9].filter:"",profession:fd[4]?fd[4].filter:""};
 }
 
-/* ================= WEBHOOK A GHL (enriquecido para el email personalizado) ================= */
+/* ================= WEBHOOK GHL ================= */
 function pushGHL(ud,res){
   try{
     var base=window.location.origin+window.location.pathname;
-    var resultUrlTeaser=base+"?screen=thankyou&p="+res.primaryKey+"&s="+(res.secondaryKey||"")+"&c="+res.constKey+"&n="+encodeURIComponent((ud.name||"").split(" ")[0])+"&bd="+(ud.birthdate||"")+"&bt="+encodeURIComponent(ud.birthtime||"");
-    var resultUrl=resultUrlTeaser+"&t="+tok(res.primaryKey,res.secondaryKey||"",res.constKey);
-    var r=res.reading||{};
+    var resultUrl=base+"?screen=resultado&p="+res.primaryKey+"&s="+(res.secondaryKey||"")+"&c="+res.constKey+"&d="+(ud.dest||"")+"&n="+encodeURIComponent((ud.name||"").split(" ")[0]);
     fetch(CONFIG.ghl_webhook,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-      name:ud.name,email:ud.email,phone:(ud.phoneCode||"")+(ud.phone||""),birthdate:ud.birthdate,birth_time:ud.birthtime||"",
-      personaje:res.primary.name,personaje_key:res.primaryKey,personaje_emoji:res.primary.emoji,
+      name:ud.name,email:ud.email,phone:(ud.phoneCode||"")+(ud.phone||""),
+      filtro_inversion:ud.filterTag||"",destino:ud.dest||"",
+      personaje:res.primary.name,personaje_key:res.primaryKey,
       personaje_secundario:res.secondary?res.secondary.name:"",secundario_key:res.secondaryKey||"",
-      constelacion:res.constellation?res.constellation.name:"",constelacion_key:res.constKey,
-      signo:r.sign||"",elemento:r.element||"",camino_vida:r.lifePath||"",camino_vida_don:r.lifePathMeaning||"",
-      result_url:resultUrl,
-      result_url_teaser:resultUrlTeaser,
-      pain_score:res.avgPain,disposition:res.disp,willing_invest:res.willingToInvest,urgency:res.urgency||"",profession:res.profession||"",
-      source:"diagnostico-identidad-v3",ts:new Date().toISOString()
+      origen_personaje:res.constellation?res.constellation.name:"",origen_key:res.constKey,
+      result_url:resultUrl,pain_score:res.avgPain,disposition:res.disp,
+      willing_invest:ud.filterTag==="investor_high"||ud.filterTag==="investor_mid",
+      urgency:res.urgency||"",profession:res.profession||"",
+      source:"diagnostico-identidad-v6",ts:new Date().toISOString()
     })});
   }catch(e){}
 }
 
-/* ================= LÓGICA DE LA OFERTA FINAL ================= */
-function finalOffer(){
-  var b=getBought(),m=b.indexOf("manual")>=0,c=b.indexOf("cuaderno")>=0;
-  if(m&&c)return{price:36,link:CONFIG.whop_completa36,missing:["Programa grabado — 10 módulos, paso a paso de cada personaje"]};
-  if(m||c)return{price:63,link:CONFIG.whop_completa63,missing:[m?"Cuaderno de Ejercicios":"Manual de Trabajo","Programa grabado — 10 módulos, paso a paso de cada personaje"]};
-  return{price:90,link:CONFIG.whop_completa90,missing:["Manual de Trabajo — los 6 personajes al detalle","Cuaderno de Ejercicios — el trabajo guiado","Programa grabado — 10 módulos, paso a paso de cada personaje"]};
+/* ================= ESTADO / UTILIDADES DE UI ================= */
+var S={ud:null,result:null,qIdx:0,answers:[]};
+var app=document.getElementById("app"),stick=document.getElementById("stick");
+var IO=null;
+function render(html,keepStick){
+  app.innerHTML=html;window.scrollTo(0,0);
+  if(!keepStick)stick.classList.remove("on");
+  if(IO)IO.disconnect();
+  if("IntersectionObserver" in window){
+    IO=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("on");IO.unobserve(e.target);}});},{threshold:.12});
+    [].forEach.call(app.querySelectorAll(".rv"),function(el){IO.observe(el);});
+  }else{[].forEach.call(app.querySelectorAll(".rv"),function(el){el.classList.add("on");});}
+}
+function foot(){return '<div class="foot">@ileanamentora · Ingeniería de Identidad</div>';}
+function hero(k,h,inner,pos){
+  return '<div style="position:relative;min-height:'+h+';display:flex;align-items:center;overflow:hidden;background:#0A1420">'
+  +'<img class="photo" src="'+px(k,1700)+'" alt="" style="position:absolute;inset:0;object-position:'+(pos||"center")+'">'
+  +'<div class="hero-scrim"></div><div style="position:relative;width:100%">'+inner+'</div></div>';
+}
+function band(k,h,inner,pos){
+  return '<div style="position:relative;min-height:'+h+';display:flex;align-items:center;overflow:hidden;background:#0A1420">'
+  +'<img class="photo" src="'+px(k,1500)+'" alt="" style="position:absolute;inset:0;object-position:'+(pos||"center")+'">'
+  +'<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,32,.55),rgba(10,20,32,.86))"></div>'
+  +'<div style="position:relative;width:100%">'+(inner||"")+'</div></div>';
+}
+function acc(title,bodyHtml,open){
+  return '<div class="acc'+(open?" on":"")+'"><button type="button" onclick="II.acc(this)">'+esc(title)+'<span class="ic"></span></button>'
+  +'<div class="accb"><div class="accb-in">'+bodyHtml+'</div></div></div>';
+}
+function chips(str){
+  var m=str.match(/'([^']+)'/g)||[];
+  return m.map(function(q){return '<div class="chip"><p class="serif" style="font-size:23px;font-style:italic;line-height:1.5;color:var(--tinta)">&#8220;'+esc(q.replace(/^'|'$/g,""))+'&#8221;</p></div>';}).join("");
 }
 
-/* ================= ESTADO + RENDER ================= */
-var S={screen:"hero",ud:null,result:null,qIdx:0,answers:[]};
-var root=document.getElementById("ii-app");
-function render(html){root.innerHTML=html;window.scrollTo(0,0);}
-function foot(){return '<div class="foot">@ileanamentora · Ingeniería de Identidad</div>';}
+/* ================= 1. PORTADA ================= */
+function rHero(){
+  render(
+  '<div class="screen">'
+  +hero("hero","100vh",
+    '<div class="wrapW"><div style="max-width:660px;padding:70px 0">'
+    +'<p class="kicker" style="margin-bottom:26px">Ingeniería de Identidad</p>'
+    +'<h1 class="h1" style="color:#fff;margin-bottom:20px">Si hice &#8220;todo bien&#8221;,<br><em style="color:var(--celeste);font-weight:500">¿por qué me siento tan mal?</em></h1>'
+    +'<p class="quote" style="color:var(--oroClaro);margin-bottom:26px">Con este vacío que no logro explicar.</p>'
+    +'<div class="rule" style="margin-bottom:26px"></div>'
+    +'<p class="lead" style="color:rgba(250,244,232,.94);max-width:540px;margin-bottom:14px">Hay un personaje que vive tu vida por ti desde hace 20 años. No lo elegiste, pero igual decide por ti: <strong style="color:#fff;font-weight:500">tu trabajo, tu pareja, tu dinero, tu descanso.</strong></p>'
+    +'<p class="body" style="color:rgba(250,244,232,.72);max-width:520px;margin-bottom:34px">En 5 minutos te digo cuál es, cómo te controla y qué te está costando.</p>'
+    +'<button class="btn" onclick="II.start()">Quiero saber quién me dirige</button>'
+    +'<p style="margin-top:18px;font-size:19px;color:rgba(250,244,232,.78);letter-spacing:.6px">5 minutos · 13 preguntas · Resultado inmediato y gratis</p>'
+    +'</div></div>','center 28%')
+  /* --- el espejo --- */
+  +'<div class="light" style="padding:86px 0"><div class="wrap">'
+  +'<div class="rv" style="text-align:center;margin-bottom:44px"><p class="kicker" style="margin-bottom:18px">El espejo</p>'
+  +'<h2 class="h2">Te levantas, respondes, resuelves, cumples y sonríes en la foto.</h2></div>'
+  +'<div class="rv card" style="border-left:3px solid var(--oro);margin-bottom:34px">'
+  +'<p class="body" style="margin-bottom:14px">Y en la noche, cuando ya nadie te necesita y la casa por fin se queda en silencio, aparece la pregunta que llevas años esquivando:</p>'
+  +'<p class="quote" style="color:var(--tinta)">¿Esto era todo?</p></div>'
+  +'<p class="body rv" style="margin-bottom:22px">Todas nacemos con un traje a la medida que nunca elegimos, pero en el que aprendimos a encajar: a controlar para mantener la paz, a salvar para sentir que valemos, a callar para evitar el rechazo y a sobreexigirnos para que nos vean.</p>'
+  +'<p class="body rv">La raíz de todos esos trajes es la misma, y es el miedo. Hoy ese traje se te hizo chico, pesa y aprieta, y no es que estés mal, es que ya no eres la mujer que construyó esa vida pero tampoco sabes quién eres ahora.</p>'
+  +'</div></div>'
+  /* --- banda con frase --- */
+  +band("ventana","62vh",'<div class="wrap" style="padding:70px 0;text-align:center">'
+    +'<p class="quote rv" style="color:#fff;max-width:620px;margin:0 auto">No es que te hayas perdido. Pero tampoco sabes dónde carajos estás hoy.</p></div>',"center 35%")
+  /* --- cierre de portada: suspenso, sin revelar los personajes --- */
+  +'<div class="light" style="padding:86px 0"><div class="wrap" style="text-align:center">'
+  +'<p class="kicker rv" style="margin-bottom:20px">Lo que vas a descubrir</p>'
+  +'<h2 class="h2 rv" style="margin-bottom:24px">Tu personaje tiene nombre, historia y una forma exacta de decidir por ti.</h2>'
+  +'<p class="body rv" style="max-width:620px;margin:0 auto 22px">En 5 minutos vas a saber cuál de ellos te está viviendo, de dónde salió, cuáles son las frases que dice por tu boca sin que te des cuenta y qué te está costando hoy en tu pareja, en tu cuerpo y en tu dinero.</p>'
+  +'<p class="body rv" style="max-width:620px;margin:0 auto 30px">Y no puedes soltar un traje que no puedes ver, por eso los libros, las terapias y los retiros chocan contra el mismo muro: no te falta voluntad, te falta claridad.</p>'
+  +'<div class="rv" style="display:flex;justify-content:center"><button class="btn" onclick="II.start()">Ponerle nombre a mi personaje</button></div>'
+  +'<p class="rv" style="margin-top:18px;font-size:19px;color:var(--muted)">Llevas años posponiendo conversaciones contigo. Esta toma 5 minutos.</p></div></div>'
+  +foot()+'</div>');
+}
 
-/* ---------- 1. HERO — compacto: golpe + promesa + botón SIN scroll. La historia del traje vive debajo para el que duda. ---------- */
-function rHero(){render(
-'<div class="screen" style="background:linear-gradient(180deg,var(--celesteSuave) 0%,var(--crema) 52%);justify-content:flex-start">'
-+'<div style="text-align:center;padding:48px 24px 26px;max-width:600px;margin:0 auto">'
-+'<p class="kicker" style="margin-bottom:18px">Ingeniería de Identidad</p>'
-+'<h1 class="serif" style="font-size:clamp(34px,8vw,56px);font-weight:600;line-height:1.08;color:var(--tinta);margin-bottom:18px">Hiciste todo bien.<br><em style="color:var(--azul)">¿Por qué se siente tan mal?</em></h1>'
-+'<div style="width:46px;height:2px;background:var(--oro);margin:0 auto 18px"></div>'
-+'<p style="font-size:16px;line-height:1.75;color:var(--texto);max-width:440px;margin:0 auto 10px">Hay un personaje que vive tu vida desde hace 20 años. Tú no lo elegiste, pero hoy decide todo: <strong style="color:var(--tinta);font-weight:500">tu trabajo, tu pareja, tu dinero, tu descanso.</strong></p>'
-+'<p style="font-size:15px;line-height:1.75;color:var(--muted);max-width:440px;margin:0 auto 22px">En 5 minutos te digo cuál es, cómo te controla y qué te está costando.</p>'
-+'<button class="btn" style="max-width:360px;margin:0 auto" onclick="II.start()">Quiero saber quién me dirige</button>'
-+'<p style="margin-top:14px;font-size:13px;color:var(--muted);letter-spacing:.5px">5 minutos · 14 preguntas · Resultado inmediato</p>'
-+'<p style="margin-top:18px;font-size:13px;color:var(--azul)">↓ ¿No me crees? Sigue bajando</p>'
-+'</div>'
-+'<div style="padding:6px 22px 30px;text-align:center">'
-+'<div class="card" style="max-width:500px;margin:0 auto 18px;text-align:left;border-left:4px solid var(--celeste)">'
-+'<p style="font-size:15px;line-height:1.8;color:var(--texto);margin-bottom:12px">Te levantas. Respondes. Resuelves. Cumples. Sonríes en la foto. Y en la noche, cuando ya nadie te necesita, aparece la pregunta que llevas años esquivando:</p>'
-+'<p class="mirror">¿Esto era todo?</p>'
-+'</div>'
-+'<p style="font-size:15px;line-height:1.8;color:var(--texto);max-width:500px;margin:0 auto 16px">Todos nacemos con un traje a la medida. Uno que nunca elegiste, pero en el que aprendiste a encajar: <em>a controlar para mantener tu paz, a salvar para sentir que vales, a callar para evitar el rechazo, a sobreexigirte para que te vean.</em></p>'
-+'<p style="font-size:15px;line-height:1.8;color:var(--texto);max-width:500px;margin:0 auto 16px">La raíz de todos esos trajes es la misma: <strong style="color:var(--tinta);font-weight:500">el miedo.</strong> Y hoy ese traje se hizo chico. Pesa. Limita. No es que estés mal, es que ya no eres la persona que construyó esa vida, pero tampoco sabes quién eres ahora.</p>'
-+'<p class="serif" style="font-size:clamp(20px,4.5vw,26px);font-weight:500;font-style:italic;color:var(--tinta);line-height:1.45;max-width:500px;margin:0 auto 16px">No es que te hayas perdido.<br>Pero tampoco sabes dónde carajos estás hoy.</p>'
-+'<p style="font-size:15px;line-height:1.8;color:var(--muted);max-width:500px;margin:0 auto 20px">Y no puedes soltar un traje que no puedes ver. Por eso los libros, las terapias y los retiros chocan contra el mismo muro: no te falta voluntad, te falta <strong style="color:var(--tinta);font-weight:500">claridad.</strong> El test le pone nombre a tu traje: cuál de los 6 personajes te dirige y qué te está costando hoy.</p>'
-+'<button class="btn" style="max-width:360px;margin:0 auto" onclick="II.start()">Ponerle nombre a mi personaje</button>'
-+'<p style="margin-top:14px;font-size:13px;color:var(--muted)">Llevas años posponiendo conversaciones contigo. Esta toma 5 minutos.</p>'
-+'</div>'+foot());}
+/* ================= 2. TEST ================= */
+function rQuiz(){
+  var q=QS[S.qIdx],pct=Math.round(S.qIdx/QS.length*100);
+  var opts=q.opts.map(function(o,i){return '<button class="opt" style="animation-delay:'+(i*.07+.05)+'s" onclick="II.pick('+i+',this)">'+esc(o.text)+'</button>';}).join("");
+  render('<div class="screen light" style="display:flex;align-items:center;padding:56px 0"><div class="wrap" style="width:100%">'
+  +'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px">'
+  +'<span class="kicker" style="color:var(--muted)">Diagnóstico</span>'
+  +'<span style="font-family:\'Cormorant Garamond\',serif;font-size:24px;color:var(--oro)">'+(S.qIdx+1)+' <span style="color:var(--muted);font-size:18px">/ '+QS.length+'</span></span></div>'
+  +'<div class="pbar" style="margin-bottom:38px"><i style="width:'+pct+'%"></i></div>'
+  +'<p class="h3" style="margin-bottom:30px">'+esc(q.text)+'</p>'
+  +'<div style="display:flex;flex-direction:column;gap:13px">'+opts+'</div>'
+  +(S.qIdx>0?'<div style="margin-top:24px"><button class="linkback" onclick="II.back()">← Volver a la anterior</button></div>':'')
+  +'</div></div>');
+}
 
-/* ---------- 2. FORMULARIO ---------- */
+/* ================= 3. OPT-IN ================= */
 var PHONE_CODES=[["Costa Rica","+506"],["México","+52"],["Colombia","+57"],["Argentina","+54"],["España","+34"],["Chile","+56"],["Perú","+51"],["Venezuela","+58"],["Ecuador","+593"],["Guatemala","+502"],["Panamá","+507"],["Rep. Dominicana","+1"],["Honduras","+504"],["El Salvador","+503"],["Nicaragua","+505"],["Bolivia","+591"],["Paraguay","+595"],["Uruguay","+598"],["Cuba","+53"],["Puerto Rico","+1"],["Estados Unidos","+1"],["Brasil","+55"]];
 function rForm(){
   var codes=PHONE_CODES.map(function(p){return '<option value="'+p[1]+'">'+p[0]+' ('+p[1]+')</option>';}).join("");
-  render(
-'<div class="screen" style="justify-content:center;align-items:center;padding:30px 16px;background:linear-gradient(180deg,var(--celesteSuave) 0%,var(--crema) 40%)">'
-+'<div style="width:100%;max-width:460px" class="card">'
-+'<p class="kicker" style="text-align:center;margin-bottom:10px">Tu resultado está listo</p>'
-+'<h2 class="serif" style="font-size:30px;font-weight:600;color:var(--tinta);margin-bottom:8px;text-align:center">Ya casi. Falta un paso.</h2>'
-+'<p style="font-size:14.5px;color:var(--texto);margin-bottom:22px;line-height:1.6;text-align:center">Déjame dónde enviarte tu diagnóstico y lo revelamos ahora mismo. La fecha de nacimiento personaliza tu lectura.</p>'
-+'<div style="margin-bottom:18px"><label class="lbl">Tu nombre</label><input class="inp" type="text" id="f-name" placeholder="¿Cómo te llamas?"></div>'
-+'<div style="margin-bottom:18px"><label class="lbl">Correo electrónico</label><input class="inp" type="email" id="f-email" placeholder="tu@correo.com"></div>'
-+'<div style="margin-bottom:18px"><label class="lbl">Fecha de nacimiento</label><input class="inp" type="date" id="f-bd"></div>'
-+'<div style="margin-bottom:18px"><label class="lbl">Hora de nacimiento <span style="color:var(--muted);text-transform:none;letter-spacing:0">(hace tu lectura más precisa)</span></label>'
-+'<div style="display:flex;gap:10px;align-items:center"><input class="inp" type="time" id="f-bt" style="flex:1">'
-+'<label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--texto);cursor:pointer;flex-shrink:0;user-select:none"><input type="checkbox" id="f-nobt" onchange="II.toggleBt()" style="accent-color:var(--oro);width:16px;height:16px">No la conozco</label></div></div>'
-+'<div style="margin-bottom:18px"><label class="lbl">Teléfono</label><div style="display:flex;gap:10px">'
-+'<select class="inp" id="f-code" style="flex:0 0 150px"><option value="">Código</option>'+codes+'</select>'
-+'<input class="inp" type="tel" id="f-phone" placeholder="Número de teléfono" style="flex:1"></div></div>'
-+'<button class="btn" onclick="II.submitForm()">Ver mi resultado</button>'
-+'<p id="f-err" style="margin-top:12px;font-size:13px;color:#B0472F;text-align:center;display:none">Completa todos los campos para continuar.</p>'
-+'<p style="margin-top:14px;font-size:13px;color:var(--muted);text-align:center">Tu correo solo se usa para enviarte tu resultado</p>'
-+'</div></div>');}
-
-/* ---------- 3. TEST ---------- */
-function rQuiz(){
-  var q=QS[S.qIdx];
-  var opts=q.opts.map(function(o,i){return '<button class="opt" style="animation-delay:'+(i*0.06+0.04)+'s" onclick="II.pick('+i+',this)">'+esc(o.text)+'</button>';}).join("");
-  render(
-'<div class="screen" style="padding:34px 18px 36px;align-items:center;justify-content:center">'
-+'<div style="width:100%;max-width:560px">'
-+'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
-+'<span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)">Diagnóstico</span>'
-+'<span style="font-size:12px;font-weight:500;color:var(--azul)">'+(S.qIdx+1)+' / '+QS.length+'</span></div>'
-+'<div style="width:100%;height:5px;background:var(--crema2);border-radius:3px;margin-bottom:24px">'
-+'<div style="height:100%;background:var(--oro);border-radius:3px;width:'+((S.qIdx/QS.length)*100)+'%;transition:width .4s ease"></div></div>'
-+'<p class="serif" style="font-size:clamp(20px,4.4vw,27px);font-weight:600;line-height:1.4;color:var(--tinta);margin-bottom:22px">'+esc(q.text)+'</p>'
-+'<div style="display:flex;flex-direction:column;gap:11px">'+opts+'</div>'
-+'</div></div>');}
-
-/* ---------- 4. ANÁLISIS ---------- */
-function rLoading(){
-  render(
-'<div class="screen" style="justify-content:center;align-items:center;text-align:center;padding:40px 24px">'
-+'<div style="width:46px;height:46px;border:3px solid var(--oroSuave);border-top-color:var(--oro);border-radius:50%;margin:0 auto 22px;animation:iiSpin .9s linear infinite"></div>'
-+'<h2 id="load-msg" class="serif" style="font-size:27px;font-weight:600;color:var(--tinta);margin-bottom:12px">Analizando tus respuestas...</h2>'
-+'<p style="font-size:14px;color:var(--muted);max-width:300px;line-height:1.65">Cada respuesta tiene una capa que no es visible a primera vista.</p></div>');
-  var msgs=["Cruzando patrones de identidad...","Construyendo tu lectura..."];
-  setTimeout(function(){var el=document.getElementById("load-msg");if(el)el.textContent=msgs[0];},1100);
-  setTimeout(function(){var el=document.getElementById("load-msg");if(el)el.textContent=msgs[1];},2300);
+  var fopts=FILTER_Q.opts.map(function(o,i){return '<button type="button" class="optf" id="fq-'+i+'" onclick="II.pickFilter('+i+')">'+esc(o.text)+'</button>';}).join("");
+  render('<div class="screen" style="position:relative;background:#0A1420;display:flex;align-items:center;padding:48px 0;overflow:hidden">'
+  +'<img class="photo" src="'+px("espejo",1400)+'" alt="" style="position:absolute;inset:0;opacity:.5">'
+  +'<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,32,.86),rgba(10,20,32,.94))"></div>'
+  +'<div class="wrap" style="position:relative;width:100%">'
+  +'<div class="card" style="padding:38px 32px">'
+  +'<p class="kicker" style="text-align:center;margin-bottom:14px">Tu resultado está listo</p>'
+  +'<h2 class="h2" style="text-align:center;margin-bottom:12px">Ya casi. Falta un paso.</h2>'
+  +'<p class="body" style="text-align:center;margin-bottom:28px;font-size:20px">Déjame dónde enviarte tu diagnóstico y lo revelamos ahora mismo, completo y gratis.</p>'
+  +'<div style="margin-bottom:20px"><label class="lbl">Tu nombre</label><input class="inp" type="text" id="f-name" placeholder="¿Cómo te llamas?"></div>'
+  +'<div style="margin-bottom:20px"><label class="lbl">Correo electrónico</label><input class="inp" type="email" id="f-email" placeholder="tu@correo.com"></div>'
+  +'<div style="margin-bottom:24px"><label class="lbl">Teléfono</label><div style="display:flex;gap:10px">'
+  +'<select class="inp" id="f-code" style="flex:0 0 160px"><option value="">Código</option>'+codes+'</select>'
+  +'<input class="inp" type="tel" id="f-phone" placeholder="Número" style="flex:1"></div></div>'
+  +'<div style="margin-bottom:26px;padding-top:22px;border-top:1px solid var(--crema2)">'
+  +'<p style="font-size:21px;font-weight:500;line-height:1.6;margin-bottom:14px">'+esc(FILTER_Q.text)+'</p>'
+  +'<div style="display:flex;flex-direction:column;gap:10px">'+fopts+'</div></div>'
+  +'<button class="btn" style="max-width:none" onclick="II.submitForm()">Ver mi resultado</button>'
+  +'<p id="f-err" style="margin-top:14px;font-size:19px;color:#B0472F;text-align:center;display:none">Completa todos los campos para continuar.</p>'
+  +'<p style="margin-top:16px;font-size:18px;color:var(--muted);text-align:center">Tu correo solo se usa para enviarte tu resultado</p>'
+  +'</div></div></div>');
 }
 
-/* ---------- 5. TEASER — carrito $7 ---------- */
-function rTeaser(){
-  var res=S.result,p=res.primary,sec=res.secondary;
-  var first=esc((S.ud.name||"").split(" ")[0]);
-  var hookCut=esc(cut(p.painHook,150));
-  var locked=["De dónde viene tu personaje — la herida exacta que lo creó (lo que acabas de empezar a leer)","Lo que te está costando hoy: en tus relaciones, tu cuerpo y tu dinero","Los 3 momentos exactos donde decide por ti sin pedirte permiso","Cómo se manifiesta cada día y las frases que dice por tu boca","Lo que viene si no haces nada","El primer paso de liberación","Bono: tu lectura energética — para qué viniste y qué lo está bloqueando"];
-  var lockedHtml=locked.map(function(t){return '<div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px"><div class="lock">&#9679;</div><span style="font-size:14.5px;line-height:1.5;color:var(--texto)">'+t+'</span></div>';}).join("");
-  render(
-'<div class="screen">'
-+'<div style="background:linear-gradient(180deg,var(--celesteSuave) 0%,var(--crema) 72%);padding:44px 28px 30px;text-align:center">'
-+'<p class="kicker" style="margin-bottom:14px">Tu diagnóstico</p>'
-+'<p class="serif" style="font-size:22px;font-weight:500;color:var(--azul);margin-bottom:2px">'+first+',</p>'
-+'<h1 class="serif" style="font-size:clamp(38px,11vw,56px);font-weight:600;color:var(--tinta);line-height:1.04;margin-bottom:16px">'+esc(p.name)+'</h1>'
-+(sec?'<p style="font-size:14px;color:var(--muted);margin-bottom:14px">con rasgos de <strong style="color:var(--azul);font-weight:500">'+esc(sec.name)+'</strong></p>':"")
-+'<span style="display:inline-block;padding:7px 18px;border:1px solid var(--oro);color:var(--oroOsc);background:rgba(194,155,64,.06);border-radius:30px;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase">Personaje dominante</span>'
-+'<p class="serif" style="font-size:clamp(21px,5vw,26px);font-style:italic;color:var(--tinta);line-height:1.42;max-width:360px;margin:26px auto 0">&#8220;'+esc(p.shadow)+'&#8221;</p>'
-+'</div>'
-+'<div style="padding:30px 28px 0;max-width:560px;margin:0 auto;width:100%">'
-+'<p class="sl">De dónde viene</p>'
-+'<p class="st">'+hookCut+'</p>'
-+'<div style="position:relative;max-height:78px;overflow:hidden;margin-top:6px"><p class="st" style="color:var(--muted)">Y ahí está la raíz de todo: la decisión que tomaste sin darte cuenta y que sigue gobernando cómo amas, cómo trabajas y cómo te tratas a ti…</p><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent,var(--crema))"></div></div>'
-+'<div class="card" style="margin-top:24px">'
-+'<h3 class="serif" style="font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--azul);font-weight:600;margin-bottom:18px">Tu diagnóstico completo incluye</h3>'+lockedHtml
-+'</div>'
-+'</div>'
-+'<div style="padding:30px 28px 42px;max-width:560px;margin:0 auto;width:100%;text-align:center">'
-+'<p class="serif" style="font-size:22px;color:var(--tinta);line-height:1.4;margin-bottom:6px">¿Vas a quedarte con las ganas de saber quién está tomando las decisiones más importantes de tu vida?</p>'
-+'<p class="serif" style="font-size:24px;font-style:italic;color:var(--oro);margin-bottom:20px">Porque, en definitiva, no eres tú.</p>'
-+'<button class="btn" onclick="II.checkout()">Quiero saberlo todo&nbsp;&nbsp;·&nbsp;&nbsp;$7</button>'
-+'<p style="font-size:13px;color:var(--muted);margin-top:14px;line-height:1.5">El resultado será enviado de inmediato a tu correo (si no lo ves, revisa tu bandeja de spam)</p>'
-+'</div>'+foot());}
+/* ================= 4. ANÁLISIS ================= */
+function rLoading(){
+  render('<div class="screen dark" style="display:flex;align-items:center;justify-content:center;text-align:center;padding:40px 24px">'
+  +'<div style="max-width:420px">'
+  +'<div style="width:54px;height:54px;border:2px solid rgba(232,220,182,.25);border-top-color:var(--oro);border-radius:50%;margin:0 auto 28px;animation:spin .9s linear infinite"></div>'
+  +'<h2 id="lmsg" class="h3" style="color:#fff;margin-bottom:14px">Analizando tus respuestas…</h2>'
+  +'<p class="body" style="color:rgba(250,244,232,.7)">Cada respuesta tiene una capa que no es visible a primera vista.</p></div></div>');
+  var m=["Cruzando patrones de identidad…","Construyendo tu lectura…"];
+  setTimeout(function(){var e=document.getElementById("lmsg");if(e)e.textContent=m[0];},1150);
+  setTimeout(function(){var e=document.getElementById("lmsg");if(e)e.textContent=m[1];},2350);
+}
 
-/* ---------- 6/7. CARRITOS $27 — mini landings ---------- */
-function rOferta(tipo){
-  var d;
-  if(tipo==="manual")d={
-    paso:"Oferta 1 de 3",titulo:"Tu personaje no actúa solo.",sub:"Baila con los de tu pareja, tus hijos, tu jefe y tu mamá.",
-    bullets:["Los 6 personajes al detalle: cómo piensan, cómo se activan y qué los delata","Cómo identificar el personaje de cada persona importante en tu vida","Las dinámicas exactas entre personajes: por qué chocas con quien chocas","Cómo dejar de engancharte cuando el personaje del otro busca activar el tuyo"],
-    porque:"En cuanto leas tu diagnóstico vas a empezar a ver personajes en todas partes — en tu casa, en tu trabajo, en tus conversaciones. El manual es el mapa completo para que esa claridad no se quede a medias: si solo entiendes tu lado del juego, el juego te sigue ganando.",
-    nombre:"Manual de Trabajo",precio:27,link:CONFIG.whop_manual,next:"oferta_cuaderno",
-    urg:"Esta oferta solo existe en esta pantalla — después no vuelve a aparecer a este precio."};
-  else d={
-    paso:"Oferta 2 de 3",titulo:"Saber no es lo mismo que soltar.",sub:"El diagnóstico te dice qué pasa. El cuaderno hace que algo pase.",
-    bullets:["Ejercicios guiados paso a paso, diseñados para tu proceso de desinstalación","El trabajo introspectivo que convierte la claridad en cambios reales","A tu ritmo, en papel, sin teoría — solo práctica que mueve","La diferencia entre leer tu diagnóstico y vivir diferente la próxima semana"],
-    porque:"Leer tu diagnóstico te va a dar un golpe de claridad. Pero te digo algo con cariño y sin filtro: la claridad que no se trabaja se evapora en días — y el personaje vuelve a tomar el control, más cómodo que nunca, porque ahora cree que ya lo conoces. El cuaderno es lo que evita que este momento se convierta en un susto pasajero más.",
-    nombre:"Cuaderno de Ejercicios",precio:27,link:CONFIG.whop_cuaderno,next:"oferta_final",
-    urg:"Solo disponible aquí, antes de abrir tu diagnóstico."};
-  var bl=d.bullets.map(function(t){return '<div class="incl-i"><span style="color:#E74C3C;flex-shrink:0;font-weight:700">✓</span><span>'+t+'</span></div>';}).join("");
-  render(
-'<div class="screen" style="background:#0a0a0a;justify-content:center;align-items:center;padding:30px 16px">'
-+'<div style="width:100%;max-width:560px">'
-+'<div style="text-align:center;margin-bottom:18px">'
-+'<p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#27AE60;margin-bottom:10px">✓ Pago confirmado · Tu diagnóstico ya va camino a tu correo</p>'
-+'<p style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,.68)">Antes de abrirlo · '+d.paso+'</p></div>'
-+'<div class="cartbox">'
-+'<h1 style="font-family:\'Lora\',serif;font-size:clamp(24px,5vw,32px);font-weight:700;color:#F5F0E8;line-height:1.25;margin-bottom:10px;text-align:center">'+d.titulo+'</h1>'
-+'<p style="font-family:\'Lora\',serif;font-size:17px;font-style:italic;color:rgba(245,240,232,.88);text-align:center;margin-bottom:22px;line-height:1.5">'+d.sub+'</p>'
-+'<div class="incl"><p class="incl-t">Qué recibes:</p>'+bl+'</div>'
-+'<p style="font-size:14px;line-height:1.7;color:rgba(245,240,232,.9);margin-bottom:24;text-align:center;margin-bottom:16px">'+d.porque+'</p>'
-+'<div style="text-align:center;margin-bottom:22px">'
-+'<p style="font-family:\'Lora\',serif;font-size:42px;font-weight:700;color:#F5F0E8;line-height:1">$'+d.precio+'<span style="font-size:17px;color:rgba(245,240,232,.78);font-weight:400;margin-left:6px">USD</span></p>'
-+'<p style="font-size:13px;color:#E74C3C;margin-top:6px;font-weight:600;letter-spacing:1px">'+d.urg+'</p></div>'
-+'<button class="btn" onclick="II.buy(\''+tipo+'\','+d.precio+')">Sí, agregar el '+d.nombre+' →</button>'
-+'<p style="text-align:center;font-size:13px;color:rgba(245,240,232,.68);margin-top:14px">Un solo pago · Acceso inmediato a tu correo</p></div>'
-+'<button class="linkout" onclick="II.go(\''+d.next+'\')">No gracias, continuar →</button>'
-+'</div></div>');}
+/* ================= 5. RESULTADO ================= */
+var THERAPY="Has intentado cosas: terapia, libros, retiros, cursos… y algo mejora por un tiempo, pero después vuelve. No es falta de voluntad ni de inteligencia, tienes las dos de sobra, es que todas esas herramientas trabajan en la superficie, en los síntomas, los hábitos y la mentalidad. Y el personaje no vive ahí: vive en tu autoconcepto, en la idea de quién eres que construiste para sobrevivir y desde la que tomas cada decisión sin darte cuenta. Mientras esa estructura siga intacta, todo lo que hagas encima se acomoda al personaje y no a ti, y por eso siempre vuelves al mismo lugar. Eso es exactamente lo que trabaja la Ingeniería de Identidad: no los síntomas, sino la estructura que los produce.";
+function rResult(){
+  var res=S.result;if(!res||!res.primary){rHero();return;}
+  var p=res.primary,sec=res.secondary,c=res.constellation;
+  var first=S.ud&&S.ud.name?esc(S.ud.name.split(" ")[0]):"Bienvenida";
+  var dest=(S.ud&&S.ud.dest)||"whatsapp";
+  var waUrl="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ileana, acabo de terminar el diagnóstico. Mi personaje dominante es "+p.name+" y quiero saber cuál es el siguiente paso.");
+  /* compartir: abre WhatsApp con el mensaje y el enlace del test ya escritos */
+  var pageUrl=(location.protocol==="http:"||location.protocol==="https:")?(location.origin+location.pathname):CONFIG.public_url;
+  var shareUrl="https://wa.me/?text="+encodeURIComponent("Amiga, hice este test y me encantó. Aquí te lo dejo: "+pageUrl);
+  var ctaUrl=dest==="whatsapp"?waUrl:CONFIG.claridad_url;
+  var meters=res.meters.map(function(m){return '<div class="meter"><div class="mtop"><span class="mnm" style="color:#fff">'+esc(m.name)+'</span><span class="mpc">'+m.pct+'%</span></div><div class="mbar"><i data-w="'+m.pct+'"></i></div></div>';}).join("");
 
-/* ---------- 8. CARRITO FINAL — programa 10 módulos + "nadie paga $158" ---------- */
-function rFinal(){
-  var o=finalOffer();
-  var miss=o.missing.map(function(t){return '<div class="incl-i"><span style="color:#E74C3C;flex-shrink:0;font-weight:700">✓</span><span>'+t+'</span></div>';}).join("");
-  render(
-'<div class="screen" style="background:#0a0a0a;justify-content:center;align-items:center;padding:30px 16px">'
-+'<div style="width:100%;max-width:580px">'
-+'<div style="text-align:center;margin-bottom:16px">'
-+'<p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#E74C3C">Última oferta · Esta pantalla no vuelve a aparecer</p></div>'
-+'<div class="cartbox">'
-+'<h1 style="font-family:\'Lora\',serif;font-size:clamp(26px,5.5vw,36px);font-weight:700;color:#F5F0E8;line-height:1.2;margin-bottom:12px;text-align:center">Nadie paga $158.</h1>'
-+'<p style="font-size:15px;line-height:1.7;color:rgba(245,240,232,.9);margin-bottom:20px;text-align:center">El corazón del método es el <strong style="color:#F5F0E8">Programa Grabado: 10 módulos</strong> donde te explico, paso a paso, cómo se construyó cada personaje, cómo se sostiene sin que lo notes — y el proceso exacto para desinstalarlo.</p>'
-+'<p style="font-size:14px;line-height:1.7;color:rgba(245,240,232,.82);margin-bottom:16px;text-align:center">No es motivación. Es el mismo trabajo de raíz que hago en mis procesos privados, grabado para que lo recorras a tu ritmo, las veces que necesites.</p>'
-+'<div class="incl"><p class="incl-t">Lo que te falta — y se agrega ahora:</p>'+miss+'</div>'
-+'<p style="font-size:15px;line-height:1.7;color:rgba(245,240,232,.9);margin-bottom:16px;text-align:center">Todo el método por separado cuesta <span style="text-decoration:line-through">$158</span>. Quien decide completarlo aquí, en esta pantalla, cierra su total en <strong style="color:#F5F0E8">$97 — ni un dólar más.</strong></p>'
-+'<div style="text-align:center;margin-bottom:22px">'
-+'<p style="font-size:13px;color:rgba(245,240,232,.72);margin-bottom:4px">Para completar TODO solo agregas:</p>'
-+'<p style="font-family:\'Lora\',serif;font-size:46px;font-weight:700;color:#F5F0E8;line-height:1">$'+o.price+'<span style="font-size:18px;color:rgba(245,240,232,.78);font-weight:400;margin-left:6px">USD</span></p>'
-+'<p style="font-size:13px;color:#E74C3C;margin-top:6px;font-weight:600;letter-spacing:1px">Tu total queda en $97 en vez de $158</p></div>'
-+'<button class="btn" onclick="II.buyFinal()">Completar todo mi pack →</button>'
-+'<p style="text-align:center;font-size:13px;color:rgba(245,240,232,.68);margin-top:14px">Un solo pago · Acceso inmediato a tu correo</p></div>'
-+'<button class="linkout" onclick="II.go(\'thankyou\')">No gracias, llévame a mi diagnóstico →</button>'
-+'</div></div>');}
-
-/* ---------- 9/10. DIAGNÓSTICO COMPLETO + PUENTE AL VSL ---------- */
-function block(label,text,italic){return '<div style="margin-bottom:20px"><p class="sl">'+label+'</p><p class="st"'+(italic?' style="font-style:italic"':'')+'>'+esc(text)+'</p></div>';}
-function rThankyou(){
-  var res=S.result;
-  if(!hasPaid()){
-    if(res&&res.primary){rTeaser();return;}
-    render('<div class="screen" style="justify-content:center;align-items:center;text-align:center;padding:36px 20px"><div style="max-width:480px"><div style="font-size:30px;color:var(--oro);margin-bottom:14px">&#128274;</div><h1 class="serif" style="font-size:clamp(26px,5vw,34px);color:var(--tinta);line-height:1.2;margin-bottom:12px">Tu diagnóstico está listo, pero bloqueado</h1><p style="font-size:15px;color:var(--texto);line-height:1.7;margin-bottom:22px">Desbloquéalo completo por $7 y te lo enviamos también a tu correo.</p><button class="btn" style="max-width:340px;margin:0 auto" onclick="II.checkout()">Desbloquear mi diagnóstico&nbsp;·&nbsp;$7</button></div></div>'+foot());
-    return;
-  }
-  var first=S.ud&&S.ud.name?esc(S.ud.name.split(" ")[0]):"Bienvenido";
-  if(!res||!res.primary){render(
-    '<div class="screen" style="justify-content:center;align-items:center;text-align:center;padding:36px 20px">'
-    +'<div style="max-width:520px"><p style="font-size:16px;line-height:1.75;color:var(--texto);margin-bottom:10px">Tu diagnóstico completo fue enviado al correo que usaste en la compra.</p>'
-    +'<p style="font-size:14px;color:var(--muted)">Revisa tu bandeja de entrada y la carpeta de spam.</p></div></div>'+foot());return;}
-  var p=res.primary,sec=res.secondary,r=res.reading,c=res.constellation;
   var html='<div class="screen">'
-+'<div style="background:linear-gradient(180deg,var(--celesteSuave) 0%,var(--crema) 78%);padding:34px 24px 26px;text-align:center">'
-+'<p style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#3B8C6E;margin-bottom:12px">Compra confirmada</p>'
-+'<h1 class="serif" style="font-size:clamp(30px,7vw,44px);font-weight:600;color:var(--tinta);line-height:1.1;margin-bottom:10px">Gracias, '+first+'</h1>'
-+'<p style="font-size:15px;color:var(--texto);max-width:440px;margin:0 auto;line-height:1.6">Este es tu diagnóstico completo. También va camino a tu correo, para que lo releas las veces que haga falta.</p></div>'
-+'<div style="padding:28px 24px 36px;max-width:620px;margin:0 auto;width:100%">'
-+'<div style="text-align:center;margin-bottom:22px"><h2 class="serif" style="font-size:clamp(30px,6vw,44px);font-weight:600;color:var(--tinta);line-height:1.1">'+esc(p.name)+'</h2>'
-+(sec?'<p style="font-size:14px;color:var(--muted);margin-top:8px">con rasgos de <strong style="color:var(--azul);font-weight:500">'+esc(sec.name)+'</strong></p>':"")+'</div>'
-+block("De dónde viene",p.painHook)
-+block("Cómo se ve por dentro",p.core)
-+block("La sombra detrás del personaje",p.shadow)
-+block("Lo que te está costando",p.costBlood)
-+'<div class="card" style="border-left:4px solid var(--oro);margin-bottom:20px"><p class="sl">Los 3 momentos donde te controla</p><p class="st" style="font-style:italic">'+esc(p.teaser3)+'</p></div>'
-+block("Cómo se manifiesta en tu día a día",p.manifestations)
-+block("Las frases que dice",p.phrases,true)
-+block("Lo que viene si no haces nada",p.futureBlock)
-+'<div class="card" style="border-left:4px solid var(--celeste);margin-bottom:20px"><p class="sl" style="color:var(--azul)">El primer paso de liberación</p><p class="st">'+esc(p.liberation)+'</p></div>';
-  if(sec)html+='<div style="margin-top:26px;padding-top:20px;border-top:1px solid var(--oroSuave)">'
-+'<p style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;text-align:center">Tu personaje secundario</p>'
-+'<div style="text-align:center;margin-bottom:16px"><h3 class="serif" style="font-size:26px;font-weight:600;color:var(--tinta)">'+esc(sec.name)+'</h3></div>'
-+block("Su núcleo",sec.core)+block("De dónde se activa",sec.painHook)+'</div>';
-  if(r&&r.sign)html+='<div style="margin-top:26px;padding-top:20px;border-top:1px solid var(--oroSuave)">'
-+'<p style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--oro);margin-bottom:10px;text-align:center">Bono · Tu lectura energética</p>'
-+'<h3 class="serif" style="font-size:26px;font-weight:600;color:var(--tinta);text-align:center;margin-bottom:18px">'+esc(r.sign)+' · '+esc(r.element)+'</h3>'
-+block("Para qué viniste",r.destiny)+block("Lo que te bloquea",r.blocked)
-+block("Tu energía base ("+r.element+")",r.elementReading)
-+block("Camino de vida "+r.lifePath+" — "+r.lifePathMeaning,r.lifePathLesson)
-+(r.timeLayer?block("La hora en que naciste",r.timeLayer):"")+'</div>';
-  if(c)html+='<div style="margin-top:26px;padding-top:20px;border-top:1px solid var(--oroSuave)">'
-+'<p style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;text-align:center">Tu constelación familiar</p>'
-+'<h3 class="serif" style="font-size:26px;font-weight:600;color:var(--tinta);text-align:center;margin-bottom:18px">'+esc(c.name)+'</h3>'
-+block("El rol que tomaste",c.desc)+block("Cómo se sigue activando",c.press)+'</div>';
-  html+='<div class="card" style="margin-top:30px;text-align:center;border:1px solid var(--oro)">'
-+'<h3 class="serif" style="font-size:clamp(24px,5vw,30px);font-weight:600;color:var(--tinta);line-height:1.3;margin-bottom:14px">Ahora ya sabes quién está viviendo tu vida.</h3>'
-+'<p style="font-size:15px;color:var(--texto);line-height:1.7;margin:0 auto 8px;max-width:440px">La pregunta ya no es cuál es tu personaje. Es cuánto tiempo más vas a dejarlo en control.</p>'
-+'<p style="font-size:15px;color:var(--texto);line-height:1.7;margin:0 auto 18px;max-width:440px">Grabé un video donde te muestro exactamente cómo se desinstala, y cómo saber si estás en el punto para hacerlo de verdad.</p>'
-+'<a class="btn" style="max-width:340px;margin:0 auto" href="'+CONFIG.vsl_url+'">Ver el video ahora</a>'
-+'<p style="margin-top:14px;font-size:13px;color:var(--muted)">12 minutos · Sin costo</p></div>';
-  html+='</div>'+foot()+'</div>';
-  render(html);}
+  /* encabezado cinematográfico */
+  +hero(res.primaryKey,"92vh",
+    '<div class="wrapW"><div style="max-width:700px;padding:64px 0">'
+    +'<p class="kicker" style="margin-bottom:20px">Tu diagnóstico · '+first+'</p>'
+    +'<p class="body" style="color:rgba(250,244,232,.8);margin-bottom:10px">El personaje que está viviendo tu vida se llama</p>'
+    +'<h1 class="h1" style="color:#fff;margin-bottom:18px">'+esc(p.name)+'</h1>'
+    +(sec?'<p class="body" style="color:rgba(250,244,232,.75);margin-bottom:18px">con rasgos de <strong style="color:var(--celeste);font-weight:500">'+esc(sec.name)+'</strong></p>':"")
+    +'<div class="rule" style="margin-bottom:22px"></div>'
+    +'<p class="quote" style="color:var(--oroClaro);max-width:560px">&#8220;'+esc(p.shadow)+'&#8221;</p>'
+    +'</div></div>',"center 30%")
+  /* medidores */
+  +'<div class="dark" style="padding:74px 0"><div class="wrap">'
+  +'<p class="kicker rv" style="margin-bottom:10px">Tu perfil</p>'
+  +'<h2 class="h2 rv" style="color:#fff;margin-bottom:14px">Así se reparte el peso adentro de ti</h2>'
+  +'<p class="body rv" style="margin-bottom:34px">Ninguna de nosotras carga un solo traje, y estos son los que más fuerza tienen en tus respuestas.</p>'
+  +'<div id="meters" class="rv">'+meters+'</div></div></div>'
+  /* de dónde viene */
+  +'<div class="light" style="padding:80px 0"><div class="wrap">'
+  +'<p class="kicker rv" style="margin-bottom:14px">De dónde viene</p>'
+  +'<p class="body rv" style="font-size:21px">'+esc(p.painHook)+'</p>'
+  +'</div></div>'
+  /* banda foto + costo */
+  +band(res.primaryKey,"58vh",'<div class="wrap" style="padding:64px 0">'
+    +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:14px">Lo que te está costando hoy</p>'
+    +'<p class="quote rv" style="color:#fff">'+esc(p.costBlood)+'</p></div>',"center 32%")
+  /* acordeones */
+  +'<div class="light" style="padding:74px 0"><div class="wrap">'
+  +'<p class="kicker rv" style="margin-bottom:26px">Tu diagnóstico, por dentro</p>'
+  +'<div class="rv">'
+  +acc("Cómo se ve por dentro",'<p class="body">'+esc(p.core)+'</p>',true)
+  +acc("Los tres momentos donde decide por ti",'<p class="body" style="font-style:italic">'+esc(p.teaser3)+'</p>',false)
+  +acc("Cómo se manifiesta en tu día a día",'<p class="body">'+esc(p.manifestations)+'</p>',false)
+  +acc("Las frases que dice por tu boca",chips(p.phrases),false)
+  +acc("Por qué la terapia, los libros y los retiros no lo tocaron",'<p class="body">'+THERAPY+'</p>',false)
+  +(sec?acc("Tu personaje secundario: "+sec.name,'<p class="body" style="margin-bottom:16px">'+esc(sec.core)+'</p><p class="body">'+esc(sec.painHook)+'</p>',false):"")
+  +acc("El origen: el rol que aprendiste antes de poder elegir",'<p class="body" style="margin-bottom:8px"><strong style="color:var(--tinta)">'+esc(c.name)+'.</strong></p><p class="body" style="margin-bottom:16px">'+esc(c.desc)+'</p><p class="body">'+esc(c.press)+'</p>',false)
+  +'</div></div></div>'
+  /* lo que viene si no haces nada */
+  +band("origen","56vh",'<div class="wrap" style="padding:60px 0">'
+    +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:14px">Lo que viene si no haces nada</p>'
+    +'<p class="lead rv" style="color:#fff;font-size:22px">'+esc(p.futureBlock)+'</p></div>',"center 40%")
+  /* LA REVELACIÓN */
+  +'<div class="light" style="padding:88px 0"><div class="wrap">'
+  +'<div class="rv" style="text-align:center;margin-bottom:30px">'
+  +'<p class="kicker" style="margin-bottom:16px">La revelación</p>'
+  +'<h2 class="h2">Tu primer paso de liberación</h2></div>'
+  +'<div class="rv card" style="border:1px solid var(--oro);background:linear-gradient(180deg,#FFFDF8,rgba(194,155,64,.07))">'
+  +'<p class="body" style="font-size:21px;color:var(--tinta)">'+esc(p.liberation)+'</p></div>'
+  +'</div></div>'
+  /* CIERRE ÚNICO */
+  +hero("puerta","auto",
+    '<div class="wrap" style="padding:86px 0">'
+    +'<p class="quote rv" style="color:#fff;margin-bottom:28px">Ya sabes quién está viviendo tu vida.<br>Y ella ya sabe que la descubriste.</p>'
+    +'<p class="body rv" style="color:rgba(250,244,232,.9);margin-bottom:18px">En unos minutos vas a cerrar esta página y la vida va a seguir con el trabajo, los pendientes y la cena, y tu personaje va a hacer lo único que sabe hacer para sobrevivir: convencerte de que esto fue interesante y que ya luego lo ves. Así enterró cada intento tuyo de cambiar, y así piensa enterrar este, porque la claridad que sientes ahora mismo tiene fecha de vencimiento y en unos días se evapora.</p>'
+    +'<p class="body rv" style="color:rgba(250,244,232,.9);margin-bottom:26px">La diferencia entre la mujer que sigue igual dentro de un año y la que por fin vive su propia vida no es el diagnóstico: es lo que hace en los próximos cinco minutos.</p>'
+    +(dest==="whatsapp"
+      ?'<p class="body rv" style="color:rgba(250,244,232,.9);margin-bottom:18px">Tu salvavidas está a un mensaje de distancia, porque el siguiente paso es una conversación directa conmigo por WhatsApp, yo, no un bot ni un formulario. Me cuentas tu resultado, te digo exactamente por dónde se sale de tu personaje y, si tiene sentido avanzar, te muestro cómo lo hacemos juntas.</p>'
+      +'<p class="body rv" style="color:rgba(250,244,232,.9);margin-bottom:32px">Te lo digo de frente y sin letra pequeña: si decides avanzar, el proceso requiere inversión de tiempo y de dinero, <strong style="color:#fff;font-weight:500">no es gratis.</strong> Lo gratis ya lo tienes, es este diagnóstico. Lo que sigue es la salida.</p>'
+      +'<div class="rv"><a class="btn" href="'+waUrl+'" target="_blank" rel="noreferrer" onclick="II.wa()">Quiero salir de mi personaje ahora</a></div>'
+      :'<p class="body rv" style="color:rgba(250,244,232,.9);margin-bottom:18px">Tu salvavidas existe y está diseñado exactamente para el momento en el que estás: una sesión donde te doy la claridad completa de tu caso, no teoría, tu caso, y el mapa concreto para empezar a salir de este personaje.</p>'
+      +'<p class="body rv" style="color:rgba(250,244,232,.9);margin-bottom:32px">Este personaje no se va solo y cada mes que pasa se instala más profundo. No tienes que resolverlo todo hoy, pero sí tienes que dar el primer paso hoy, antes de que ella vuelva a cerrar la puerta.</p>'
+      +'<div class="rv"><a class="btn" href="'+CONFIG.claridad_url+'" target="_blank" rel="noreferrer">Quiero mi sesión de claridad</a></div>')
+    +'<div class="rv" style="margin-top:34px;padding-top:26px;border-top:1px solid rgba(250,244,232,.16)">'
+    +'<a class="btn btn-line" style="max-width:340px" href="'+shareUrl+'" target="_blank" rel="noreferrer" onclick="II.shared()">Mandarle esto a una amiga por WhatsApp</a>'
+    +'<p style="margin-top:12px;font-size:18px;color:rgba(250,244,232,.6)">Se abre WhatsApp con el mensaje y el enlace ya listos.</p></div>'
+    +'</div>',"center 40%")
+  +foot()+'</div>';
+  render(html,true);
 
-/* ---------- 11. ACCESOS Y SALIDA ---------- */
-function rAcceso(nm,ds){render(
-'<div class="screen" style="background:#0a0a0a;justify-content:center;align-items:center;padding:36px 20px;text-align:center">'
-+'<div style="max-width:520px;width:100%">'
-+'<p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#27AE60;margin-bottom:18px">✓ Compra confirmada</p>'
-+'<h1 style="font-family:\'Lora\',serif;font-size:clamp(28px,6vw,40px);font-weight:700;color:#F5F0E8;line-height:1.15;margin-bottom:18px">Bienvenido a '+nm+'</h1>'
-+'<div style="width:40px;height:2px;background:#27AE60;margin:0 auto 16px"></div>'
-+'<p style="font-size:15px;color:rgba(245,240,232,.9);line-height:1.7;margin-bottom:16px">'+ds+'</p>'
-+'<p style="font-size:14px;color:rgba(245,240,232,.78);line-height:1.65;margin:0 auto 32px;max-width:440px">Tu acceso ya está activo. Te enviamos el enlace directo al correo que usaste en la compra — revisa tu bandeja de entrada y la carpeta de promociones.</p>'
-+'<a class="btn" style="max-width:340px;margin:0 auto" href="'+CONFIG.whop_account+'">Acceder a mi cuenta →</a>'
-+'</div></div>'+foot());}
-function rDisfruta(){
-  var first=S.ud&&S.ud.name?esc(S.ud.name.split(" ")[0]):"";
-  render(
-'<div class="screen" style="background:#0a0a0a;justify-content:center;align-items:center;padding:36px 20px;text-align:center">'
-+'<div style="max-width:520px;width:100%">'
-+'<p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,.78);margin-bottom:18px">Hasta aquí, por ahora</p>'
-+'<h1 style="font-family:\'Lora\',serif;font-size:clamp(28px,6vw,40px);font-weight:700;color:#F5F0E8;line-height:1.2;margin-bottom:18px">Gracias por estar'+(first?", "+first:"")+'</h1>'
-+'<div style="width:40px;height:2px;background:#C0392B;margin:0 auto 16px"></div>'
-+'<p style="font-size:15px;color:rgba(245,240,232,.9);line-height:1.75;margin-bottom:18px">Lo que descubriste hoy ya es tuyo. Tu diagnóstico te pertenece y también lo tienes en tu correo.</p>'
-+'<p style="font-size:14px;color:rgba(245,240,232,.78);line-height:1.7;margin:0 auto 32px;max-width:440px">Y cuando quieras entender cómo se desinstala el personaje — no solo cómo se llama — este video es el siguiente paso.</p>'
-+'<a class="btn" style="max-width:340px;margin:0 auto" href="'+CONFIG.vsl_url+'">Ver el video →</a>'
-+'</div></div>'+foot());}
+  /* medidores animados + barra fija */
+  setTimeout(function(){[].forEach.call(document.querySelectorAll("#meters .mbar i"),function(el,i){setTimeout(function(){el.style.width=el.getAttribute("data-w")+"%";},i*160);});},700);
+  document.getElementById("stick-t").textContent=dest==="whatsapp"?"Tu personaje ya sabe que lo descubriste. No le des tiempo de acomodarse.":"El primer paso existe y está diseñado para tu momento.";
+  var a=document.getElementById("stick-a");
+  a.textContent=dest==="whatsapp"?"Hablar con Ileana":"Quiero claridad";
+  a.href=ctaUrl;a.target="_blank";a.rel="noreferrer";
+  a.onclick=function(){if(dest==="whatsapp")II.wa();};
+  onScrollStick();
+}
+function onScrollStick(){
+  var h=function(){
+    var y=window.scrollY||document.documentElement.scrollTop;
+    if(y>window.innerHeight*1.4)stick.classList.add("on");else stick.classList.remove("on");
+  };
+  window.removeEventListener("scroll",window.__sh||function(){});
+  window.__sh=h;window.addEventListener("scroll",h,{passive:true});h();
+}
 
-/* ================= NAVEGACIÓN / HANDLERS ================= */
+/* ================= HANDLERS ================= */
+var FSEL=null;
 window.II={
   start:function(){track("ViewContent");S.qIdx=0;S.answers=[];rQuiz();},
-  toggleBt:function(){var cb=document.getElementById("f-nobt"),t=document.getElementById("f-bt");t.disabled=cb.checked;if(cb.checked)t.value="";},
+  card:function(el){el.classList.toggle("open");var t=el.querySelector(".ptip");if(t)t.textContent=el.classList.contains("open")?"Toca para cerrar":"Toca para ver";},
+  acc:function(btn){btn.parentNode.classList.toggle("on");},
   pick:function(oi,btn){
     btn.className="opt sel";
     setTimeout(function(){
-      S.answers.push({qid:QS[S.qIdx].id,oi:oi});
-      if(S.qIdx<QS.length-1){S.qIdx++;rQuiz();}
-      else{rForm();}
-    },280);
+      S.answers[S.qIdx]={qid:QS[S.qIdx].id,oi:oi};
+      if(S.qIdx<QS.length-1){S.qIdx++;rQuiz();}else{FSEL=null;rForm();}
+    },260);
   },
+  back:function(){if(S.qIdx>0){S.qIdx--;S.answers.length=S.qIdx;rQuiz();}},
+  pickFilter:function(i){FSEL=i;FILTER_Q.opts.forEach(function(_,j){var el=document.getElementById("fq-"+j);if(el)el.className="optf"+(j===i?" sel":"");});},
   submitForm:function(){
     var g=function(id){var el=document.getElementById(id);return el?el.value.trim():"";};
-    var nobt=document.getElementById("f-nobt").checked;
-    var ud={name:g("f-name"),email:g("f-email"),birthdate:g("f-bd"),birthtime:nobt?"no_conozco":g("f-bt"),phoneCode:g("f-code"),phone:g("f-phone")};
-    if(!ud.name||!ud.email||ud.email.indexOf("@")<0||!ud.birthdate||!ud.phoneCode||!ud.phone){document.getElementById("f-err").style.display="block";return;}
-    S.ud=ud;track("Lead");
-    rLoading();
-    var rd=getFullReading(ud.birthdate,ud.birthtime||"no_conozco");
-    var res=scoreAll(S.answers,rd);res.reading=rd;
-    S.result=res;pushGHL(ud,res);
+    var ud={name:g("f-name"),email:g("f-email"),phoneCode:g("f-code"),phone:g("f-phone")};
+    if(!ud.name||!ud.email||ud.email.indexOf("@")<0||!ud.phoneCode||!ud.phone||FSEL===null){document.getElementById("f-err").style.display="block";return;}
+    var fo=FILTER_Q.opts[FSEL];ud.filterTag=fo.tag;ud.dest=fo.dest;
+    S.ud=ud;track("Lead");rLoading();
+    var res=scoreAll(S.answers);S.result=res;pushGHL(ud,res);
     try{localStorage.setItem(LS_KEY,JSON.stringify({ud:ud,result:res}));}catch(e){}
-    setTimeout(function(){rTeaser();},2600);
+    setTimeout(function(){rResult();},2700);
   },
-  checkout:function(){
-    try{localStorage.setItem(LS_KEY,JSON.stringify({ud:S.ud,result:S.result}));}catch(e){}
-    track("InitiateCheckout",{value:7,currency:"USD"});
-    window.location.href=CONFIG.whop_7;
-  },
-  go:function(sc){if(sc==="thankyou")rThankyou();}
+  wa:function(){track("Contact");},
+  shared:function(){track("Share");}
 };
 
-/* ================= ARRANQUE (lee la URL: redirects de Whop y links de email) ================= */
+/* ================= ARRANQUE ================= */
 (function init(){
   try{
-    var p=new URLSearchParams(window.location.search);
-    var sc=p.get("screen");
-    var bt=p.get("bought");if(bt)addBought(bt);
-    if(sc==="thankyou"){
+    var q=new URLSearchParams(window.location.search),sc=q.get("screen");
+    if(sc==="resultado"||sc==="thankyou"){
       var s=null;try{s=localStorage.getItem(LS_KEY);}catch(e){}
       if(s){var d=JSON.parse(s);S.ud=d.ud;S.result=d.result;}
-      else if(p.get("p")&&CHARS[p.get("p")]){
-        var pk=p.get("p"),sk=p.get("s"),ck=p.get("c")||"hero";
-        var res={primaryKey:pk,secondaryKey:sk||null,constKey:ck,primary:CHARS[pk],secondary:(sk&&CHARS[sk])?CHARS[sk]:null,constellation:CONST[ck]||CONST.hero};
-        if(p.get("t")&&p.get("t")===tok(pk,sk||"",ck))UNLOCKED=true;
-        var bd=p.get("bd"),btm=p.get("bt");
-        if(bd)res.reading=getFullReading(bd,btm||"no_conozco");
-        S.result=res;S.ud={name:p.get("n")||"Bienvenido",email:p.get("email")||""};
+      else if(q.get("p")&&CHARS[q.get("p")]){
+        var pk=q.get("p"),sk=q.get("s"),ck=q.get("c")||"hero";
+        S.result={primaryKey:pk,secondaryKey:sk||null,constKey:ck,primary:CHARS[pk],secondary:(sk&&CHARS[sk])?CHARS[sk]:null,constellation:CONST[ck]||CONST.hero,
+          meters:[{key:pk,name:CHARS[pk].name,pct:100}].concat(sk&&CHARS[sk]?[{key:sk,name:CHARS[sk].name,pct:68}]:[])};
+        S.ud={name:q.get("n")||"Bienvenida",email:"",dest:q.get("d")||"whatsapp"};
       }
-      rThankyou();return;
+      if(S.result&&S.result.primary){rResult();return;}
     }
   }catch(e){}
   rHero();
