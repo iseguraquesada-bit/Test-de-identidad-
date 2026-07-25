@@ -295,6 +295,13 @@ function pushGHL(ud,res){
       result_url:resultUrl,pain_score:res.avgPain,disposition:res.disp,
       willing_invest:ud.filterTag==="investor_high"||ud.filterTag==="investor_mid",
       urgency:res.urgency||"",profession:res.profession||"",
+      /* ---- compatibilidad con el workflow que ya existe en GHL (nombres de la versión anterior) ---- */
+      personaje_emoji:"",
+      constelacion:res.constellation?res.constellation.name:"",
+      constelacion_key:res.constKey,
+      result_url_teaser:resultUrl,
+      birthdate:"",birth_time:"",signo:"",elemento:"",camino_vida:"",camino_vida_don:"",
+      gender:ud.gender||"",
       source:"diagnostico-identidad-v6",ts:new Date().toISOString()
     })});
   }catch(e){}

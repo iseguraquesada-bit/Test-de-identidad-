@@ -106,7 +106,6 @@ img{display:block;max-width:100%;}
 .foot{text-align:center;padding:34px 20px;font-size:16px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
 .chip{background:var(--blanco);border-left:3px solid var(--oro);border-radius:3px;padding:20px 24px;margin-bottom:13px;}
 
-/* ===== GHL: el test toma la pantalla completa, sin importar el contenedor ===== */
 #ii-fullscreen{position:fixed;inset:0;z-index:99999;overflow-y:auto;overflow-x:hidden;background:var(--crema);-webkit-overflow-scrolling:touch;}
 #ii-fullscreen *{box-sizing:border-box;}
 </style>
@@ -118,15 +117,7 @@ img{display:block;max-width:100%;}
 </div>
 <script>
 
-/* ===== GHL: montaje a pantalla completa + precarga de la primera imagen ===== */
-(function(){
-  var host=document.getElementById("ii-host");
-  if(host&&host.parentNode!==document.body){document.body.appendChild(host);}
-  document.documentElement.style.overflow="hidden";
-  var l=document.createElement("link");l.rel="preload";l.as="image";
-  l.href="https://images.pexels.com/photos/3299317/pexels-photo-3299317.jpeg?auto=compress&cs=tinysrgb&w=1400";
-  document.head.appendChild(l);
-})();
+(function(){var host=document.getElementById("ii-host");if(host&&host.parentNode!==document.body){document.body.appendChild(host);}document.documentElement.style.overflow="hidden";var l=document.createElement("link");l.rel="preload";l.as="image";l.href="https://images.pexels.com/photos/3299317/pexels-photo-3299317.jpeg?auto=compress&cs=tinysrgb&w=1400";document.head.appendChild(l);})();
 
 (function(){
 "use strict";
@@ -300,6 +291,13 @@ function pushGHL(ud,res){
       result_url:resultUrl,pain_score:res.avgPain,disposition:res.disp,
       willing_invest:ud.filterTag==="investor_high"||ud.filterTag==="investor_mid",
       urgency:res.urgency||"",profession:res.profession||"",
+      /* ---- compatibilidad con el workflow que ya existe en GHL (nombres de la versión anterior) ---- */
+      personaje_emoji:"",
+      constelacion:res.constellation?res.constellation.name:"",
+      constelacion_key:res.constKey,
+      result_url_teaser:resultUrl,
+      birthdate:"",birth_time:"",signo:"",elemento:"",camino_vida:"",camino_vida_don:"",
+      gender:ud.gender||"",
       source:"diagnostico-identidad-v6",ts:new Date().toISOString()
     })});
   }catch(e){}
