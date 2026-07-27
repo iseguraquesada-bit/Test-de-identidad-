@@ -1,6 +1,3 @@
-<!-- ===== TEST DE IDENTIDAD · bloque para pegar en un elemento de Código Personalizado de GHL =====
-     Pegar TODO este contenido. No requiere nada más: ni imágenes, ni archivos, ni servidores externos.
-     ================================================================================== -->
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap');
@@ -14,6 +11,7 @@ body{font-family:'Jost',sans-serif;background:var(--crema);color:var(--tinta);fo
 img{display:block;max-width:100%;}
 .serif{font-family:'Cormorant Garamond',serif;}
 .wrap{max-width:680px;margin:0 auto;padding:0 26px;}
+.wrap,.wrapW{padding-left:26px!important;padding-right:26px!important;}
 .wrapW{max-width:1120px;margin:0 auto;padding:0 26px;}
 
 /* ---------- animaciones ---------- */
@@ -53,6 +51,9 @@ img{display:block;max-width:100%;}
 .blue{background:var(--celesteSuave);}
 .card{background:var(--blanco);border:1px solid var(--crema2);border-radius:5px;padding:32px 30px;box-shadow:0 3px 22px rgba(18,40,63,.05);}
 .hero-scrim{position:absolute;inset:0;background:linear-gradient(103deg,rgba(10,20,32,.9) 0%,rgba(10,20,32,.66) 48%,rgba(10,20,32,.3) 100%);}
+@media(max-width:640px){.wrap,.wrapW{padding-left:22px!important;padding-right:22px!important;}
+.h1{font-size:clamp(40px,10vw,56px)}
+.quote{font-size:clamp(27px,7vw,34px)}}
 @media(max-width:760px){.hero-scrim{background:linear-gradient(180deg,rgba(10,20,32,.62) 0%,rgba(10,20,32,.84) 42%,rgba(10,20,32,.94) 100%);}}
 .photo{width:100%;height:100%;object-fit:cover;}
 .figcap{font-size:17px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted);}
@@ -106,18 +107,12 @@ img{display:block;max-width:100%;}
 .foot{text-align:center;padding:34px 20px;font-size:16px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
 .chip{background:var(--blanco);border-left:3px solid var(--oro);border-radius:3px;padding:20px 24px;margin-bottom:13px;}
 
-#ii-fullscreen{position:fixed;inset:0;z-index:99999;overflow-y:auto;overflow-x:hidden;background:var(--crema);-webkit-overflow-scrolling:touch;}
-#ii-fullscreen *{box-sizing:border-box;}
+#ii-fullscreen{position:fixed;inset:0;z-index:99999;overflow-y:auto;overflow-x:hidden;background:var(--crema);}
 </style>
-<div id="ii-host">
-  <div id="ii-fullscreen">
-    <div id="app"></div>
-    <div id="stick" class="stick"><div class="sin"><p id="stick-t"></p><a id="stick-a" class="btn" href="#">Dar el paso</a></div></div>
-  </div>
-</div>
+<div id="ii-host"><div id="ii-fullscreen"><div id="app"></div><div id="stick" class="stick"><div class="sin"><p id="stick-t"></p><a id="stick-a" class="btn" href="#">Dar el paso</a></div></div></div></div>
 <script>
 
-(function(){var host=document.getElementById("ii-host");if(host&&host.parentNode!==document.body){document.body.appendChild(host);}document.documentElement.style.overflow="hidden";var l=document.createElement("link");l.rel="preload";l.as="image";l.href="https://images.pexels.com/photos/3299317/pexels-photo-3299317.jpeg?auto=compress&cs=tinysrgb&w=1400";document.head.appendChild(l);})();
+(function(){var h=document.getElementById("ii-host");if(h&&h.parentNode!==document.body)document.body.appendChild(h);document.documentElement.style.overflow="hidden";})();
 
 (function(){
 "use strict";
@@ -147,7 +142,6 @@ var PH={
   espiritualReprimida:"https://images.pexels.com/photos/9032696/pexels-photo-9032696.jpeg"
 };
 function px(k,w){return (PH[k]||PH.hero)+"?auto=compress&cs=tinysrgb&w="+(w||1200);}
-var _first=true;function lazyAttr(){if(_first){_first=false;return ' fetchpriority="high"';}return ' loading="lazy" decoding="async"';}
 
 /* ================= HELPERS ================= */
 function track(ev,d){try{if(window.fbq)window.fbq("track",ev,d||{});}catch(e){}}
@@ -298,7 +292,7 @@ function pushGHL(ud,res){
       result_url_teaser:resultUrl,
       birthdate:"",birth_time:"",signo:"",elemento:"",camino_vida:"",camino_vida_don:"",
       gender:ud.gender||"",
-      source:"diagnostico-identidad-v6",ts:new Date().toISOString()
+      source:"diagnostico-identidad-v3",source_version:"v6",ts:new Date().toISOString()
     })});
   }catch(e){}
 }
@@ -319,12 +313,12 @@ function render(html,keepStick){
 function foot(){return '<div class="foot">@ileanamentora · Ingeniería de Identidad</div>';}
 function hero(k,h,inner,pos){
   return '<div style="position:relative;min-height:'+h+';display:flex;align-items:center;overflow:hidden;background:#0A1420">'
-  +'<img class="photo"'+lazyAttr()+' src="'+px(k,1400)+'" alt="" style="position:absolute;inset:0;object-position:'+(pos||"center")+'">'
+  +'<img class="photo" src="'+px(k,1700)+'" alt="" style="position:absolute;inset:0;object-position:'+(pos||"center")+'">'
   +'<div class="hero-scrim"></div><div style="position:relative;width:100%">'+inner+'</div></div>';
 }
 function band(k,h,inner,pos){
   return '<div style="position:relative;min-height:'+h+';display:flex;align-items:center;overflow:hidden;background:#0A1420">'
-  +'<img class="photo" loading="lazy" decoding="async" src="'+px(k,1200)+'" alt="" style="position:absolute;inset:0;object-position:'+(pos||"center")+'">'
+  +'<img class="photo" src="'+px(k,1500)+'" alt="" style="position:absolute;inset:0;object-position:'+(pos||"center")+'">'
   +'<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,32,.55),rgba(10,20,32,.86))"></div>'
   +'<div style="position:relative;width:100%">'+(inner||"")+'</div></div>';
 }
@@ -363,7 +357,7 @@ function rHero(){
   +'<p class="body rv">La raíz de todos esos trajes es la misma, y es el miedo. Hoy ese traje se te hizo chico, pesa y aprieta, y no es que estés mal, es que ya no eres la mujer que construyó esa vida pero tampoco sabes quién eres ahora.</p>'
   +'</div></div>'
   /* --- banda con frase --- */
-  +band("ventana","62vh",'<div class="wrap" style="padding:70px 0;text-align:center">'
+  +band("ventana","62vh",'<div class="wrap" style="padding:70px 26px;text-align:center">'
     +'<p class="quote rv" style="color:#fff;max-width:620px;margin:0 auto">No es que te hayas perdido. Pero tampoco sabes dónde carajos estás hoy.</p></div>',"center 35%")
   /* --- cierre de portada: suspenso, sin revelar los personajes --- */
   +'<div class="light" style="padding:86px 0"><div class="wrap" style="text-align:center">'
@@ -397,7 +391,7 @@ function rForm(){
   var codes=PHONE_CODES.map(function(p){return '<option value="'+p[1]+'">'+p[0]+' ('+p[1]+')</option>';}).join("");
   var fopts=FILTER_Q.opts.map(function(o,i){return '<button type="button" class="optf" id="fq-'+i+'" onclick="II.pickFilter('+i+')">'+esc(o.text)+'</button>';}).join("");
   render('<div class="screen" style="position:relative;background:#0A1420;display:flex;align-items:center;padding:48px 0;overflow:hidden">'
-  +'<img class="photo" loading="lazy" decoding="async" src="'+px("espejo",1100)+'" alt="" style="position:absolute;inset:0;opacity:.5">'
+  +'<img class="photo" src="'+px("espejo",1400)+'" alt="" style="position:absolute;inset:0;opacity:.5">'
   +'<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,32,.86),rgba(10,20,32,.94))"></div>'
   +'<div class="wrap" style="position:relative;width:100%">'
   +'<div class="card" style="padding:38px 32px">'
@@ -467,7 +461,7 @@ function rResult(){
   +'<p class="body rv" style="font-size:21px">'+esc(p.painHook)+'</p>'
   +'</div></div>'
   /* banda foto + costo */
-  +band(res.primaryKey,"58vh",'<div class="wrap" style="padding:64px 0">'
+  +band(res.primaryKey,"58vh",'<div class="wrap" style="padding:64px 26px">'
     +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:14px">Lo que te está costando hoy</p>'
     +'<p class="quote rv" style="color:#fff">'+esc(p.costBlood)+'</p></div>',"center 32%")
   /* acordeones */
@@ -483,7 +477,7 @@ function rResult(){
   +acc("El origen: el rol que aprendiste antes de poder elegir",'<p class="body" style="margin-bottom:8px"><strong style="color:var(--tinta)">'+esc(c.name)+'.</strong></p><p class="body" style="margin-bottom:16px">'+esc(c.desc)+'</p><p class="body">'+esc(c.press)+'</p>',false)
   +'</div></div></div>'
   /* lo que viene si no haces nada */
-  +band("origen","56vh",'<div class="wrap" style="padding:60px 0">'
+  +band("origen","56vh",'<div class="wrap" style="padding:60px 26px">'
     +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:14px">Lo que viene si no haces nada</p>'
     +'<p class="lead rv" style="color:#fff;font-size:22px">'+esc(p.futureBlock)+'</p></div>',"center 40%")
   /* LA REVELACIÓN */
@@ -496,7 +490,7 @@ function rResult(){
   +'</div></div>'
   /* CIERRE ÚNICO */
   +hero("puerta","auto",
-    '<div class="wrap" style="padding:86px 0">'
+    '<div class="wrap" style="padding:86px 26px">'
     +'<p class="quote rv" style="color:#fff;margin-bottom:28px">Ya sabes quién está viviendo tu vida.<br>Y ella ya sabe que la descubriste.</p>'
     +'<p class="body rv" style="color:rgba(250,244,232,.9);margin-bottom:18px">En unos minutos vas a cerrar esta página y la vida va a seguir con el trabajo, los pendientes y la cena, y tu personaje va a hacer lo único que sabe hacer para sobrevivir: convencerte de que esto fue interesante y que ya luego lo ves. Así enterró cada intento tuyo de cambiar, y así piensa enterrar este, porque la claridad que sientes ahora mismo tiene fecha de vencimiento y en unos días se evapora.</p>'
     +'<p class="body rv" style="color:rgba(250,244,232,.9);margin-bottom:26px">La diferencia entre la mujer que sigue igual dentro de un año y la que por fin vive su propia vida no es el diagnóstico: es lo que hace en los próximos cinco minutos.</p>'
