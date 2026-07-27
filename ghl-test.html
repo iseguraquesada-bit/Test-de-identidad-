@@ -248,7 +248,28 @@ var FILTER_Q={
   ]
 };
 
-/* ================= SCORING ================= */
+/* ================= SCORING (normalizado: cada personaje compite en igualdad) ================= */
+/* Cada personaje aparece en distinta cantidad de preguntas. Sin normalizar, los que
+   aparecen más veces ganaban casi siempre. Aquí se divide el puntaje obtenido entre
+   el máximo que ese personaje podía sacar, así todos tienen la misma oportunidad. */
+var STAT=(function(){
+  /* Para cada personaje calculamos el puntaje promedio y la variación que tendría
+     si alguien respondiera al azar. Luego el resultado se mide contra ESE promedio,
+     así los seis personajes compiten en igualdad de condiciones. */
+  var mean={},vari={};ORDER.forEach(function(k){mean[k]=0;vari[k]=0;});
+  QS.forEach(function(q){
+    if(q.type!=="i")return;
+    var n=q.opts.length;
+    ORDER.forEach(function(c){
+      var vals=q.opts.map(function(o){return (o.chars||[]).indexOf(c)>=0?(o.w||0):0;});
+      var m=vals.reduce(function(a,b){return a+b;},0)/n;
+      var v=vals.reduce(function(a,b){return a+(b-m)*(b-m);},0)/n;
+      mean[c]+=m;vari[c]+=v;
+    });
+  });
+  var sd={};ORDER.forEach(function(k){sd[k]=Math.sqrt(vari[k])||1;});
+  return{mean:mean,sd:sd};
+})();
 function scoreAll(answers){
   var ch={controladora:0,salvadora:0,invisible:0,proveedora:0,exitosaVacia:0,espiritualReprimida:0};
   var cv={},pain=0,pn=0,disp=0,fd={};
@@ -260,11 +281,15 @@ function scoreAll(answers){
     if(o.pain!==undefined){pain+=o.pain;pn++;}
     if(o.disp!==undefined)disp+=o.disp;
   });
-  var sorted=ORDER.map(function(k){return[k,ch[k]];}).sort(function(a,b){return b[1]-a[1];});
-  var max=sorted[0][1]||1;
-  var meters=sorted.filter(function(s){return s[1]>0;}).slice(0,4).map(function(s){return{key:s[0],name:CHARS[s[0]].name,pct:Math.max(14,Math.round(s[1]/max*100))};});
+  /* puntaje relativo: 0 a 1 sobre el máximo posible de cada personaje */
+  var rel={};ORDER.forEach(function(k){rel[k]=(ch[k]-STAT.mean[k])/STAT.sd[k];});
+  var sorted=ORDER.map(function(k){return[k,rel[k],ch[k]];})
+    .sort(function(a,b){return (b[1]-a[1])||(b[2]-a[2]);});
+  var lo=sorted[sorted.length-1][1],hi=sorted[0][1],span=(hi-lo)||1;
+  var meters=sorted.filter(function(s){return s[2]>0;}).slice(0,4).map(function(s){
+    return{key:s[0],name:CHARS[s[0]].name,pct:Math.max(16,Math.round(28+72*((s[1]-lo)/span)))};});
   var priKey=sorted[0][0];
-  var secKey=sorted[1][1]>=sorted[0][1]*0.55?sorted[1][0]:null;
+  var secKey=sorted[1][1]>=sorted[0][1]*0.62?sorted[1][0]:null;
   var tcArr=Object.keys(cv).map(function(k){return[k,cv[k]];}).sort(function(a,b){return b[1]-a[1];});
   var constKey=tcArr.length?tcArr[0][0]:"hero";
   return{primaryKey:priKey,secondaryKey:secKey,constKey:constKey,primary:CHARS[priKey],secondary:secKey?CHARS[secKey]:null,constellation:CONST[constKey],
