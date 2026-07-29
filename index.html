@@ -773,7 +773,15 @@ window.II={
     var q=new URLSearchParams(window.location.search),sc=q.get("screen");
     if(sc==="resultado"||sc==="thankyou"){
       var s=null;try{s=localStorage.getItem(LS_KEY);}catch(e){}
-      if(s){var d=JSON.parse(s);S.ud=d.ud;S.result=d.result;}
+      if(s){var d=JSON.parse(s);S.ud=d.ud;S.result=d.result;
+        /* El resultado guardado trae una copia del personaje del día que hizo el test.
+           Lo volvemos a armar desde el archivo actual para que siempre lea la versión vigente. */
+        if(S.result&&S.result.primaryKey&&CHARS[S.result.primaryKey]){
+          S.result.primary=CHARS[S.result.primaryKey];
+          S.result.secondary=(S.result.secondaryKey&&CHARS[S.result.secondaryKey])?CHARS[S.result.secondaryKey]:null;
+          S.result.constellation=CONST[S.result.constKey]||CONST.hero;
+        }else{S.result=null;}
+      }
       else if(q.get("p")&&CHARS[q.get("p")]){
         var pk=q.get("p"),sk=q.get("s"),ck=q.get("c")||"hero";
         S.result={primaryKey:pk,secondaryKey:sk||null,constKey:ck,primary:CHARS[pk],secondary:(sk&&CHARS[sk])?CHARS[sk]:null,constellation:CONST[ck]||CONST.hero,
