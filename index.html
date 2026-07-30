@@ -171,20 +171,30 @@ var CONFIG={
 var LS_KEY="ileana_diagnostic_v6";
 
 /* ================= FOTOGRAFÍA (Pexels · uso libre · verificada una por una) ================= */
+/* Todas las fotos son horizontales y de ambiente, con la mujer en plano medio o abierto.
+   Los retratos cerrados quedaban destrozados al recortarse en bandas anchas. */
 var PH={
   hero:        "https://images.pexels.com/photos/3299317/pexels-photo-3299317.jpeg",
-  espejo:      "https://images.pexels.com/photos/1871342/pexels-photo-1871342.jpeg",
-  ventana:     "https://images.pexels.com/photos/4447142/pexels-photo-4447142.jpeg",
+  espejo:      "https://images.pexels.com/photos/9171452/pexels-photo-9171452.jpeg",
+  ventana:     "https://images.pexels.com/photos/7278922/pexels-photo-7278922.jpeg",
   origen:      "https://images.pexels.com/photos/3922819/pexels-photo-3922819.jpeg",
-  puerta:      "https://images.pexels.com/photos/10496905/pexels-photo-10496905.jpeg",
-  controladora:"https://images.pexels.com/photos/4098260/pexels-photo-4098260.jpeg",
-  salvadora:   "https://images.pexels.com/photos/6383158/pexels-photo-6383158.jpeg",
-  invisible:   "https://images.pexels.com/photos/7298237/pexels-photo-7298237.jpeg",
+  puerta:      "https://images.pexels.com/photos/13538107/pexels-photo-13538107.jpeg",
+  controladora:"https://images.pexels.com/photos/8860907/pexels-photo-8860907.jpeg",
+  salvadora:   "https://images.pexels.com/photos/7231629/pexels-photo-7231629.jpeg",
+  invisible:   "https://images.pexels.com/photos/17044848/pexels-photo-17044848.jpeg",
   proveedora:  "https://images.pexels.com/photos/9063397/pexels-photo-9063397.jpeg",
   exitosaVacia:"https://images.pexels.com/photos/3926205/pexels-photo-3926205.jpeg",
-  espiritualReprimida:"https://images.pexels.com/photos/9032696/pexels-photo-9032696.jpeg"
+  espiritualReprimida:"https://images.pexels.com/photos/7169649/pexels-photo-7169649.jpeg"
+};
+/* Encuadre propio de cada foto, para que el recorte nunca corte una cara. */
+var POS={
+  hero:"center 32%", espejo:"center 50%", ventana:"center 42%", origen:"center 45%",
+  puerta:"center 50%", controladora:"center 48%", salvadora:"center 10%",
+  invisible:"center 45%", proveedora:"center 42%", exitosaVacia:"center 48%",
+  espiritualReprimida:"center 30%"
 };
 function px(k,w){return (PH[k]||PH.hero)+"?auto=compress&cs=tinysrgb&w="+(w||1200);}
+function pos(k,over){return over||POS[k]||"center 45%";}
 
 /* ================= HELPERS ================= */
 function track(ev,d){try{if(window.fbq)window.fbq("track",ev,d||{});}catch(e){}}
@@ -313,6 +323,7 @@ var CHARS={
     liberation:"Aquí está la revelación completa: el vacío que sientes no es señal de que algo ande mal contigo, es la prueba de que cumpliste al pie de la letra un sueño que nunca fue tuyo. Te entregaron un mapa a los veinte y fuiste tan capaz que llegaste a la cima, pero era la montaña equivocada, y eso no se arregla escalando más alto. La buena noticia que el personaje no quiere que sepas es que no tienes que quemar tu vida para recuperarte, porque no se trata de tirar el éxito por la borda, se trata de dejar de habitarlo como un disfraz. Cuando descubres quién eres sin el aplauso, todo lo que construiste por fin se puede disfrutar, porque ya no lo necesitas para valer, y esa es la diferencia entre tener una vida impresionante y tener una vida tuya."},
   espiritualReprimida:{name:"La Espiritual Reprimida",tag:"Hablo de luz para no mirar mi sombra",
     adultez:true,
+    rolLine:"Este personaje se instaló encima de algo más viejo, porque tú no llegaste a la espiritualidad desde cero. Llegaste desde un rol que traías de mucho antes, y la espiritualidad fue la única opción lógica que te quedó después de intentar lo tradicional, la terapia, los libros, el esfuerzo y la voluntad, y ver que nada de eso llegaba al fondo. No fue una huida, fue lo único que te sostuvo. Lo que hay que revisar hoy es el rol de abajo, porque es el que sigue mandando.",
     adultezLine:["Y aquí está lo que hace distinto a este personaje: a ella no la eligió una niña. La elegiste tú, ya adulta, después de años de preguntas sin respuesta y de un dolor que no tenía dónde ponerse.","Eso duele más de reconocer, porque fue una decisión tuya y no una herencia. Y al mismo tiempo es la mejor noticia del diagnóstico, porque lo que se eligió con conciencia se puede desandar con conciencia, y no llevas décadas sosteniéndola: llevas exactamente el tiempo que llevas buscando afuera lo que solo estaba adentro."],
     whoIs:["Ella no es una farsante ni una mujer que finge su espiritualidad, y esto quiero que quede clarísimo. Es la que encontró en la conciencia un lugar donde por fin no dolía, y lo convirtió en el escondite más elegante que ha tenido.", "Su trabajo es subir todo a la mente antes de que llegue al cuerpo. Traduce la rabia en aprendizaje, la tristeza en proceso y el conflicto en falta de conciencia del otro. Y cada vez que sales de algo difícil sin haber sentido nada, ella confirma que su método funciona y se queda otro año más.", "Y no es que tu camino sea falso. Es que la herramienta que te salvó terminó sirviéndote para no sentir, en lugar de para sentir más."],
     birth:["Ella nace en un momento donde ya no había de dónde agarrarse. Puede que fuera un duelo, una separación, una traición, o simplemente años de estar rota sin que nadie lo notara, y la espiritualidad llegó y te sostuvo de verdad.", "Y ahí hizo su cálculo: si logro elevarme por encima de esto, no me toca sentirlo. Y le funcionó, porque desde arriba todo se ve más ordenado, y porque el lenguaje de la luz es el único que permite evitar sin que parezca evasión.", "Por eso hoy sentir rabia no se te siente humano, se te siente como un retroceso. No es que hayas perdido el camino, es ella defendiéndose, porque el día que bajas al cuerpo ella se queda sin lugar donde vivir."],
@@ -612,14 +623,14 @@ function render(html,keepStick){
   }else{[].forEach.call(app.querySelectorAll(".rv"),function(el){el.classList.add("on");});}
 }
 function foot(){return '<div class="foot">@ileanamentora · Ingeniería de Identidad</div>';}
-function hero(k,h,inner,pos){
+function hero(k,h,inner,po){
   return '<div style="position:relative;min-height:'+h+';display:flex;align-items:center;overflow:hidden;background:#0A1420">'
-  +'<img class="photo" src="'+px(k,1700)+'" alt="" style="position:absolute;inset:0;object-position:'+(pos||"center")+'">'
+  +'<img class="photo" src="'+px(k,1700)+'" alt="" style="position:absolute;inset:0;object-position:'+pos(k,po)+'">'
   +'<div class="hero-scrim"></div><div style="position:relative;width:100%">'+inner+'</div></div>';
 }
-function band(k,h,inner,pos){
+function band(k,h,inner,po){
   return '<div style="position:relative;min-height:'+h+';display:flex;align-items:center;overflow:hidden;background:#0A1420">'
-  +'<img class="photo" src="'+px(k,1500)+'" alt="" style="position:absolute;inset:0;object-position:'+(pos||"center")+'">'
+  +'<img class="photo" src="'+px(k,1500)+'" alt="" style="position:absolute;inset:0;object-position:'+pos(k,po)+'">'
   +'<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,32,.55),rgba(10,20,32,.86))"></div>'
   +'<div style="position:relative;width:100%">'+(inner||"")+'</div></div>';
 }
@@ -646,7 +657,7 @@ function rHero(){
     +'<p class="body" style="color:rgba(250,244,232,.72);max-width:520px;margin-bottom:34px">Te llevas cuatro cosas concretas: el nombre del personaje que te está dirigiendo, de dónde salió, cómo decide por ti sin pedirte permiso y tu primer paso para soltarlo.</p>'
     +'<button class="btn" onclick="II.start()">Quiero saber quién me dirige</button>'
     +'<p style="margin-top:18px;font-size:19px;color:rgba(250,244,232,.78);letter-spacing:.6px">5 minutos · 14 preguntas · Resultado inmediato y gratis</p>'
-    +'</div></div>','center 28%')
+    +'</div></div>')
   /* --- el espejo --- */
   +'<div class="light" style="padding:86px 0"><div class="wrap">'
   +'<div class="rv" style="text-align:center;margin-bottom:44px"><p class="kicker" style="margin-bottom:18px">El espejo</p>'
@@ -659,7 +670,7 @@ function rHero(){
   +'</div></div>'
   /* --- banda con frase --- */
   +band("ventana","62vh",'<div class="wrap" style="padding:70px 26px;text-align:center">'
-    +'<p class="quote rv" style="color:#fff;max-width:620px;margin:0 auto">No es que te hayas perdido. Pero tampoco sabes dónde carajos estás hoy.</p></div>',"center 35%")
+    +'<p class="quote rv" style="color:#fff;max-width:620px;margin:0 auto">No es que te hayas perdido. Pero tampoco sabes dónde carajos estás hoy.</p></div>')
   /* --- cierre de portada: suspenso, sin revelar los personajes --- */
   +'<div class="light" style="padding:86px 0"><div class="wrap" style="text-align:center">'
   +'<p class="kicker rv" style="margin-bottom:20px">Lo que vas a descubrir</p>'
@@ -705,7 +716,7 @@ var PHONE_CODES=[["Costa Rica","+506"],["México","+52"],["Colombia","+57"],["Ar
 function rForm(){
   var codes=PHONE_CODES.map(function(p){return '<option value="'+p[1]+'">'+p[0]+' ('+p[1]+')</option>';}).join("");
   render('<div class="screen" style="position:relative;background:#0A1420;display:flex;align-items:center;padding:48px 0;overflow:hidden">'
-  +'<img class="photo" src="'+px("espejo",1400)+'" alt="" style="position:absolute;inset:0;opacity:.5">'
+  +'<img class="photo" src="'+px("espejo",1400)+'" alt="" style="position:absolute;inset:0;opacity:.5;object-position:'+pos("espejo")+'">'
   +'<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,32,.86),rgba(10,20,32,.94))"></div>'
   +'<div class="wrap" style="position:relative;width:100%">'
   +'<div class="card" style="padding:38px 32px">'
@@ -781,7 +792,7 @@ function rResult(){
     +'<p class="quote" style="color:#fff;max-width:660px;margin:0 auto 30px">'+esc(WELCOME.line)+'</p>'
     +PP(WELCOME.body,"body","color:rgba(250,244,232,.86);max-width:620px;margin:0 auto 18px")
     +'<div class="dwn" style="margin-top:34px"></div>'
-    +'</div>',"center 30%")
+    +'</div>')
   /* 2. el nombre */
   +hero(res.primaryKey,"92vh",
     '<div class="wrapW"><div style="max-width:700px;padding:64px 0">'
@@ -791,7 +802,7 @@ function rResult(){
     +(sec?'<p class="body" style="color:rgba(250,244,232,.75);margin-bottom:18px">con rasgos de <strong style="color:var(--celeste);font-weight:500">'+esc(sec.name)+'</strong></p>':"")
     +'<div class="rule" style="margin-bottom:22px"></div>'
     +'<p class="quote" style="color:var(--oroClaro);max-width:560px">&#8220;'+esc(p.shadow)+'&#8221;</p>'
-    +'</div></div>',"center 30%")
+    +'</div></div>')
   /* 3. medidores */
   +'<div class="dark" style="padding:70px 0"><div class="wrap">'
   +'<p class="kicker rv" style="margin-bottom:10px">Tu perfil</p>'
@@ -816,7 +827,7 @@ function rResult(){
       :(res.years?'<div class="rv" style="margin-top:34px;padding-top:28px;border-top:1px solid rgba(250,244,232,.2)">'
        +'<p class="quote" style="color:var(--oroClaro)">Si ella nació cuando tenías siete u ocho años, hoy llevas '+esc(res.years)+' sosteniendo una decisión que tomó una niña.</p>'
        +'<p class="body" style="color:rgba(250,244,232,.86);margin-top:16px">Y por eso nunca fue falta de voluntad. Has estado peleando contra algo que se instaló antes de que supieras que se podía elegir.</p></div>':""))
-    +'</div>',"center 38%")
+    +'</div>')
   /* 6. cómo opera: acordeones */
   +'<div class="light" style="padding:74px 0"><div class="wrap">'
   +'<p class="kicker rv" style="margin-bottom:26px">Tercera parte · Cómo opera por dentro</p>'
@@ -826,13 +837,15 @@ function rResult(){
   +acc("Las frases que dice por tu boca",chips(p.phrases),false)
   +acc("Por qué la terapia, los libros y los retiros no la tocaron",'<p class="body">'+THERAPY+'</p>',false)
   +(sec?acc("Tu personaje secundario: "+sec.name,'<p class="body" style="margin-bottom:16px">'+esc(sec.core)+'</p><p class="body">'+esc(sec.painHook)+'</p>',false):"")
-  +(c?acc("El rol que aprendiste antes de poder elegir",'<p class="body" style="margin-bottom:8px"><strong style="color:var(--tinta)">'+esc(c.name)+'.</strong></p><p class="body" style="margin-bottom:16px">'+esc(c.desc)+'</p><p class="body">'+esc(c.press)+'</p>',false):"")
+  +((c||p.rolLine)?acc(p.adultez?"El rol de fondo, y por qué esta fue la única salida que encontraste":"El rol que aprendiste antes de poder elegir",
+      (p.rolLine?'<p class="body" style="margin-bottom:18px">'+esc(p.rolLine)+'</p>':"")
+      +(c?'<p class="body" style="margin-bottom:8px"><strong style="color:var(--tinta)">'+esc(c.name)+'.</strong></p><p class="body" style="margin-bottom:16px">'+esc(c.desc)+'</p><p class="body">'+esc(c.press)+'</p>':""),false):"")
   +'<p class="body rv" style="margin-top:30px;font-size:21px;color:var(--tinta)">Y si mientras leías esto pensaste que exagero o que no es tan así, fíjate quién está buscando el argumento.</p>'
   +'</div></div></div>'
   /* 7. LOS CUATRO CUADRANTES */
   +band(res.primaryKey,"auto",'<div class="wrap" style="padding:70px 26px">'
     +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:14px">Cuarta parte</p>'
-    +'<h2 class="h2 rv" style="color:#fff">Lo que te dio y lo que te está cobrando</h2></div>',"center 30%")
+    +'<h2 class="h2 rv" style="color:#fff">Lo que te dio y lo que te está cobrando</h2></div>')
   +'<div class="light" style="padding:64px 0"><div class="wrap">'
   +'<div class="quad rv">'
   +QB("Lo que sí te dio","Te dio",gaveB,"",false)
@@ -846,7 +859,7 @@ function rResult(){
     +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:18px">La revelación</p>'
     +'<h2 class="h2 rv" style="color:#fff;margin-bottom:34px">Tu primer paso de liberación</h2>'
     +PP(rev,"lead","color:rgba(250,244,232,.96);font-size:23px;margin-bottom:22px")
-    +'</div>',"center 40%")
+    +'</div>')
   /* 9. EL PRIMER PASO, GRATIS Y HOY */
   +(step?'<div class="light" style="padding:82px 0"><div class="wrap">'
     +'<p class="kicker rv" style="margin-bottom:14px">Tu primer paso, y no cuesta nada</p>'
@@ -877,7 +890,7 @@ function rResult(){
     +'<div class="rv" style="margin-top:34px;padding-top:26px;border-top:1px solid rgba(250,244,232,.16)">'
     +'<a class="btn btn-line" style="max-width:340px" href="'+shareUrl+'" target="_blank" rel="noreferrer" onclick="II.shared()">Mandarle esto a una amiga por WhatsApp</a>'
     +'<p style="margin-top:12px;font-size:18px;color:rgba(250,244,232,.6)">Se abre WhatsApp con el mensaje y el enlace ya listos.</p></div>'
-    +'</div>',"center 40%")
+    +'</div>')
   /* 11. NOTA DE CUIDADO */
   +'<div class="light" style="padding:64px 0"><div class="wrap">'
   +'<div class="rv" style="max-width:660px;margin:0 auto;text-align:center">'
