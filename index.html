@@ -386,12 +386,11 @@ var CHARS={
 var ORDER=["controladora","salvadora","invisible","proveedora","exitosaVacia","espiritualReprimida"];
 
 /* ================= TEST =================
-   Diez situaciones de vida. En cada una hay tres afirmaciones, una por personaje, y hay
-   que elegir la que más se parece: no existe la opción de no elegir, porque cada pregunta
-   sin respuesta dejaba un hueco y el resultado terminaba calculado sobre datos incompletos.
-   Cada personaje aparece EXACTAMENTE en 5 de las 10 situaciones y se enfrenta a cada uno
-   de los otros EXACTAMENTE 2 veces, así que todos tienen las mismas oportunidades y el
-   porcentaje es literal: de las 5 veces que apareció, cuántas la elegiste. */
+   Ocho situaciones de vida. En cada una aparecen LAS SEIS opciones, una por personaje,
+   para que siempre haya una que se parezca a ella y para que ninguno tenga ventaja.
+   Se elige una y solo una: no existe la opción de no elegir, porque cada pregunta sin
+   respuesta dejaba un hueco y el resultado terminaba calculado sobre datos incompletos.
+   Entonces el porcentaje es literal: de las 8 situaciones, en cuántas se eligió a ese personaje. */
 var QS=[
   {id:1,type:"m",text:"Hoy, si te lo preguntas de verdad, ¿cómo te sientes con tu vida?",opts:[
     {text:"Cansada emocionalmente, aunque por fuera todo funcione.",mood:"cansancio_emocional",disp:2},
@@ -402,14 +401,23 @@ var QS=[
   {id:2,type:"r",text:"Cuando hay un conflicto con alguien importante para mí…",items:[
     {t:"Me quedo callada para no empeorarlo, y después me quedo pensando en lo que no dije.",char:"invisible"},
     {t:"Tomo el control de la situación y me encargo de que se resuelva como debe ser.",char:"controladora"},
-    {t:"Me pongo en el lugar del otro y termino cuidándolo a él aunque yo esté dolida.",char:"salvadora"}]},
+    {t:"Elijo mi paz, tomo distancia y no me engancho con el drama.",char:"espiritualReprimida"},
+    {t:"Me pongo en el lugar del otro y termino cuidándolo a él aunque yo esté dolida.",char:"salvadora"},
+    {t:"Por fuera lo manejo impecable y por dentro me queda dando vueltas días enteros.",char:"exitosaVacia"},
+    {t:"Lo resuelvo rápido y vuelvo a lo mío, porque no me puedo dar el lujo de quedarme ahí.",char:"proveedora"}]},
   {id:3,type:"r",text:"Cuando por fin tengo tiempo libre…",items:[
     {t:"Me da culpa, así que lo relleno con algo productivo casi sin pensarlo.",char:"proveedora"},
+    {t:"Lo dedico a meditar, a leer o a algún proceso, nunca a no hacer nada.",char:"espiritualReprimida"},
     {t:"No logro soltarlo del todo, sigo pendiente de que nada se caiga.",char:"controladora"},
-    {t:"Lo termino usando en algo de alguien más, porque siempre hay quien me necesita.",char:"salvadora"}]},
+    {t:"Lo uso en algo que no moleste a nadie, casi siempre sola y en silencio.",char:"invisible"},
+    {t:"Lo termino usando en algo de alguien más, porque siempre hay quien me necesita.",char:"salvadora"},
+    {t:"Lo lleno de planes que se ven bien, aunque por dentro no me den gran cosa.",char:"exitosaVacia"}]},
   {id:4,type:"r",text:"Cuando alguien me reconoce o me elogia…",items:[
     {t:"Lo agradezco por fuera, pero por dentro no me lo creo del todo.",char:"exitosaVacia"},
+    {t:"Lo devuelvo enseguida, hablo de lo que hizo la otra persona y me salgo del centro.",char:"salvadora"},
     {t:"Me incomoda que me miren tanto y cambio el tema lo más rápido que puedo.",char:"invisible"},
+    {t:"Lo recibo con humildad y lo suelto rápido, no me quiero inflar el ego.",char:"espiritualReprimida"},
+    {t:"Lo agradezco y de una pienso en lo que todavía me falta.",char:"proveedora"},
     {t:"Me elogian por lo mucho que cargo, y eso me confirma que no puedo bajar el ritmo.",char:"controladora"}]},
   {id:5,type:"o",text:"Cuando piensas en tu infancia, ¿cuál de estas frases resuena más?",opts:[
     {text:"Había que ser fuerte y no se podía fallar.",con:"hero"},
@@ -418,41 +426,49 @@ var QS=[
     {text:"El amor llegaba cuando cumplía las expectativas.",con:"perfectionist"},
     {text:"Sentía que yo era el problema de la casa.",con:"scapegoat"},
     {text:"Ninguna de estas describe mi infancia.",con:null}]},
-  {id:6,type:"r",text:"Con mi cuerpo y mi salud…",items:[
-    {t:"Cuando me avisa que pare, reorganizo todo menos mi descanso.",char:"controladora"},
-    {t:"Le busco un significado o una lectura energética antes de ir a revisarlo.",char:"espiritualReprimida"},
-    {t:"Le pido un poco más, porque siento que todavía puedo aguantar.",char:"proveedora"}]},
-  {id:7,type:"r",text:"Cuando estoy sola, sin nada que resolver…",items:[
+  {id:6,type:"r",text:"Cuando estoy sola, sin nada que resolver…",items:[
     {t:"Me pongo a meditar o a estudiar algo, y así el silencio no se pone incómodo.",char:"espiritualReprimida"},
+    {t:"Dura poco, porque siempre encuentro algo pendiente que adelantar.",char:"proveedora"},
     {t:"Mi cabeza empieza a repasar todo lo que falta y no logro apagarla.",char:"controladora"},
-    {t:"Aparece un vacío que no sé nombrar y prefiero no quedarme mucho ahí.",char:"exitosaVacia"}]},
-  {id:8,type:"r",text:"Cuando algo me duele de verdad…",items:[
+    {t:"Termino escribiéndole a alguien para ver cómo está.",char:"salvadora"},
+    {t:"Aparece un vacío que no sé nombrar y prefiero no quedarme mucho ahí.",char:"exitosaVacia"},
+    {t:"Me siento más tranquila que acompañada, y eso también me da algo de tristeza.",char:"invisible"}]},
+  {id:7,type:"r",text:"Cuando algo me duele de verdad…",items:[
     {t:"Me lo trago y sigo funcionando, total tampoco era tan grave.",char:"invisible"},
+    {t:"Me pongo a organizar y a resolver, porque si me detengo se me viene todo encima.",char:"controladora"},
     {t:"Le encuentro el aprendizaje rápido y sigo, sin quedarme en el sentimiento.",char:"espiritualReprimida"},
-    {t:"Me ocupo de alguien más, porque cuidar a otro me calma más que mirarme a mí.",char:"salvadora"}]},
-  {id:9,type:"r",text:"Cuando pienso en lo que quiero para mi vida…",items:[
+    {t:"Me ocupo de alguien más, porque cuidar a otro me calma más que mirarme a mí.",char:"salvadora"},
+    {t:"Me meto de lleno en el trabajo hasta que se me pasa.",char:"proveedora"},
+    {t:"Lo lloro sola de noche y al día siguiente aparezco impecable.",char:"exitosaVacia"}]},
+  {id:8,type:"r",text:"Cuando pienso en lo que quiero para mi vida…",items:[
     {t:"Pienso en la próxima meta, aunque la anterior no la haya disfrutado.",char:"proveedora"},
+    {t:"Lo tengo clarísimo y también tengo el plan, lo que no tengo es descanso.",char:"controladora"},
     {t:"Me doy cuenta de que sé lo que se espera de mí, pero no lo que yo quiero.",char:"exitosaVacia"},
-    {t:"Lo que quiero siempre queda después de lo que necesitan los míos.",char:"salvadora"}]},
-  {id:10,type:"r",text:"En mis relaciones más cercanas…",items:[
+    {t:"Confío en que se va a acomodar y suelto el control de cómo tiene que pasar.",char:"espiritualReprimida"},
+    {t:"Lo que quiero siempre queda después de lo que necesitan los míos.",char:"salvadora"},
+    {t:"Me da algo de pena admitir lo que quiero, así que lo dejo en voz baja.",char:"invisible"}]},
+  {id:9,type:"r",text:"En mis relaciones más cercanas…",items:[
     {t:"Se quedaron en la superficie, y nadie sabe realmente cómo estoy.",char:"exitosaVacia"},
+    {t:"Soy la que organiza, la que recuerda todo y la que sostiene el ritmo.",char:"controladora"},
     {t:"Soy la que sostiene, la que escucha y la que resuelve, y casi nunca al revés.",char:"salvadora"},
-    {t:"Pongo distancia cuando algo me incomoda y lo llamo cuidar mi paz.",char:"espiritualReprimida"}]},
-  {id:11,type:"r",text:"Cuando siento que fallé o que no estuve a la altura…",items:[
-    {t:"Me exijo el doble hasta compensarlo, cueste lo que cueste.",char:"proveedora"},
-    {t:"Concluyo que era mejor no haberlo intentado y me achico para la próxima.",char:"invisible"},
-    {t:"Se me confirma la sospecha de que todo lo que logré fue casualidad.",char:"exitosaVacia"}]},
-  {id:12,type:"r",text:"Cuando algo se sale de control sin avisar…",items:[
+    {t:"Estoy presente pero en segundo plano, y casi nunca hablo de mí.",char:"invisible"},
+    {t:"Pongo distancia cuando algo me incomoda y lo llamo cuidar mi paz.",char:"espiritualReprimida"},
+    {t:"Estoy, pero siempre con la cabeza en lo que tengo que resolver después.",char:"proveedora"}]},
+  {id:10,type:"r",text:"Cuando algo se sale de control sin avisar…",items:[
     {t:"Me repito que todo pasa por algo y suelto antes de haber sentido nada.",char:"espiritualReprimida"},
+    {t:"Tomo el mando y no suelto hasta que todo vuelva a su lugar.",char:"controladora"},
     {t:"Me pongo a trabajar más, porque moverme es lo único que me calma.",char:"proveedora"},
-    {t:"Me hago pequeña, espero a que pase y no digo lo que pienso.",char:"invisible"}]},
-  {id:13,type:"c",text:"Si pudieras cambiar una sola cosa de tu vida ahora mismo, ¿qué cambiarías?",opts:[
+    {t:"Me aseguro primero de que los demás estén bien y después veo cómo estoy yo.",char:"salvadora"},
+    {t:"Me hago pequeña, espero a que pase y no digo lo que pienso.",char:"invisible"},
+    {t:"Funciono perfecto por fuera aunque por dentro no sienta nada.",char:"exitosaVacia"}]},
+  {id:11,type:"c",text:"Si pudieras cambiar una sola cosa de tu vida ahora mismo, ¿qué cambiarías?",opts:[
     {text:"La forma en la que me trato a mí misma.",change:"trato_conmigo",disp:2},
     {text:"El nivel de carga que llevo encima.",change:"carga",disp:3},
     {text:"Mis relaciones, que se sienten vacías o desgastantes.",change:"relaciones",disp:2},
     {text:"Mi trabajo o mi propósito, porque ya no me representa.",change:"proposito",disp:3},
-    {text:"Mi capacidad de sentir y de estar presente.",change:"sentir",disp:2}]},
-  {id:14,type:"d",text:"¿En qué década de tu vida estás?",opts:[
+    {text:"Mi capacidad de sentir y de estar presente.",change:"sentir",disp:2},
+    {text:"Mi relación con el trabajo y con el descanso.",change:"descanso",disp:2}]},
+  {id:12,type:"d",text:"¿En qué década de tu vida estás?",opts:[
     {text:"Entre 25 y 34 años.",age:30},
     {text:"Entre 35 y 44 años.",age:40},
     {text:"Entre 45 y 54 años.",age:50},
@@ -534,7 +550,9 @@ function scoreAll(answers){
     if(q.type==="d"&&o.age)age=o.age;
     if(q.type==="o"&&o.con)origen=o.con;
   });
-  var CHG={trato_conmigo:"invisible",carga:"controladora",relaciones:"salvadora",proposito:"exitosaVacia",sentir:"espiritualReprimida"};
+  /* Cada personaje tiene exactamente una vía de desempate, para que ninguno salga
+     favorecido ni castigado cuando dos quedan iguales. */
+  var CHG={trato_conmigo:"invisible",carga:"controladora",relaciones:"salvadora",proposito:"exitosaVacia",sentir:"espiritualReprimida",descanso:"proveedora"};
   var ORG={parentification:"salvadora",hero:"controladora",invisible:"invisible",perfectionist:"proveedora",scapegoat:"exitosaVacia"};
   /* El orden de partida se rota según las respuestas de cada persona para que ningún
      personaje quede favorecido por estar primero en la lista. */
@@ -548,32 +566,28 @@ function scoreAll(answers){
   var niveles=Object.keys(grupos).map(Number).sort(function(a,b){return b-a;});
   var sorted=[];
   niveles.forEach(function(h){
-    var g=grupos[h],pts={};
-    /* Cada par de personajes se enfrentó exactamente dos veces, así que entre empatados
-       gana quien ganó esos enfrentamientos directos. */
-    g.forEach(function(k){pts[k]=0;g.forEach(function(j){if(j!==k)pts[k]+=(won[k][j]||0);});});
+    var g=grupos[h];
+    /* Como los seis compiten en todas las preguntas, los empates se resuelven con la
+       pregunta de qué cambiarías y después con la de infancia. */
     g.sort(function(a,b){
-      if(pts[b]!==pts[a])return pts[b]-pts[a];
       var pa=CHG[change]===a?1:0,pb=CHG[change]===b?1:0;
       if(pa!==pb)return pb-pa;
-      var oa=ORG[origen]===a?1:0,ob=ORG[origen]===b?1:0;
-      if(oa!==ob)return ob-oa;
       return base.indexOf(a)-base.indexOf(b);
     });
     sorted=sorted.concat(g);
   });
-  var priKey=sorted[0],maxP=faced[priKey]||5;
-  var secKey=(hits[sorted[1]]>=2&&hits[sorted[1]]>=hits[priKey]-1)?sorted[1]:null;
+  var priKey=sorted[0],maxP=faced[priKey]||8;
+  var secKey=hits[sorted[1]]>=2?sorted[1]:null;
   var conPuntaje=sorted.filter(function(k){return hits[k]>0;});
   var meters=(conPuntaje.length?conPuntaje:[priKey]).slice(0,2).map(function(k){
-    return{key:k,name:CHARS[k].name,hits:hits[k],den:faced[k]||5,
-      w:Math.max(8,Math.round(hits[k]/(faced[k]||5)*100))};});
+    return{key:k,name:CHARS[k].name,hits:hits[k],den:faced[k]||8,
+      w:Math.max(8,Math.round(hits[k]/(faced[k]||8)*100))};});
   /* Si no reconoció ninguna frase de infancia, no le inventamos un origen. */
   var constKey=origen||"";
   /* Señal baja: si el personaje más alto apenas asoma, se lo decimos en vez de
      presentarle una lectura contundente que no se sostiene. */
-  var senal=hits[priKey]<=1?"baja":hits[priKey]<=2?"media":"clara";
-  var nivel=hits[priKey]>=4?"alta":hits[priKey]>=3?"media":"baja";
+  var senal=hits[priKey]<=2?"baja":hits[priKey]<=3?"media":"clara";
+  var nivel=hits[priKey]>=5?"alta":hits[priKey]>=3?"media":"baja";
   return{primaryKey:priKey,secondaryKey:secKey,constKey:constKey,
     primary:CHARS[priKey],secondary:secKey?CHARS[secKey]:null,constellation:CONST[constKey]||null,
     meters:meters,puntaje:hits[priKey],maxPuntaje:maxP,senal:senal,bloques:bloques,
@@ -697,7 +711,7 @@ function rHero(){
     +'<p class="lead" style="color:rgba(250,244,232,.94);max-width:540px;margin-bottom:14px">En 5 minutos le ponemos nombre a eso que hoy llamas <strong style="color:#fff;font-weight:500">vivir en piloto automático</strong>, y vas a ver con claridad qué te está regalando y qué te está quitando.</p>'
     +'<p class="body" style="color:rgba(250,244,232,.72);max-width:520px;margin-bottom:34px">Te llevas cuatro cosas concretas: el nombre del personaje que te está dirigiendo, de dónde salió, cómo decide por ti sin pedirte permiso y tu primer paso para soltarlo.</p>'
     +'<button class="btn" onclick="II.start()">Quiero saber quién me dirige</button>'
-    +'<p style="margin-top:18px;font-size:19px;color:rgba(250,244,232,.78);letter-spacing:.6px">5 minutos · 14 preguntas · Resultado inmediato y gratis</p>'
+    +'<p style="margin-top:18px;font-size:19px;color:rgba(250,244,232,.78);letter-spacing:.6px">5 minutos · 12 preguntas · Resultado inmediato y gratis</p>'
     +'</div></div>')
   /* --- el espejo --- */
   +'<div class="light" style="padding:86px 0"><div class="wrap">'
