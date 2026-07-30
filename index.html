@@ -136,6 +136,14 @@ img{display:block;max-width:100%;}
 
 /* ---------- pie ---------- */
 .foot{text-align:center;padding:34px 20px;font-size:16px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+/* --- barra comparativa: cuánto respondió el personaje y cuánto respondió ella --- */
+.split{display:flex;height:16px;border-radius:8px;overflow:hidden;background:rgba(250,244,232,.14);}
+.split i{display:block;height:100%;}
+.split .sper{background:linear-gradient(90deg,#C29B40,#E8DCB6);}
+.split .slib{background:rgba(143,194,222,.55);}
+.splab{display:flex;justify-content:space-between;gap:16px;margin-top:12px;font-size:19px;color:rgba(250,244,232,.86);}
+.splab b{font-weight:500;color:#fff;font-size:22px;}
+@media(max-width:640px){.splab{font-size:18px}.splab b{font-size:21px}}
 /* --- el balance: tres columnas editoriales y un bloque final destacado --- */
 .quad{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-top:1px solid var(--crema2);}
 .quad>.qbox{border-left:1px solid var(--crema2);}
@@ -404,21 +412,24 @@ var QS=[
     {t:"Elijo mi paz, tomo distancia y no me engancho con el drama.",char:"espiritualReprimida"},
     {t:"Me pongo en el lugar del otro y termino cuidándolo a él aunque yo esté dolida.",char:"salvadora"},
     {t:"Por fuera lo manejo impecable y por dentro me queda dando vueltas días enteros.",char:"exitosaVacia"},
-    {t:"Lo resuelvo rápido y vuelvo a lo mío, porque no me puedo dar el lujo de quedarme ahí.",char:"proveedora"}]},
+    {t:"Lo resuelvo rápido y vuelvo a lo mío, porque no me puedo dar el lujo de quedarme ahí.",char:"proveedora"},
+    {t:"Digo lo que siento aunque incomode, y me quedo a sostener la conversación.",char:null,libre:true}]},
   {id:3,type:"r",text:"Cuando por fin tengo tiempo libre…",items:[
     {t:"Me da culpa, así que lo relleno con algo productivo casi sin pensarlo.",char:"proveedora"},
     {t:"Lo dedico a meditar, a leer o a algún proceso, nunca a no hacer nada.",char:"espiritualReprimida"},
     {t:"No logro soltarlo del todo, sigo pendiente de que nada se caiga.",char:"controladora"},
     {t:"Lo uso en algo que no moleste a nadie, casi siempre sola y en silencio.",char:"invisible"},
     {t:"Lo termino usando en algo de alguien más, porque siempre hay quien me necesita.",char:"salvadora"},
-    {t:"Lo lleno de planes que se ven bien, aunque por dentro no me den gran cosa.",char:"exitosaVacia"}]},
+    {t:"Lo lleno de planes que se ven bien, aunque por dentro no me den gran cosa.",char:"exitosaVacia"},
+    {t:"No hago nada y lo disfruto, sin justificarlo con nadie.",char:null,libre:true}]},
   {id:4,type:"r",text:"Cuando alguien me reconoce o me elogia…",items:[
     {t:"Lo agradezco por fuera, pero por dentro no me lo creo del todo.",char:"exitosaVacia"},
     {t:"Lo devuelvo enseguida, hablo de lo que hizo la otra persona y me salgo del centro.",char:"salvadora"},
     {t:"Me incomoda que me miren tanto y cambio el tema lo más rápido que puedo.",char:"invisible"},
     {t:"Lo recibo con humildad y lo suelto rápido, no me quiero inflar el ego.",char:"espiritualReprimida"},
     {t:"Lo agradezco y de una pienso en lo que todavía me falta.",char:"proveedora"},
-    {t:"Me elogian por lo mucho que cargo, y eso me confirma que no puedo bajar el ritmo.",char:"controladora"}]},
+    {t:"Me elogian por lo mucho que cargo, y eso me confirma que no puedo bajar el ritmo.",char:"controladora"},
+    {t:"Lo recibo completo, sin devolverlo y sin disminuirlo.",char:null,libre:true}]},
   {id:5,type:"o",text:"Cuando piensas en tu infancia, ¿cuál de estas frases resuena más?",opts:[
     {text:"Había que ser fuerte y no se podía fallar.",con:"hero"},
     {text:"Era mejor no molestar, estar callada era más seguro.",con:"invisible"},
@@ -432,35 +443,40 @@ var QS=[
     {t:"Mi cabeza empieza a repasar todo lo que falta y no logro apagarla.",char:"controladora"},
     {t:"Termino escribiéndole a alguien para ver cómo está.",char:"salvadora"},
     {t:"Aparece un vacío que no sé nombrar y prefiero no quedarme mucho ahí.",char:"exitosaVacia"},
-    {t:"Me siento más tranquila que acompañada, y eso también me da algo de tristeza.",char:"invisible"}]},
+    {t:"Me siento más tranquila que acompañada, y eso también me da algo de tristeza.",char:"invisible"},
+    {t:"Me quedo conmigo y no necesito llenar el silencio.",char:null,libre:true}]},
   {id:7,type:"r",text:"Cuando algo me duele de verdad…",items:[
     {t:"Me lo trago y sigo funcionando, total tampoco era tan grave.",char:"invisible"},
     {t:"Me pongo a organizar y a resolver, porque si me detengo se me viene todo encima.",char:"controladora"},
     {t:"Le encuentro el aprendizaje rápido y sigo, sin quedarme en el sentimiento.",char:"espiritualReprimida"},
     {t:"Me ocupo de alguien más, porque cuidar a otro me calma más que mirarme a mí.",char:"salvadora"},
     {t:"Me meto de lleno en el trabajo hasta que se me pasa.",char:"proveedora"},
-    {t:"Lo lloro sola de noche y al día siguiente aparezco impecable.",char:"exitosaVacia"}]},
+    {t:"Lo lloro sola de noche y al día siguiente aparezco impecable.",char:"exitosaVacia"},
+    {t:"Lo siento en el cuerpo el tiempo que haga falta, sin apurarlo.",char:null,libre:true}]},
   {id:8,type:"r",text:"Cuando pienso en lo que quiero para mi vida…",items:[
     {t:"Pienso en la próxima meta, aunque la anterior no la haya disfrutado.",char:"proveedora"},
     {t:"Lo tengo clarísimo y también tengo el plan, lo que no tengo es descanso.",char:"controladora"},
     {t:"Me doy cuenta de que sé lo que se espera de mí, pero no lo que yo quiero.",char:"exitosaVacia"},
     {t:"Confío en que se va a acomodar y suelto el control de cómo tiene que pasar.",char:"espiritualReprimida"},
     {t:"Lo que quiero siempre queda después de lo que necesitan los míos.",char:"salvadora"},
-    {t:"Me da algo de pena admitir lo que quiero, así que lo dejo en voz baja.",char:"invisible"}]},
+    {t:"Me da algo de pena admitir lo que quiero, así que lo dejo en voz baja.",char:"invisible"},
+    {t:"Sé lo que quiero, lo digo en voz alta y no pido permiso.",char:null,libre:true}]},
   {id:9,type:"r",text:"En mis relaciones más cercanas…",items:[
     {t:"Se quedaron en la superficie, y nadie sabe realmente cómo estoy.",char:"exitosaVacia"},
     {t:"Soy la que organiza, la que recuerda todo y la que sostiene el ritmo.",char:"controladora"},
     {t:"Soy la que sostiene, la que escucha y la que resuelve, y casi nunca al revés.",char:"salvadora"},
     {t:"Estoy presente pero en segundo plano, y casi nunca hablo de mí.",char:"invisible"},
     {t:"Pongo distancia cuando algo me incomoda y lo llamo cuidar mi paz.",char:"espiritualReprimida"},
-    {t:"Estoy, pero siempre con la cabeza en lo que tengo que resolver después.",char:"proveedora"}]},
+    {t:"Estoy, pero siempre con la cabeza en lo que tengo que resolver después.",char:"proveedora"},
+    {t:"Me muestro como estoy, incluso cuando no estoy bien.",char:null,libre:true}]},
   {id:10,type:"r",text:"Cuando algo se sale de control sin avisar…",items:[
     {t:"Me repito que todo pasa por algo y suelto antes de haber sentido nada.",char:"espiritualReprimida"},
     {t:"Tomo el mando y no suelto hasta que todo vuelva a su lugar.",char:"controladora"},
     {t:"Me pongo a trabajar más, porque moverme es lo único que me calma.",char:"proveedora"},
     {t:"Me aseguro primero de que los demás estén bien y después veo cómo estoy yo.",char:"salvadora"},
     {t:"Me hago pequeña, espero a que pase y no digo lo que pienso.",char:"invisible"},
-    {t:"Funciono perfecto por fuera aunque por dentro no sienta nada.",char:"exitosaVacia"}]},
+    {t:"Funciono perfecto por fuera aunque por dentro no sienta nada.",char:"exitosaVacia"},
+    {t:"Acepto que esto no depende de mí y me quedo tranquila con eso.",char:null,libre:true}]},
   {id:11,type:"c",text:"Si pudieras cambiar una sola cosa de tu vida ahora mismo, ¿qué cambiarías?",opts:[
     {text:"La forma en la que me trato a mí misma.",change:"trato_conmigo",disp:2},
     {text:"El nivel de carga que llevo encima.",change:"carga",disp:3},
@@ -524,10 +540,10 @@ var STAT=(function(){
    así que las seis se miden en el mismo rango de 0 a 10 y ninguna respuesta se descarta.
    Los empates se resuelven por cantidad de respuestas fuertes, después por la pregunta
    de qué cambiarías, después por la de infancia. Todo con números, nada arbitrario. */
-function scoreAll(answers){
+function scoreAll(answers,pref){
   var hits={},faced={},won={};
   ORDER.forEach(function(k){hits[k]=0;faced[k]=0;won[k]={};});
-  var mood="",change="",age=0,origen="",bloques=0,disp=0,semilla=0;
+  var mood="",change="",age=0,origen="",bloques=0,disp=0,semilla=0,libres=0;
   answers.forEach(function(a){
     semilla+=(a.qid||0)*3+(a.oi||0)*7;
     var q=null;for(var i=0;i<QS.length;i++)if(QS[i].id===a.qid){q=QS[i];break;}
@@ -536,7 +552,8 @@ function scoreAll(answers){
       bloques++;
       var presentes=(q.items||[]).map(function(it){return it.char;});
       presentes.forEach(function(c){if(c in faced)faced[c]++;});
-      var elegido=(q.items[a.oi]||{}).char;
+      var op=q.items[a.oi]||{},elegido=op.char;
+      if(op.libre)libres++;
       if(elegido&&(elegido in hits)){
         hits[elegido]++;
         presentes.forEach(function(c){if(c!==elegido)won[elegido][c]=(won[elegido][c]||0)+1;});
@@ -576,6 +593,12 @@ function scoreAll(answers){
     });
     sorted=sorted.concat(g);
   });
+  /* Si hubo pregunta de desempate, manda lo que ella eligió. */
+  if(pref&&sorted.indexOf(pref)>0&&hits[pref]>=hits[sorted[0]]-1){
+    sorted=[pref].concat(sorted.filter(function(k){return k!==pref;}));
+  }
+  /* Empate real arriba: cuando el segundo está igual o a una respuesta del primero. */
+  var empate=(sorted.length>1&&hits[sorted[1]]>=hits[sorted[0]]-1&&hits[sorted[1]]>0)?[sorted[0],sorted[1]]:null;
   var priKey=sorted[0],maxP=faced[priKey]||8;
   var secKey=hits[sorted[1]]>=2?sorted[1]:null;
   var conPuntaje=sorted.filter(function(k){return hits[k]>0;});
@@ -591,6 +614,7 @@ function scoreAll(answers){
   return{primaryKey:priKey,secondaryKey:secKey,constKey:constKey,
     primary:CHARS[priKey],secondary:secKey?CHARS[secKey]:null,constellation:CONST[constKey]||null,
     meters:meters,puntaje:hits[priKey],maxPuntaje:maxP,senal:senal,bloques:bloques,
+    empate:empate,libres:libres,personajeResp:bloques-libres,
     avgPain:maxP?(hits[priKey]/maxP)*3:0,disp:disp,mood:mood,change:change,
     nivel:nivel,dest:nivel==="alta"?"whatsapp":"claridad",
     age:age,years:(age?(age>=58?"más de cincuenta años":age>=50?"más de cuarenta años":age>=40?"más de treinta años":"más de veinte años"):""),
@@ -665,7 +689,7 @@ function pushGHL(ud,res){
 }
 
 /* ================= ESTADO / UTILIDADES DE UI ================= */
-var S={ud:null,result:null,qIdx:0,answers:[]};
+var S={ud:null,result:null,qIdx:0,answers:[],pref:null};
 var app=document.getElementById("app"),stick=document.getElementById("stick");
 var IO=null;
 function render(html,keepStick){
@@ -757,6 +781,20 @@ function rQuiz(){
   +'<p class="h3" style="margin-bottom:30px">'+esc(q.text)+'</p>'
   +cuerpo
   +(S.qIdx>0?'<div style="margin-top:24px"><button class="linkback" onclick="II.back()">← Volver a la anterior</button></div>':'')
+  +'</div></div>');
+}
+
+/* ============ 2b. DESEMPATE: cuando dos quedan iguales, elige ella ============ */
+function rDesempate(dos){
+  var opts=dos.map(function(k,i){
+    return '<button class="opt" style="animation-delay:'+(i*.08+.05)+'s" onclick="II.desempate(\''+k+'\')">'+esc(CHARS[k].tag)+'</button>';
+  }).join("");
+  render('<div class="screen light" style="display:flex;align-items:center;padding:56px 0"><div class="wrap" style="width:100%">'
+  +'<p class="kicker" style="color:var(--muted);margin-bottom:12px">Una última, y esta la decides tú</p>'
+  +'<div class="pbar" style="margin-bottom:38px"><i style="width:96%"></i></div>'
+  +'<p class="h3" style="margin-bottom:18px">Dos formas de vivir quedaron empatadas en tus respuestas.</p>'
+  +'<p class="body" style="margin-bottom:30px">¿Cuál de estas dos frases se parece más a tu vida hoy?</p>'
+  +'<div style="display:flex;flex-direction:column;gap:13px">'+opts+'</div>'
   +'</div></div>');
 }
 
@@ -859,7 +897,24 @@ function rResult(){
   +'<p class="kicker rv" style="margin-bottom:10px">Tu perfil</p>'
   +'<h2 class="h2 rv" style="color:#fff;margin-bottom:14px">Así se reparte el peso adentro de ti</h2>'
   +'<p class="body rv" style="margin-bottom:34px">Ninguna de nosotras carga un solo traje. Estos son los que más peso tienen en tus respuestas.</p>'
-  +'<div id="meters" class="rv">'+meters+'</div></div></div>'
+  +'<div id="meters" class="rv">'+meters+'</div>'
+  /* cuánto del test respondió un personaje y cuánto respondió ella */
+  +(res.bloques?(function(){
+      var tot=res.bloques,per=res.personajeResp,lib=res.libres;
+      var pp=Math.round(per/tot*100),pl=100-pp;
+      return '<div class="rv" style="margin-top:44px;padding-top:34px;border-top:1px solid rgba(250,244,232,.18)">'
+      +'<p class="kicker" style="color:var(--oroClaro);margin-bottom:16px">Y aquí está lo que casi nadie mide</p>'
+      +'<div class="split"><i class="sper" style="width:'+pp+'%"></i><i class="slib" style="width:'+pl+'%"></i></div>'
+      +'<div class="splab"><span><b>'+pp+'%</b> respondió un personaje</span><span><b>'+pl+'%</b> respondiste tú</span></div>'
+      +'<p class="body" style="margin-top:20px">'
+      +(lib===0
+        ? 'En las '+tot+' situaciones respondió un personaje. En ninguna apareciste tú, y eso no es un defecto tuyo: es la medida exacta de cuánto espacio le has cedido.'
+        : (per>lib
+          ? 'De '+tot+' situaciones, en '+per+' respondió un personaje y solo en '+lib+' respondiste tú. Ese '+pl+'% es todo el tiempo que hoy te estás permitiendo ser quien eres.'
+          : 'De '+tot+' situaciones, en '+lib+' respondiste tú y en '+per+' respondió un personaje. Ya recuperaste más de la mitad, y lo que falta es justo donde más te cuesta.'))
+      +'</p></div>';
+    })():"")
+  +'</div></div>'
   /* 4. quién es */
   +'<div class="light" style="padding:80px 0"><div class="wrap">'
   +'<p class="kicker rv" style="margin-bottom:14px">Primera parte</p>'
@@ -999,9 +1054,13 @@ window.II={
     btn.className="opt sel";
     setTimeout(function(){
       S.answers[S.qIdx]={qid:QS[S.qIdx].id,oi:oi};
-      if(S.qIdx<QS.length-1){S.qIdx++;rQuiz();}else{rForm();}
+      if(S.qIdx<QS.length-1){S.qIdx++;rQuiz();return;}
+      /* Al terminar, si hay empate arriba se lo preguntamos a ella. */
+      var prov=scoreAll(S.answers);
+      if(prov.empate){rDesempate(prov.empate);}else{rForm();}
     },260);
   },
+  desempate:function(k){S.pref=k;rForm();},
   back:function(){if(S.qIdx>0){S.qIdx--;S.answers.length=S.qIdx;rQuiz();}},
   costPick:function(el){el.classList.toggle("on");II.costCount();},
   costCount:function(){
@@ -1021,7 +1080,7 @@ window.II={
     var ud={name:g("f-name"),email:g("f-email"),phoneCode:g("f-code"),phone:g("f-phone")};
     if(!ud.name||!ud.email||ud.email.indexOf("@")<0||!ud.phoneCode||!ud.phone){document.getElementById("f-err").style.display="block";return;}
     S.ud=ud;track("Lead");rLoading();
-    var res=scoreAll(S.answers);S.result=res;ud.dest=res.dest;pushGHL(ud,res);
+    var res=scoreAll(S.answers,S.pref);S.result=res;ud.dest=res.dest;pushGHL(ud,res);
     try{localStorage.setItem(LS_KEY,JSON.stringify({ud:ud,result:res}));}catch(e){}
     setTimeout(function(){rResult();},2700);
   },
