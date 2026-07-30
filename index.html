@@ -183,7 +183,7 @@ img{display:block;max-width:100%;}
 .qhero{margin-top:34px;border:1px solid var(--oro);border-radius:6px;background:linear-gradient(160deg,#FFFDF8 0%,rgba(194,155,64,.09) 100%);padding:52px 46px;}
 .qhero .qline{font-size:34px;font-style:normal;color:var(--tinta);border-bottom:none;padding-bottom:0;margin-bottom:34px;max-width:840px;}
 .qhero .ql li{font-size:22px;}
-.qcierre{margin-top:38px;padding-top:30px;border-top:1px solid rgba(194,155,64,.45);font-family:'Cormorant Garamond',serif;font-size:31px;line-height:1.32;color:var(--tinta);max-width:900px;}
+.qcierre{margin-top:28px;padding-top:22px;border-top:1px solid rgba(194,155,64,.45);font-family:'Cormorant Garamond',serif;font-size:31px;line-height:1.32;color:var(--tinta);max-width:900px;}
 .qpreg{margin-top:22px;font-size:22px;letter-spacing:.4px;color:var(--azul);}
 .qpreg b{font-weight:500;color:var(--oro);letter-spacing:2px;text-transform:uppercase;font-size:23px;}
 @media(max-width:640px){.qcierre{font-size:27px;margin-top:30px;padding-top:26px}.qpreg{font-size:21px}.qpreg b{font-size:22px}}
@@ -222,8 +222,8 @@ var PH={
   origen:      "https://images.pexels.com/photos/3922819/pexels-photo-3922819.jpeg",
   puerta:      "https://images.pexels.com/photos/13538107/pexels-photo-13538107.jpeg",
   controladora:"https://images.pexels.com/photos/8860907/pexels-photo-8860907.jpeg",
-  salvadora:   "https://images.pexels.com/photos/7231629/pexels-photo-7231629.jpeg",
-  invisible:   "https://images.pexels.com/photos/17044848/pexels-photo-17044848.jpeg",
+  salvadora:   "https://images.pexels.com/photos/5699726/pexels-photo-5699726.jpeg",
+  invisible:   "https://images.pexels.com/photos/8057362/pexels-photo-8057362.jpeg",
   proveedora:  "https://images.pexels.com/photos/9063397/pexels-photo-9063397.jpeg",
   exitosaVacia:"https://images.pexels.com/photos/3926205/pexels-photo-3926205.jpeg",
   espiritualReprimida:"https://images.pexels.com/photos/7169649/pexels-photo-7169649.jpeg"
@@ -231,8 +231,8 @@ var PH={
 /* Encuadre propio de cada foto, para que el recorte nunca corte una cara. */
 var POS={
   hero:"center 32%", espejo:"center 50%", ventana:"center 42%", origen:"center 45%",
-  puerta:"center 50%", controladora:"center 48%", salvadora:"center 10%",
-  invisible:"center 45%", proveedora:"center 42%", exitosaVacia:"center 48%",
+  puerta:"center 50%", controladora:"center 48%", salvadora:"center 40%",
+  invisible:"center 40%", proveedora:"center 42%", exitosaVacia:"center 48%",
   espiritualReprimida:"center 30%"
 };
 function px(k,w){return (PH[k]||PH.hero)+"?auto=compress&cs=tinysrgb&w="+(w||1200);}
@@ -258,7 +258,7 @@ var CHARS={
     whoIs:["Ella no es una mujer mandona ni una obsesiva del orden, aunque desde afuera se vea así. Es la que un día entendió que el mundo se sostiene si ella lo sostiene, y desde entonces no ha bajado la guardia un solo día.","Su escondite favorito es la competencia, porque a la mujer que resuelve nadie la cuestiona. Cada vez que alguien dice que eres admirable, que eres fuerte y que eres la que siempre puede, ella respira tranquila y se queda otro año más.","Y no es un rasgo de tu personalidad. Es un rol que aprendiste tan temprano y que repetiste tantas veces que dejó de sentirse como un rol."],
     birth:["Ella no nace a los treinta ni a los cuarenta, nace mucho antes, en una casa donde algo era demasiado impredecible: alguien no cumplía, alguien fallaba, alguien se iba, o había un clima que cambiaba sin avisar y una niña aprendió a leerlo antes de que estallara.","Esa niña hizo el cálculo más inteligente que podía hacer con lo que tenía: si estoy pendiente de todo, nada me toma por sorpresa, y si nada me toma por sorpresa, no me vuelve a doler igual. Ahí nació ella, y desde ese día trabaja sin descanso y sin pedir permiso.","Por eso cuando intentas soltar no sientes alivio, sientes riesgo. No es exageración tuya ni falta de fe, es ella activándose, y decide antes de que tú alcances a pensarlo."],
     gaveText:"Antes de cobrarte nada, este personaje te salvó. Gracias a él sostuviste cosas que otros habrían soltado, aprendiste a resolver bajo presión y la gente confía en tu palabra. Nada de eso es mentira y nadie te lo va a quitar.",
-    pares:[["Revisas dos veces algo que ya estaba bien.", "Lo entregas y no lo vuelves a mirar."], ["Te escriben un domingo y contestas.", "Pasas el domingo sin abrir el teléfono."], ["Corriges tanto que ya nadie te ofrece ayuda.", "Pides ayuda y la dejas así como te la dan."], ["Tu cuerpo te avisa y le pides un mes más.", "Duermes ocho horas seguidas."], ["Tu proyecto lleva años esperando.", "Empiezas el tuyo esta semana."]],
+    pares:[["Revisas dos veces algo que ya estaba bien.", "Lo entregas y no lo vuelves a mirar."], ["Te escriben un domingo y contestas.", "Pasas el domingo sin abrir el teléfono."], ["Corriges tanto que ya nadie te ofrece ayuda.", "Pides ayuda y la recibes con gusto."], ["Tu cuerpo te avisa y le pides un mes más.", "Duermes ocho horas seguidas."], ["Tu proyecto lleva años esperando.", "Empiezas el tuyo esta semana."]],
     gaveB:["Anticipar problemas antes de que existan", "Sostener responsabilidades que a otros les quedan grandes", "Que la gente confíe en que lo tuyo va a estar", "Rendir bajo presión sin que se te note", "Criterio para decidir rápido cuando nadie más se atreve"],
     takesNote:"Así se siente por dentro cuando ella manda. Puede que reconozcas una, puede que reconozcas todas.",
     takesB:["Llevas tanto tiempo durmiendo mal que ya lo llamas tu forma de ser", "Le dedicas horas a revisar lo que ya estaba bien, y esas horas no las recupera nadie", "Corregiste tanto lo que otros hacían que dejaron de ayudarte, y ahora cargas sola con toda la razón", "Estás tan pendiente de lo que puede salir mal que se te pasa lo que está saliendo bien", "Tu cuerpo lleva meses avisando y tú le sigues pidiendo un mes más", "Tu descanso dura hasta que alguien escribe, y siempre alguien escribe", "Tu proyecto lleva años esperando a que se desocupe una mujer que nunca se desocupa"],
@@ -373,7 +373,7 @@ var CHARS={
     keepsLine:"No va a pasar una tragedia. Va a pasar otro logro que tampoco se siente.",
     withoutLine:"Imagínate mirar tu propia vida y que por fin se sienta tuya, con todo lo que ya construiste adentro. Eso es lo que hay del otro lado.",
     gaveText:"Antes de cobrarte nada, este personaje cumplió. Te llevó lejos, te dio resultados que muchas mujeres quisieran y una capacidad de ejecución que no es común. Nada de eso hay que tirarlo por la borda.",
-    pares:[["Te felicitan y piensas que fue suerte.", "Te felicitan y te lo crees."], ["Cumples la meta y de una te pones otra.", "Cumples la meta y la disfrutas antes de seguir."], ["Dices que todo bien sin fijarte si es cierto.", "Dices que hoy no estás bien, en voz alta."], ["Sabes de memoria lo que se espera de ti.", "Sabes lo que quieres tú."], ["Nadie cercano sabe cómo estás de verdad.", "Alguien cercano sabe cómo estás de verdad."]],
+    pares:[["Te felicitan y piensas que fue suerte.", "Te felicitan y te lo crees."], ["Cumples la meta y de una te pones otra.", "Cumples la meta y la disfrutas antes de seguir."], ["Ya andas buscando la siguiente maestría o certificación porque todavía no es suficiente.", "Disfrutas lo que ya lograste y entiendes que el título no eres tú."], ["Dices que todo bien sin fijarte si es cierto.", "Dices que hoy no estás bien, en voz alta."], ["Sabes de memoria lo que se espera de ti.", "Sabes lo que quieres tú."], ["Nadie cercano sabe cómo estás de verdad.", "Alguien cercano sabe cómo estás de verdad."]],
     gaveB:["Una capacidad de ejecución que muy poca gente tiene", "Resultados reales, que se pueden mostrar", "Estándares altos que elevaron todo lo que tocaste", "Independencia y opciones que la mayoría no tiene", "Llegar exactamente donde dijiste que ibas a llegar"],
     takesNote:"Esto no se ve por fuera, y ahí está lo peor, porque a la mujer a la que todo le va bien nadie le pregunta cómo está. Puede que reconozcas una, puede que reconozcas todas.",
     takesB:["Cada reconocimiento se lo acreditas a la suerte, así que ninguno te ha llegado nunca", "Alcanzas la meta, no sientes nada, y en vez de parar subes la vara", "Dices que todo bien sin revisar si es cierto, y ya nadie pregunta dos veces", "Lloras sola de noche y a las siete de la mañana estás impecable", "Sabes de memoria lo que se espera de ti, y no tienes idea de lo que quieres", "Tus vínculos se quedaron en la superficie porque nunca dejaste que bajaran", "Cada logro nuevo no llena nada, solo hace más grande la pregunta de para qué"],
@@ -761,7 +761,7 @@ function rHero(){
   render(
   '<div class="screen">'
   +hero("hero","100vh",
-    '<div class="wrapW"><div style="max-width:660px;padding:70px 0">'
+    '<div class="wrapW"><div style="max-width:660px;padding:46px 0">'
     +'<p class="kicker" style="margin-bottom:26px">Ingeniería de Identidad</p>'
     +'<h1 class="h1" style="color:#fff;margin-bottom:20px">Si hice &#8220;todo bien&#8221;,<br><em style="color:var(--celeste);font-weight:500">¿por qué me siento tan mal?</em></h1>'
     +'<p class="quote" style="color:var(--oroClaro);margin-bottom:26px">Con este vacío que no logro explicar.</p>'
@@ -782,7 +782,7 @@ function rHero(){
   +'<p class="body rv">La raíz de todos esos trajes es la misma, y es el miedo. Hoy ese traje se te hizo chico, pesa y aprieta, y no es que estés mal, es que ya no eres la mujer que construyó esa vida pero tampoco sabes quién eres ahora.</p>'
   +'</div></div>'
   /* --- banda con frase --- */
-  +band("ventana","62vh",'<div class="wrap" style="padding:70px 26px;text-align:center">'
+  +band("ventana","62vh",'<div class="wrap" style="padding:46px 26px;text-align:center">'
     +'<p class="quote rv" style="color:#fff;max-width:620px;margin:0 auto">No es que te hayas perdido. Pero tampoco sabes dónde carajos estás hoy.</p></div>')
   /* --- cierre de portada: suspenso, sin revelar los personajes --- */
   +'<div class="light" style="padding:86px 0"><div class="wrap" style="text-align:center">'
@@ -909,7 +909,7 @@ function rResult(){
   var html='<div class="screen">'
   /* 1. ANTES DE TU RESULTADO: la nota amorosa, antes de revelar el nombre */
   +hero("espejo","68vh",
-    '<div class="wrap" style="padding:70px 26px;text-align:center">'
+    '<div class="wrap" style="padding:46px 26px;text-align:center">'
     +'<p class="kicker" style="margin-bottom:26px">'+first+', antes de tu resultado</p>'
     +'<div class="rule" style="margin:0 auto 30px"></div>'
     +'<p class="quote" style="color:#fff;max-width:660px;margin:0 auto 30px">'+esc(WELCOME.line)+'</p>'
@@ -918,7 +918,7 @@ function rResult(){
     +'</div>')
   /* 2. el nombre */
   +hero(res.primaryKey,"92vh",
-    '<div class="wrapW"><div style="max-width:700px;padding:64px 0">'
+    '<div class="wrapW"><div style="max-width:700px;padding:44px 0">'
     +'<p class="kicker" style="margin-bottom:20px">Tu diagnóstico</p>'
     +'<p class="body" style="color:rgba(250,244,232,.8);margin-bottom:10px">El personaje que ha estado viviendo tu vida se llama</p>'
     +'<h1 class="h1" style="color:#fff;margin-bottom:18px">'+esc(p.name)+'</h1>'
@@ -927,7 +927,7 @@ function rResult(){
     +'<p class="quote" style="color:var(--oroClaro);max-width:560px">&#8220;'+esc(p.shadow)+'&#8221;</p>'
     +'</div></div>')
   /* 3. medidores */
-  +'<div class="dark" style="padding:70px 0"><div class="wrap">'
+  +'<div class="dark" style="padding:46px 0"><div class="wrap">'
   +'<p class="kicker rv" style="margin-bottom:10px">Tu perfil</p>'
   +'<h2 class="h2 rv" style="color:#fff;margin-bottom:14px">Así se reparte el peso adentro de ti</h2>'
   +'<p class="body rv" style="margin-bottom:34px">Ninguna de nosotras carga un solo traje. Estos son los que más peso tienen en tus respuestas.</p>'
@@ -936,7 +936,7 @@ function rResult(){
   +(res.bloques?(function(){
       var tot=res.bloques,per=res.personajeResp,lib=res.libres;
       var pp=Math.round(per/tot*100),pl=100-pp;
-      return '<div class="rv" style="margin-top:44px;padding-top:34px;border-top:1px solid rgba(250,244,232,.18)">'
+      return '<div class="rv" style="margin-top:30px;padding-top:24px;border-top:1px solid rgba(250,244,232,.18)">'
       +'<p class="kicker" style="color:var(--oroClaro);margin-bottom:16px">Y aquí está lo que casi nadie mide</p>'
       +'<div class="split"><i class="sper" style="width:'+pp+'%"></i><i class="slib" style="width:'+pl+'%"></i></div>'
       +'<div class="splab"><span><b>'+pp+'%</b> tu personaje</span><span><b>'+pl+'%</b> respondiste tú</span></div>'
@@ -944,13 +944,13 @@ function rResult(){
     })():"")
   +'</div></div>'
   /* 4. quién es */
-  +'<div class="light" style="padding:80px 0"><div class="wrap">'
+  +'<div class="light" style="padding:50px 0"><div class="wrap">'
   +'<p class="kicker rv" style="margin-bottom:14px">Primera parte</p>'
   +'<h2 class="h2 rv" style="margin-bottom:26px">Quién es '+esc(p.name)+'</h2>'
   +PP(whoIs,"body","font-size:21px;margin-bottom:20px")
   +'</div></div>'
   /* 5. de dónde nace */
-  +band("ventana","auto",'<div class="wrap" style="padding:82px 26px">'
+  +band("ventana","auto",'<div class="wrap" style="padding:52px 26px">'
     +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:14px">Segunda parte</p>'
     +'<h2 class="h2 rv" style="color:#fff;margin-bottom:26px">De dónde nace y por qué la elegiste'+(p.adultez?"":" sin saberlo")+'</h2>'
     +PP(birth,"lead","color:rgba(250,244,232,.94);font-size:22px;margin-bottom:20px")
@@ -963,7 +963,7 @@ function rResult(){
        +'<p class="body" style="color:rgba(250,244,232,.86);margin-top:16px">Y por eso nunca fue falta de voluntad. Has estado peleando contra algo que se instaló antes de que supieras que se podía elegir.</p></div>':""))
     +'</div>')
   /* 6. cómo opera: acordeones */
-  +'<div class="light" style="padding:74px 0"><div class="wrap">'
+  +'<div class="light" style="padding:48px 0"><div class="wrap">'
   +'<p class="kicker rv" style="margin-bottom:26px">Tercera parte · Cómo opera por dentro</p>'
   +'<div class="rv">'
   +acc("Los tres momentos donde decide por ti",'<p class="body" style="font-style:italic">'+esc(p.teaser3)+'</p>',true)
@@ -977,10 +977,10 @@ function rResult(){
   +'<p class="body rv" style="margin-top:30px;font-size:21px;color:var(--tinta)">Y si mientras leías esto pensaste que exagero o que no es tan así, fíjate quién está buscando el argumento.</p>'
   +'</div></div></div>'
   /* 7. LAS DOS VIDAS, CARA A CARA */
-  +band(res.primaryKey,"auto",'<div class="wrap" style="padding:70px 26px">'
+  +band(res.primaryKey,"auto",'<div class="wrap" style="padding:46px 26px">'
     +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:14px">Cuarta parte</p>'
     +'<h2 class="h2 rv" style="color:#fff">Dos vidas, la misma mujer</h2></div>')
-  +'<div class="light" style="padding:64px 0"><div class="wrapW" style="max-width:1060px;margin:0 auto">'
+  +'<div class="light" style="padding:44px 0"><div class="wrapW" style="max-width:1060px;margin:0 auto">'
   +(p.gaveText?'<p class="body rv" style="font-size:21px;margin-bottom:34px">'+esc(p.gaveText)+'</p>':"")
   +(p.takesLine?'<p class="qline rv" style="border-bottom:none;padding-bottom:0;margin-bottom:30px">'+esc(p.takesLine)+'</p>':"")
   +'<div class="pares rv">'
@@ -994,13 +994,13 @@ function rResult(){
   +'</div></div>'
   /* 8. LA CONVERSACIÓN HONESTA: desarma al personaje y abre el umbral para ella */
   +hero("puerta","auto",
-    '<div class="wrap" style="padding:96px 26px">'
+    '<div class="wrap" style="padding:58px 26px">'
     +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:18px">Sin rodeos</p>'
-    +'<h2 class="h2 rv" style="color:#fff;margin-bottom:34px">Lo que te diría si estuviéramos sentadas las dos</h2>'
+    +'<h2 class="h2 rv" style="color:#fff;margin-bottom:24px">Lo que te diría si estuviéramos sentadas las dos</h2>'
     +PP(rev,"lead","color:rgba(250,244,232,.96);font-size:23px;margin-bottom:22px")
     +'</div>')
   /* 9. EL PRIMER PASO, GRATIS Y HOY */
-  +(step?'<div class="light" style="padding:82px 0"><div class="wrap">'
+  +(step?'<div class="light" style="padding:52px 0"><div class="wrap">'
     +'<p class="kicker rv" style="margin-bottom:14px">Tu herramienta más poderosa, y no cuesta nada</p>'
     +'<h2 class="h2 rv" style="margin-bottom:26px">'+esc(step.title)+'</h2>'
     +'<div class="rv card" style="border:1px solid var(--oro);background:linear-gradient(180deg,#FFFDF8,rgba(194,155,64,.07))">'
@@ -1008,7 +1008,7 @@ function rResult(){
     +'</div></div></div>':"")
   /* 10. EL SIGUIENTE PASO: una sola puerta */
   +band("origen","auto",
-    '<div class="wrap" style="padding:86px 26px">'
+    '<div class="wrap" style="padding:54px 26px">'
     +'<p class="body rv" style="color:rgba(250,244,232,.9);margin-bottom:26px">La diferencia entre la mujer que dentro de un año sigue igual y la que por fin vive su propia vida no está en el diagnóstico, está en si algo se interrumpe o no. Y este patrón no se disuelve con el tiempo, se consolida, porque cada año que lo repites se siente menos como un personaje y más como tú.</p>'
     +'<div class="rv card" style="background:rgba(250,244,232,.06);border:1px solid var(--oro);margin-bottom:20px">'
     +'<p class="kicker" style="color:var(--oroClaro);margin-bottom:14px">El siguiente paso</p>'
@@ -1018,7 +1018,7 @@ function rResult(){
     +'<p class="body" style="color:rgba(250,244,232,.94);margin-bottom:14px">Ahora esta decisión sí depende de ti y no del personaje.</p>'
     +'<p class="serif rv" style="font-size:30px;font-style:italic;color:var(--oroClaro);margin-bottom:26px">Te amo.</p>'
     +'<a class="btn" style="max-width:none" href="'+CONFIG.claridad_url+'" target="_blank" rel="noreferrer" onclick="II.wa()">Quiero mi sesión de claridad</a></div>'
-    +'<div class="rv" style="margin-top:34px;padding-top:26px;border-top:1px solid rgba(250,244,232,.16)">'
+    +'<div class="rv" style="margin-top:26px;padding-top:22px;border-top:1px solid rgba(250,244,232,.16)">'
     +'<a class="btn btn-line" style="max-width:340px" href="'+shareUrl+'" target="_blank" rel="noreferrer" onclick="II.shared()">Mandarle esto a una amiga por WhatsApp</a>'
     +'<p style="margin-top:12px;font-size:19px;color:rgba(250,244,232,.75)">Se abre WhatsApp con el mensaje y el enlace ya listos.</p></div>'
     +'</div>')
