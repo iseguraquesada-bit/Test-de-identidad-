@@ -905,14 +905,8 @@ function rResult(){
       return '<div class="rv" style="margin-top:44px;padding-top:34px;border-top:1px solid rgba(250,244,232,.18)">'
       +'<p class="kicker" style="color:var(--oroClaro);margin-bottom:16px">Y aquí está lo que casi nadie mide</p>'
       +'<div class="split"><i class="sper" style="width:'+pp+'%"></i><i class="slib" style="width:'+pl+'%"></i></div>'
-      +'<div class="splab"><span><b>'+pp+'%</b> respondió un personaje</span><span><b>'+pl+'%</b> respondiste tú</span></div>'
-      +'<p class="body" style="margin-top:20px">'
-      +(lib===0
-        ? 'En las '+tot+' situaciones respondió un personaje. En ninguna apareciste tú, y eso no es un defecto tuyo: es la medida exacta de cuánto espacio le has cedido.'
-        : (per>lib
-          ? 'De '+tot+' situaciones, en '+per+' respondió un personaje y solo en '+lib+' respondiste tú. Ese '+pl+'% es todo el tiempo que hoy te estás permitiendo ser quien eres.'
-          : 'De '+tot+' situaciones, en '+lib+' respondiste tú y en '+per+' respondió un personaje. Ya recuperaste más de la mitad, y lo que falta es justo donde más te cuesta.'))
-      +'</p></div>';
+      +'<div class="splab"><span><b>'+pp+'%</b> tu personaje</span><span><b>'+pl+'%</b> respondiste tú</span></div>'
+      +'</div>';
     })():"")
   +'</div></div>'
   /* 4. quién es */
