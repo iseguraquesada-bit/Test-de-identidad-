@@ -1076,6 +1076,19 @@ window.II={
   try{
     var q=new URLSearchParams(window.location.search),sc=q.get("screen");
     if(sc==="resultado"||sc==="thankyou"){
+      /* Si el enlace trae personaje, manda el enlace por encima de lo guardado.
+         Así un resultado compartido se ve igual para quien lo abre. */
+      if(q.get("p")&&CHARS[q.get("p")]){
+        var pk0=q.get("p"),sk0=q.get("s"),ck0=q.get("c")||"";
+        var den0=8;
+        S.result={primaryKey:pk0,secondaryKey:(sk0&&CHARS[sk0])?sk0:null,constKey:ck0,
+          primary:CHARS[pk0],secondary:(sk0&&CHARS[sk0])?CHARS[sk0]:null,constellation:CONST[ck0]||null,
+          meters:[{key:pk0,name:CHARS[pk0].name,hits:6,den:den0,w:75}].concat(
+            (sk0&&CHARS[sk0])?[{key:sk0,name:CHARS[sk0].name,hits:2,den:den0,w:25}]:[]),
+          bloques:8,libres:2,personajeResp:6,years:"",empate:null};
+        S.ud={name:q.get("n")||"Bienvenida",email:"",dest:"claridad"};
+        rResult();return;
+      }
       var s=null;try{s=localStorage.getItem(LS_KEY);}catch(e){}
       if(s){var d=JSON.parse(s);S.ud=d.ud;S.result=d.result;
         /* El resultado guardado trae una copia del personaje del día que hizo el test.
@@ -1085,12 +1098,6 @@ window.II={
           S.result.secondary=(S.result.secondaryKey&&CHARS[S.result.secondaryKey])?CHARS[S.result.secondaryKey]:null;
           S.result.constellation=CONST[S.result.constKey]||CONST.hero;
         }else{S.result=null;}
-      }
-      else if(q.get("p")&&CHARS[q.get("p")]){
-        var pk=q.get("p"),sk=q.get("s"),ck=q.get("c")||"hero";
-        S.result={primaryKey:pk,secondaryKey:sk||null,constKey:ck,primary:CHARS[pk],secondary:(sk&&CHARS[sk])?CHARS[sk]:null,constellation:CONST[ck]||CONST.hero,
-          meters:[{key:pk,name:CHARS[pk].name,pct:100}].concat(sk&&CHARS[sk]?[{key:sk,name:CHARS[sk].name,pct:68}]:[])};
-        S.ud={name:q.get("n")||"Bienvenida",email:"",dest:q.get("d")||"whatsapp"};
       }
       if(S.result&&S.result.primary){rResult();return;}
     }
