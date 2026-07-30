@@ -144,7 +144,25 @@ img{display:block;max-width:100%;}
 .splab{display:flex;justify-content:space-between;gap:16px;margin-top:12px;font-size:19px;color:rgba(250,244,232,.86);}
 .splab b{font-weight:500;color:#fff;font-size:22px;}
 @media(max-width:640px){.splab{font-size:18px}.splab b{font-size:21px}}
-/* --- el balance: tres columnas editoriales y un bloque final destacado --- */
+/* --- las dos vidas, cara a cara --- */
+.parhead{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--crema2);}
+.parhead span{padding:16px 28px;font-size:15px;letter-spacing:3px;text-transform:uppercase;font-weight:500;color:var(--azul);}
+.parhead span:last-child{color:var(--oro);background:rgba(194,155,64,.07);}
+.par{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--crema2);}
+.par>div{padding:26px 28px;font-size:21px;line-height:1.5;}
+.par .hoy{color:var(--texto);}
+.par .tuya{color:var(--tinta);background:rgba(194,155,64,.07);border-left:1px solid rgba(194,155,64,.3);}
+.par b{display:none;}
+.pares{border-bottom:1px solid var(--crema2);}
+@media(max-width:820px){
+ .parhead{display:none;}
+ .par{grid-template-columns:1fr;}
+ .par>div{padding:20px 22px;font-size:22px;}
+ .par .tuya{border-left:none;}
+ .par b{display:block;font-family:'Jost',sans-serif;font-size:14px;letter-spacing:2.6px;text-transform:uppercase;font-weight:500;margin-bottom:8px;color:var(--azul);}
+ .par .tuya b{color:var(--oro);}
+}
+/* --- el balance --- */
 .quad{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--crema2);}
 .quad>.qbox{border-left:1px solid var(--crema2);}
 .quad>.qbox:first-child{border-left:none;}
@@ -239,6 +257,8 @@ var CHARS={
     step:{"title": "Nómbrala", "body": ["Durante los próximos siete días, cada vez que sientas la urgencia de revisar, corregir o hacerte cargo de algo que no te toca, para tres segundos y nómbrala: esta es ella, no soy yo.", "No te obligues a cambiar nada, no te regañes y no te exijas hacerlo distinto todavía. Solo sepáralas.", "Eso es todo, y no es poco: es el primer movimiento de la Ingeniería de Identidad, porque un personaje solo tiene poder mientras pasa por ti sin nombre. En el momento en que lo nombras deja de ser tú y se convierte en algo que puedes observar, y todo lo que se puede observar se puede soltar."]},
     whoIs:["Ella no es una mujer mandona ni una obsesiva del orden, aunque desde afuera se vea así. Es la que un día entendió que el mundo se sostiene si ella lo sostiene, y desde entonces no ha bajado la guardia un solo día.","Su escondite favorito es la competencia, porque a la mujer que resuelve nadie la cuestiona. Cada vez que alguien dice que eres admirable, que eres fuerte y que eres la que siempre puede, ella respira tranquila y se queda otro año más.","Y no es un rasgo de tu personalidad. Es un rol que aprendiste tan temprano y que repetiste tantas veces que dejó de sentirse como un rol."],
     birth:["Ella no nace a los treinta ni a los cuarenta, nace mucho antes, en una casa donde algo era demasiado impredecible: alguien no cumplía, alguien fallaba, alguien se iba, o había un clima que cambiaba sin avisar y una niña aprendió a leerlo antes de que estallara.","Esa niña hizo el cálculo más inteligente que podía hacer con lo que tenía: si estoy pendiente de todo, nada me toma por sorpresa, y si nada me toma por sorpresa, no me vuelve a doler igual. Ahí nació ella, y desde ese día trabaja sin descanso y sin pedir permiso.","Por eso cuando intentas soltar no sientes alivio, sientes riesgo. No es exageración tuya ni falta de fe, es ella activándose, y decide antes de que tú alcances a pensarlo."],
+    gaveText:"Antes de cobrarte nada, este personaje te salvó. Gracias a él sostuviste cosas que otros habrían soltado, aprendiste a resolver bajo presión y la gente confía en tu palabra. Nada de eso es mentira y nadie te lo va a quitar.",
+    pares:[["Revisas dos veces lo que ya estaba bien.", "Entregas y te olvidas."], ["Tu descanso dura hasta que alguien escribe.", "Un domingo entero sin abrir el teléfono."], ["Corregiste tanto que dejaron de ayudarte.", "Pides ayuda y la recibes sin revisarla."], ["Tu cuerpo avisa y le pides un mes más.", "Duermes ocho horas de corrido."], ["Tu proyecto espera a que te desocupes.", "Empiezas el tuyo."]],
     gaveB:["Anticipar problemas antes de que existan", "Sostener responsabilidades que a otros les quedan grandes", "Que la gente confíe en que lo tuyo va a estar", "Rendir bajo presión sin que se te note", "Criterio para decidir rápido cuando nadie más se atreve"],
     takesNote:"Así se siente por dentro cuando ella manda. Puede que reconozcas una, puede que reconozcas todas.",
     takesB:["Llevas tanto tiempo durmiendo mal que ya lo llamas tu forma de ser", "Le dedicas horas a revisar lo que ya estaba bien, y esas horas no las recupera nadie", "Corregiste tanto lo que otros hacían que dejaron de ayudarte, y ahora cargas sola con toda la razón", "Estás tan pendiente de lo que puede salir mal que se te pasa lo que está saliendo bien", "Tu cuerpo lleva meses avisando y tú le sigues pidiendo un mes más", "Tu descanso dura hasta que alguien escribe, y siempre alguien escribe", "Tu proyecto lleva años esperando a que se desocupe una mujer que nunca se desocupa"],
@@ -268,6 +288,8 @@ var CHARS={
     takesLine:"No va a pasar una tragedia. Va a pasar otro año dando de lo que ya no tienes.",
     keepsLine:"No va a pasar una tragedia. Va a pasar otro año dando de lo que ya no tienes.",
     withoutLine:"Imagínate que alguien te pregunte cómo estás de verdad y que tú tengas la respuesta lista, y ganas de darla. Eso es lo que hay del otro lado.",
+    gaveText:"Antes de cobrarte nada, este personaje te dio cosas reales: una sensibilidad para leer a la gente que muy pocas tienen, vínculos donde te confían lo que no le cuentan a nadie y un lugar que nadie te discute. Ser buena nunca fue el problema.",
+    pares:[["Dices que sí con la energía que ya no tienes.", "Dices hoy no me queda, y nadie se cae."], ["Todos saben que pueden escribirte a las once.", "Apagas el teléfono sin dar explicaciones."], ["Cuando te ofrecen ayuda dices que no hace falta.", "Recibes sin sentir que quedas debiendo."], ["Sabes qué necesita cada uno menos tú.", "Sabes qué quieres y lo pides."], ["Eres el plan B de todos y el plan A de nadie.", "Entras en tu propia lista, y de primera."]],
     gaveB:["Leer el estado de ánimo de alguien antes de que hable", "Sostener a otros en sus peores momentos", "Vínculos donde te confían lo que no le cuentan a nadie", "Ser la que aparece cuando hace falta", "Una intuición con la gente que muy pocas tienen"],
     takesNote:"Nada de esto se ve por fuera, porque tú eres la que siempre está bien. Puede que reconozcas una, puede que reconozcas todas.",
     takesB:["Dices que sí con la energía que ya no tienes, y después te enojas con quien te lo pidió", "Todos saben que pueden escribirte a las once de la noche, y eso lo enseñaste tú", "Sabes con detalle qué necesita cada uno, y no sabrías qué contestar si te preguntan qué necesitas tú", "Cuando te ofrecen ayuda dices que no hace falta, y después duele que nadie te ayude", "Eres el plan B de todos y el plan A de nadie", "Tu vida lleva años en la fila detrás de la de otros, y la fila no se acaba", "El día que te toque necesitar vas a descubrir a quién le enseñaste que tú no necesitas"],
@@ -294,6 +316,8 @@ var CHARS={
     takesLine:"No va a pasar una tragedia. Va a pasar otro año en silencio.",
     keepsLine:"No va a pasar una tragedia. Va a pasar otro año en silencio.",
     withoutLine:"Imagínate decir lo que piensas y ver que el mundo sigue ahí, intacto, y tú también. Eso es lo que hay del otro lado.",
+    gaveText:"Antes de cobrarte nada, este personaje te protegió. Hacerte pequeña fue lo más inteligente que podías hacer cuando ser vista salía caro, y de ahí te quedó una capacidad de leer el ambiente y de escuchar que casi nadie tiene.",
+    pares:[["Te callas para no incomodar.", "Dices lo que piensas y el mundo sigue ahí."], ["Ensayas la frase y no la dices.", "Hablas primero, sin ensayo."], ["Achicas lo que quieres antes de contarlo.", "Lo dices completo y en voz alta."], ["El enojo sale tres días después y por otra cosa.", "Lo dices en el momento y ahí se acaba."], ["Te quieren, pero a una versión que armaste.", "Te conocen de verdad y se quedan igual."]],
     gaveB:["Leer un ambiente completo en segundos", "Escuchar de verdad, sin interrumpir", "Ahorrarte conflictos que no valían la pena", "Adaptarte a lugares donde otras no habrían durado", "Ver lo que a los demás se les pasa"],
     takesNote:"Esto no se ve desde afuera, porque tú eres la que nunca da problemas. Puede que reconozcas una, puede que reconozcas todas.",
     takesB:["Te callas para no incomodar, y después te lo llevas a la cama", "Ensayaste la frase completa y no la dijiste, y alguien más se llevó lo que era tuyo", "Dices que sí queriendo decir que no, y el enojo termina siendo contra ti", "Achicas lo que quieres antes de contarlo, y así de chiquito se queda", "El enojo que te tragaste sale tres días después por algo que no era", "La gente cercana no sabe cómo estás porque tú les enseñaste a no preguntar", "Te quieren, pero a una versión tuya que armaste para que te quisieran"],
@@ -320,6 +344,8 @@ var CHARS={
     takesLine:"No va a pasar una tragedia. Va a pasar otro año agotada y al día.",
     keepsLine:"No va a pasar una tragedia. Va a pasar otro año agotada y al día.",
     withoutLine:"Imagínate un día entero sin producir nada y sentir, por primera vez, que igual valiste. Eso es lo que hay del otro lado.",
+    gaveText:"Antes de cobrarte nada, este personaje te construyó una vida. Tu disciplina, tu independencia y el hecho de que cumples tu palabra son reales, y buena parte de lo que hoy tienes existe porque él no te dejó rendirte.",
+    pares:[["Descansar te da culpa.", "Un martes libre y sin justificarlo."], ["Terminas algo y en dos horas ya estás en lo próximo.", "Terminas y te das el tiempo de disfrutarlo."], ["Tu cuerpo avisa y tú negocias.", "Tu cuerpo pide y tú le haces caso."], ["A tu gente le das lo que sobra.", "Llegas entera a la cena."], ["Vales por lo que entregaste esta semana.", "Vales sin entregar nada."]],
     gaveB:["Disciplina para sostener lo que otros abandonan", "Independencia, y todo lo que construiste con ella", "Cumplir tu palabra sin excepciones", "Levantar cosas desde cero", "Seguir cuando ya no quedan ganas"],
     takesNote:"Esto no se ve por fuera, porque por fuera lo que se ve es una mujer que puede con todo. Puede que reconozcas una, puede que reconozcas todas.",
     takesB:["Descansar te da culpa, así que llevas años sin descansar de verdad", "Terminas algo grande y en dos horas ya estás en lo próximo, sin haberlo sentido", "Tu cuerpo avisa y tú negocias, y va a llegar el día en que no haya con quién negociar", "A tu gente le das lo que sobra, y últimamente sobra poco", "Cada semana empiezas de cero, porque tu valor depende de lo que entregaste", "Si te preguntan qué te gusta hacer, no tienes una respuesta lista", "La vida que ibas a disfrutar cuando hubiera tiempo lleva años esperando ese tiempo"],
@@ -346,6 +372,8 @@ var CHARS={
     takesLine:"No va a pasar una tragedia. Va a pasar otro logro que tampoco se siente.",
     keepsLine:"No va a pasar una tragedia. Va a pasar otro logro que tampoco se siente.",
     withoutLine:"Imagínate mirar tu propia vida y que por fin se sienta tuya, con todo lo que ya construiste adentro. Eso es lo que hay del otro lado.",
+    gaveText:"Antes de cobrarte nada, este personaje cumplió. Te llevó lejos, te dio resultados que muchas mujeres quisieran y una capacidad de ejecución que no es común. Nada de eso hay que tirarlo por la borda.",
+    pares:[["Cada reconocimiento se lo acreditas a la suerte.", "Recibes y te lo crees."], ["Alcanzas la meta y de una subes la vara.", "Alcanzas la meta y te quedas ahí un rato."], ["Dices que todo bien sin revisar si es cierto.", "Dices hoy no estoy bien, en voz alta."], ["Sabes de memoria lo que se espera de ti.", "Sabes lo que quieres tú."], ["Tus vínculos se quedaron en la superficie.", "Alguien cercano sabe cómo estás de verdad."]],
     gaveB:["Una capacidad de ejecución que muy poca gente tiene", "Resultados reales, que se pueden mostrar", "Estándares altos que elevaron todo lo que tocaste", "Independencia y opciones que la mayoría no tiene", "Llegar exactamente donde dijiste que ibas a llegar"],
     takesNote:"Esto no se ve por fuera, y ahí está lo peor, porque a la mujer a la que todo le va bien nadie le pregunta cómo está. Puede que reconozcas una, puede que reconozcas todas.",
     takesB:["Cada reconocimiento se lo acreditas a la suerte, así que ninguno te ha llegado nunca", "Alcanzas la meta, no sientes nada, y en vez de parar subes la vara", "Dices que todo bien sin revisar si es cierto, y ya nadie pregunta dos veces", "Lloras sola de noche y a las siete de la mañana estás impecable", "Sabes de memoria lo que se espera de ti, y no tienes idea de lo que quieres", "Tus vínculos se quedaron en la superficie porque nunca dejaste que bajaran", "Cada logro nuevo no llena nada, solo hace más grande la pregunta de para qué"],
@@ -375,6 +403,8 @@ var CHARS={
     takesLine:"No va a pasar una tragedia. Va a pasar otro año en paz por fuera.",
     keepsLine:"No va a pasar una tragedia. Va a pasar otro año en paz por fuera.",
     withoutLine:"Imagínate sentir rabia sin traducirla y descubrir que del otro lado de eso también hay paz, pero una que no hay que sostener. Eso es lo que hay del otro lado.",
+    gaveText:"Antes de cobrarte nada, este personaje te sostuvo cuando nada más lo hacía. La espiritualidad te dio piso en un momento sin piso, y te dejó herramientas que sí funcionan y una forma de mirar la vida que no cambiarías.",
+    pares:[["Perdonas antes de tiempo.", "Sientes primero y perdonas después, si toca."], ["Le encuentras el aprendizaje en dos segundos.", "Te quedas en lo que duele el tiempo que haga falta."], ["Evitas la conversación y le llamas cuidar tu paz.", "La tienes, y ahí sí hay paz."], ["Te juzgas por sentir rabia.", "Te enojas y no pides disculpas después."], ["Por fuera serena, por dentro sin ordenar.", "Por dentro y por fuera, la misma."]],
     gaveB:["Herramientas que sí funcionan y que sí has usado", "Una capacidad de observarte que casi nadie desarrolla", "Un piso firme cuando no había ninguno", "Salir de lugares oscuros por tu propia mano", "Sensibilidad para lo que otros no alcanzan a ver"],
     takesNote:"Esto no se ve por fuera, porque por fuera lo que se ve es una mujer en paz. Puede que reconozcas una, puede que reconozcas todas.",
     takesB:["Perdonas antes de tiempo, y lo que no sentiste se queda exactamente donde estaba", "Le encuentras el aprendizaje en dos segundos, y por eso nunca terminas de sentirlo", "Evitas la conversación difícil y le pones el nombre de cuidar tu paz", "Te juzgas por sentir rabia, y la rabia guardada un día sale sin filtro y sin puntería", "Llevas años estudiándote y te conoces lo mismo que al principio", "Tu cuerpo te avisa y le buscas un significado antes que un médico", "Por fuera te ven serena, y por dentro está todo sin ordenar"],
@@ -737,7 +767,7 @@ function rHero(){
     +'<p class="quote" style="color:var(--oroClaro);margin-bottom:26px">Con este vacío que no logro explicar.</p>'
     +'<div class="rule" style="margin-bottom:26px"></div>'
     +'<p class="lead" style="color:rgba(250,244,232,.94);max-width:540px;margin-bottom:14px">En 5 minutos le ponemos nombre a eso que hoy llamas <strong style="color:#fff;font-weight:500">vivir en piloto automático</strong>, y vas a ver con claridad qué te está regalando y qué te está quitando.</p>'
-    +'<p class="body" style="color:rgba(250,244,232,.72);max-width:520px;margin-bottom:34px">Te llevas cuatro cosas concretas: el nombre del personaje que te está dirigiendo, de dónde salió, cómo decide por ti sin pedirte permiso y tu primer paso para soltarlo.</p>'
+    +'<p class="body" style="color:rgba(250,244,232,.72);max-width:520px;margin-bottom:34px">Te llevas cuatro cosas concretas: el nombre del personaje que te está dirigiendo, de dónde salió, cómo se ve tu vida con él al mando y cómo se vería siendo tuya, y una herramienta para empezar hoy.</p>'
     +'<button class="btn" onclick="II.start()">Quiero saber quién me dirige</button>'
     +'<p style="margin-top:18px;font-size:19px;color:rgba(250,244,232,.78);letter-spacing:.6px">5 minutos · 12 preguntas · Resultado inmediato y gratis</p>'
     +'</div></div>')
@@ -758,7 +788,7 @@ function rHero(){
   +'<div class="light" style="padding:86px 0"><div class="wrap" style="text-align:center">'
   +'<p class="kicker rv" style="margin-bottom:20px">Lo que vas a descubrir</p>'
   +'<h2 class="h2 rv" style="margin-bottom:24px">Tu personaje tiene nombre, historia y una forma exacta de decidir por ti.</h2>'
-  +'<p class="body rv" style="max-width:620px;margin:0 auto 22px">En 5 minutos vas a saber cuál de ellos te está viviendo, de dónde salió, cuáles son las frases que dice por tu boca sin que te des cuenta, qué te dio y qué te está cobrando por dentro.</p>'
+  +'<p class="body rv" style="max-width:620px;margin:0 auto 22px">En 5 minutos vas a saber cuál de ellos te está viviendo, de dónde salió, las frases que dice por tu boca sin que te des cuenta, y cómo se vería tu vida el día que dejes de sostenerlo.</p>'
   +'<p class="body rv" style="max-width:620px;margin:0 auto 30px">Y no puedes soltar un traje que no puedes ver, por eso los libros, las terapias y los retiros chocan contra el mismo muro: no te falta voluntad, te falta claridad.</p>'
   +'<div class="rv" style="display:flex;justify-content:center"><button class="btn" onclick="II.start()">Ponerle nombre a mi personaje</button></div>'
   +'<p class="rv" style="margin-top:18px;font-size:19px;color:var(--muted)">Llevas años posponiendo conversaciones contigo. Esta toma 5 minutos.</p></div></div>'
@@ -946,23 +976,21 @@ function rResult(){
       +(c?'<p class="body" style="margin-bottom:8px"><strong style="color:var(--tinta)">'+esc(c.name)+'.</strong></p><p class="body" style="margin-bottom:16px">'+esc(c.desc)+'</p><p class="body">'+esc(c.press)+'</p>':""),false):"")
   +'<p class="body rv" style="margin-top:30px;font-size:21px;color:var(--tinta)">Y si mientras leías esto pensaste que exagero o que no es tan así, fíjate quién está buscando el argumento.</p>'
   +'</div></div></div>'
-  /* 7. LOS CUATRO CUADRANTES */
+  /* 7. LAS DOS VIDAS, CARA A CARA */
   +band(res.primaryKey,"auto",'<div class="wrap" style="padding:70px 26px">'
     +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:14px">Cuarta parte</p>'
-    +'<h2 class="h2 rv" style="color:#fff">Lo que te dio, lo que te cobra y lo que hay del otro lado</h2></div>')
-  +'<div class="light" style="padding:64px 0"><div class="wrapW" style="max-width:1180px;margin:0 auto">'
-  +'<div class="quad rv">'
-  +QB("I","Lo que sí te dio",p.gaveLine||"",gaveB)
-  +QB("II","Lo que te cuesta y te cobra a futuro",p.takesLine||"",takesB)
+    +'<h2 class="h2 rv" style="color:#fff">Dos vidas, la misma mujer</h2></div>')
+  +'<div class="light" style="padding:64px 0"><div class="wrapW" style="max-width:1060px;margin:0 auto">'
+  +(p.gaveText?'<p class="body rv" style="font-size:21px;margin-bottom:34px">'+esc(p.gaveText)+'</p>':"")
+  +(p.takesLine?'<p class="qline rv" style="border-bottom:none;padding-bottom:0;margin-bottom:30px">'+esc(p.takesLine)+'</p>':"")
+  +'<div class="pares rv">'
+  +'<div class="parhead"><span>Con ella al mando</span><span>Cuando la vida es tuya</span></div>'
+  +(p.pares||[]).map(function(x){
+     return '<div class="par"><div class="hoy"><b>Con ella al mando</b>'+esc(x[0])+'</div>'
+     +'<div class="tuya"><b>Cuando la vida es tuya</b>'+esc(x[1])+'</div></div>';}).join("")
   +'</div>'
-  +(withoutB?'<div class="qhero rv">'
-    +'<p class="qk">Y del otro lado</p>'
-    +'<p class="qh">Quién eres cuando la sueltas</p>'
-    +(p.withoutLine?'<p class="qline">'+esc(p.withoutLine)+'</p>':"")
-    +LI(withoutB)
-    +'<p class="qcierre">'+esc(CIERRE_ASPIRACIONAL)+'</p>'
-    +'<p class="qpreg">¿De quién depende? <b>Solo de ti.</b></p>'
-    +'</div>':"")
+  +'<p class="qcierre rv">'+esc(CIERRE_ASPIRACIONAL)+'</p>'
+  +'<p class="qpreg rv">¿De quién depende? <b>Solo de ti.</b></p>'
   +'</div></div>'
   /* 8. LA CONVERSACIÓN HONESTA: desarma al personaje y abre el umbral para ella */
   +hero("puerta","auto",
