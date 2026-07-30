@@ -328,8 +328,91 @@ var CHARS={
 };
 var ORDER=["controladora","salvadora","invisible","proveedora","exitosaVacia","espiritualReprimida"];
 
-/* ================= TEST ================= */
+/* ================= TEST =================
+   Diseño de bloques balanceados: 10 preguntas de comparación donde cada personaje
+   aparece EXACTAMENTE 5 veces y compite contra cada uno de los otros EXACTAMENTE 2 veces.
+   Bloques: CSI, CSP, CIE, CPR, CER, SIR, SPE, SER, IPE, IPR
+   (C=Controladora S=Salvadora I=Invisible P=Proveedora E=ExitosaVacía R=EspiritualReprimida)
+   Por eso el resultado no necesita ninguna corrección estadística: el conteo es el puntaje. */
 var QS=[
+  {id:1,type:"m",text:"Hoy, si te lo preguntas de verdad, ¿cómo te sientes con tu vida?",opts:[
+    {text:"Cansada emocionalmente, aunque por fuera todo funcione.",mood:"cansancio_emocional",disp:2},
+    {text:"Confundida, con muchas preguntas que no logro responder.",mood:"confusion",disp:3},
+    {text:"Sin motivación para planear nada nuevo.",mood:"sin_motivacion",disp:2},
+    {text:"Con la sensación de que se me está pasando la vida.",mood:"se_pasa_la_vida",disp:3},
+    {text:"Bien de verdad, con cosas que quiero afinar.",mood:"estable",disp:1}]},
+  {id:2,type:"b",text:"Cuando hay un conflicto con alguien importante para mí…",opts:[
+    {text:"Me quedo callada para no empeorarlo, y después me quedo pensando en lo que no dije.",char:"invisible"},
+    {text:"Tomo el control de la situación y me encargo de que se resuelva como debe ser.",char:"controladora"},
+    {text:"Me pongo en el lugar del otro y termino cuidándolo a él aunque yo esté dolida.",char:"salvadora"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:3,type:"b",text:"Cuando por fin tengo tiempo libre…",opts:[
+    {text:"Me da culpa, así que lo relleno con algo productivo casi sin pensarlo.",char:"proveedora"},
+    {text:"No logro soltarlo del todo, sigo pendiente de que nada se caiga.",char:"controladora"},
+    {text:"Lo termino usando en algo de alguien más, porque siempre hay quien me necesita.",char:"salvadora"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:4,type:"b",text:"Cuando alguien me reconoce o me elogia…",opts:[
+    {text:"Lo agradezco por fuera, pero por dentro no me lo creo del todo.",char:"exitosaVacia"},
+    {text:"Me incomoda que me miren tanto y cambio el tema lo más rápido que puedo.",char:"invisible"},
+    {text:"Me elogian por lo mucho que cargo, y eso me confirma que no puedo bajar el ritmo.",char:"controladora"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:5,type:"o",text:"Cuando piensas en tu infancia, ¿cuál de estas frases resuena más?",opts:[
+    {text:"Había que ser fuerte y no se podía fallar.",con:"hero"},
+    {text:"Era mejor no molestar, estar callada era más seguro.",con:"invisible"},
+    {text:"Yo cuidaba de los demás antes que de mí.",con:"parentification"},
+    {text:"El amor llegaba cuando cumplía las expectativas.",con:"perfectionist"},
+    {text:"Sentía que yo era el problema de la casa.",con:"scapegoat"},
+    {text:"Ninguna de estas describe mi infancia.",con:null}]},
+  {id:6,type:"b",text:"Con mi cuerpo y mi salud…",opts:[
+    {text:"Cuando me avisa que pare, reorganizo todo menos mi descanso.",char:"controladora"},
+    {text:"Le busco un significado o una lectura energética antes de ir a revisarlo.",char:"espiritualReprimida"},
+    {text:"Le pido un poco más, porque siento que todavía puedo aguantar.",char:"proveedora"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:7,type:"b",text:"Cuando estoy sola, sin nada que resolver…",opts:[
+    {text:"Me pongo a meditar o a estudiar algo, y así el silencio no se pone incómodo.",char:"espiritualReprimida"},
+    {text:"Mi cabeza empieza a repasar todo lo que falta y no logro apagarla.",char:"controladora"},
+    {text:"Aparece un vacío que no sé nombrar y prefiero no quedarme mucho ahí.",char:"exitosaVacia"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:8,type:"b",text:"Cuando algo me duele de verdad…",opts:[
+    {text:"Me lo trago y sigo funcionando, total tampoco era tan grave.",char:"invisible"},
+    {text:"Le encuentro el aprendizaje rápido y sigo, sin quedarme en el sentimiento.",char:"espiritualReprimida"},
+    {text:"Me ocupo de alguien más, porque cuidar a otro me calma más que mirarme a mí.",char:"salvadora"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:9,type:"b",text:"Cuando pienso en lo que quiero para mi vida…",opts:[
+    {text:"Pienso en la próxima meta, aunque la anterior no la haya disfrutado.",char:"proveedora"},
+    {text:"Me doy cuenta de que sé lo que se espera de mí, pero no lo que yo quiero.",char:"exitosaVacia"},
+    {text:"Lo que quiero siempre queda después de lo que necesitan los míos.",char:"salvadora"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:10,type:"b",text:"En mis relaciones más cercanas…",opts:[
+    {text:"Se quedaron en la superficie, y nadie sabe realmente cómo estoy.",char:"exitosaVacia"},
+    {text:"Soy la que sostiene, la que escucha y la que resuelve, y casi nunca al revés.",char:"salvadora"},
+    {text:"Pongo distancia cuando algo me incomoda y lo llamo cuidar mi paz.",char:"espiritualReprimida"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:11,type:"b",text:"Cuando siento que fallé o que no estuve a la altura…",opts:[
+    {text:"Me exijo el doble hasta compensarlo, cueste lo que cueste.",char:"proveedora"},
+    {text:"Concluyo que era mejor no haberlo intentado y me achico para la próxima.",char:"invisible"},
+    {text:"Se me confirma la sospecha de que todo lo que logré fue casualidad.",char:"exitosaVacia"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:12,type:"b",text:"Cuando algo se sale de control sin avisar…",opts:[
+    {text:"Me repito que todo pasa por algo y suelto antes de haber sentido nada.",char:"espiritualReprimida"},
+    {text:"Me pongo a trabajar más, porque moverme es lo único que me calma.",char:"proveedora"},
+    {text:"Me hago pequeña, espero a que pase y no digo lo que pienso.",char:"invisible"},
+    {text:"Ninguna de estas me describe.",char:null}]},
+  {id:13,type:"c",text:"Si pudieras cambiar una sola cosa de tu vida ahora mismo, ¿qué cambiarías?",opts:[
+    {text:"La forma en la que me trato a mí misma.",change:"trato_conmigo",disp:2},
+    {text:"El nivel de carga que llevo encima.",change:"carga",disp:3},
+    {text:"Mis relaciones, que se sienten vacías o desgastantes.",change:"relaciones",disp:2},
+    {text:"Mi trabajo o mi propósito, porque ya no me representa.",change:"proposito",disp:3},
+    {text:"Mi capacidad de sentir y de estar presente.",change:"sentir",disp:2}]},
+  {id:14,type:"d",text:"¿En qué década de tu vida estás?",opts:[
+    {text:"Entre 25 y 34 años.",age:30},
+    {text:"Entre 35 y 44 años.",age:40},
+    {text:"Entre 45 y 54 años.",age:50},
+    {text:"55 años o más.",age:58}]}
+];
+
+/* ---- versión anterior del cuestionario, ya sin uso ---- */
+var QS_OLD=[
   {id:1,type:"i",text:"Cuando algo no sale como lo planeaste, ¿qué es lo primero que sientes?",opts:[{text:"Ansiedad. Necesito retomar el control rápido.",chars:["controladora","proveedora"],w:3,pain:2},{text:"Frustración, pero lo proceso y sigo.",chars:[],w:0,pain:1},{text:"Soy flexible, los cambios no me afectan mucho.",chars:[],w:0},{text:"Culpa. Siento que fallé en algo.",chars:["salvadora"],w:2,pain:2}]},
   {id:2,type:"i",text:"¿Con qué frecuencia priorizas las necesidades de otros sobre las tuyas?",opts:[{text:"Casi siempre. Es automático, ni lo pienso.",chars:["salvadora","invisible"],w:3,pain:3,disp:-1},{text:"Con frecuencia, aunque a veces me cuido.",chars:["salvadora"],w:2,pain:2},{text:"Lo balanceo bien.",chars:[],w:0,disp:1},{text:"Me cuido a mí primero y sin culpa.",chars:[],w:0,disp:2}]},
   {id:3,type:"i",text:"Cuando hay conflicto en tus relaciones importantes, ¿qué haces?",opts:[{text:"Me callo para no empeorar la situación.",chars:["invisible"],w:3,pain:3,disp:-1,con:"invisible"},{text:"Intento resolver para que todos estén bien.",chars:["salvadora","controladora"],w:2,pain:2},{text:"Lo enfrento directamente, aunque sea incómodo.",chars:[],w:0,pain:1,disp:2},{text:"Me alejo en silencio y vuelvo cuando baja la tensión.",chars:["invisible"],w:1,pain:2}]},
@@ -372,7 +455,79 @@ var STAT=(function(){
   var sd={};ORDER.forEach(function(k){sd[k]=Math.sqrt(vari[k])||1;});
   return{mean:mean,sd:sd};
 })();
+/* ================= PUNTAJE =================
+   El puntaje es un conteo literal: cuántas veces ella eligió a cada personaje de las
+   5 veces exactas en que se le presentó. Mismo rango para las seis, sin normalizar nada.
+   Los empates se resuelven con los enfrentamientos directos (cada par compitió 2 veces),
+   después con la pregunta de qué cambiarías y después con la de infancia. */
 function scoreAll(answers){
+  var hits={},faced={},won={};
+  ORDER.forEach(function(k){hits[k]=0;faced[k]=0;won[k]={};});
+  var mood="",change="",age=0,origen="",bloques=0,elegidas=0,disp=0,semilla=0;
+  answers.forEach(function(a){
+    semilla+=(a.qid||0)*3+(a.oi||0)*7;
+    var q=null;for(var i=0;i<QS.length;i++)if(QS[i].id===a.qid){q=QS[i];break;}
+    if(!q)return;var o=q.opts[a.oi];if(!o)return;
+    if(o.disp!==undefined)disp+=o.disp;
+    if(q.type==="b"){
+      bloques++;
+      var presentes=q.opts.map(function(x){return x.char;}).filter(function(x){return !!x;});
+      presentes.forEach(function(c){if(c in faced)faced[c]++;});
+      if(o.char&&(o.char in hits)){
+        hits[o.char]++;elegidas++;
+        presentes.forEach(function(c){if(c!==o.char)won[o.char][c]=(won[o.char][c]||0)+1;});
+      }
+    }
+    if(q.type==="m"&&o.mood)mood=o.mood;
+    if(q.type==="c"&&o.change)change=o.change;
+    if(q.type==="d"&&o.age)age=o.age;
+    if(q.type==="o"&&o.con)origen=o.con;
+  });
+  var CHG={trato_conmigo:"invisible",carga:"controladora",relaciones:"salvadora",proposito:"exitosaVacia",sentir:"espiritualReprimida"};
+  var ORG={parentification:"salvadora",hero:"controladora",invisible:"invisible",perfectionist:"proveedora",scapegoat:"exitosaVacia"};
+  /* El orden de partida se rota según las respuestas de cada persona para que ningún
+     personaje quede favorecido por estar primero en la lista. */
+  var rot=semilla%ORDER.length;
+  var base=ORDER.slice(rot).concat(ORDER.slice(0,rot));
+  /* Primero se agrupa por conteo. Dentro de cada grupo empatado se resuelve con los
+     puntos de los enfrentamientos directos entre los empatados, después con la pregunta
+     de qué cambiarías, después con la de infancia. Todo son números, así que el orden
+     es siempre el mismo para las mismas respuestas y no depende de nada arbitrario. */
+  var grupos={};base.forEach(function(k){var h=hits[k];(grupos[h]=grupos[h]||[]).push(k);});
+  var niveles=Object.keys(grupos).map(Number).sort(function(a,b){return b-a;});
+  var sorted=[];
+  niveles.forEach(function(h){
+    var g=grupos[h],pts={};
+    g.forEach(function(k){pts[k]=0;g.forEach(function(j){if(j!==k)pts[k]+=(won[k][j]||0);});});
+    g.sort(function(a,b){
+      if(pts[b]!==pts[a])return pts[b]-pts[a];
+      var pa=CHG[change]===a?1:0,pb=CHG[change]===b?1:0;
+      if(pa!==pb)return pb-pa;
+      var oa=ORG[origen]===a?1:0,ob=ORG[origen]===b?1:0;
+      if(oa!==ob)return ob-oa;
+      return base.indexOf(a)-base.indexOf(b);
+    });
+    sorted=sorted.concat(g);
+  });
+  var priKey=sorted[0];
+  var secKey=(hits[sorted[1]]>=2&&hits[sorted[1]]>=hits[priKey]-1)?sorted[1]:null;
+  var meters=sorted.filter(function(k){return hits[k]>0;}).slice(0,4).map(function(k){
+    return{key:k,name:CHARS[k].name,hits:hits[k],den:faced[k]||5,
+      w:Math.max(14,Math.round(hits[k]/(faced[k]||5)*100))};});
+  /* Si no reconoció ninguna frase de infancia, no le inventamos un origen. */
+  var constKey=origen||"";
+  var nivel=elegidas>=8?"alta":elegidas>=5?"media":"baja";
+  return{primaryKey:priKey,secondaryKey:secKey,constKey:constKey,
+    primary:CHARS[priKey],secondary:secKey?CHARS[secKey]:null,constellation:CONST[constKey]||null,
+    meters:meters,elegidas:elegidas,bloques:bloques,
+    avgPain:bloques?(elegidas/bloques)*3:0,disp:disp,mood:mood,change:change,
+    nivel:nivel,dest:nivel==="alta"?"whatsapp":"claridad",
+    age:age,years:(age?(age>=58?"más de cincuenta años":age>=50?"más de cuarenta años":age>=40?"más de treinta años":"más de veinte años"):""),
+    urgency:"",profession:""};
+}
+
+/* ---- motor anterior, ya sin uso ---- */
+function scoreAllOld(answers){
   var ch={controladora:0,salvadora:0,invisible:0,proveedora:0,exitosaVacia:0,espiritualReprimida:0};
   var cv={},pain=0,pn=0,disp=0,mood="",change="",age=0;
   var hits={};ORDER.forEach(function(k){hits[k]=0;});
@@ -581,8 +736,8 @@ function rResult(){
   var ctaUrl=dest==="whatsapp"?waUrl:CONFIG.claridad_url;
   var costItems=(p.costs||[]).map(function(t){return '<div class="costi" onclick="II.costPick(this)"><span class="bx"></span><span>'+esc(t)+'</span></div>';}).join("");
   var meters=res.meters.map(function(m,ix){
-    var n=m.hits!==undefined?m.hits:null, den=m.npat||13;
-    var etq=n===null?"":("en "+n+" de "+den+(ix===0?" · el que más apareció":""));
+    var n=m.hits!==undefined?m.hits:null, den=m.den||m.npat||5;
+    var etq=n===null?"":(n+" de "+den+" veces"+(ix===0?" · dominante":""));
     var wd=m.w!==undefined?m.w:(m.pct||60);
     return '<div class="meter"><div class="mtop"><span class="mnm" style="color:#fff">'+esc(m.name)+'</span><span class="mpc" style="font-size:17px;letter-spacing:1.6px;text-transform:none">'+esc(etq)+'</span></div><div class="mbar"><i data-w="'+wd+'"></i></div></div>';}).join("");
 
@@ -621,7 +776,7 @@ function rResult(){
   +'<div class="dark" style="padding:70px 0"><div class="wrap">'
   +'<p class="kicker rv" style="margin-bottom:10px">Tu perfil</p>'
   +'<h2 class="h2 rv" style="color:#fff;margin-bottom:14px">Así se reparte el peso adentro de ti</h2>'
-  +'<p class="body rv" style="margin-bottom:14px">Ninguna de nosotras carga un solo traje. Esto no mide cuánto tienes de cada personaje, porque eso no se puede medir con un test: lo que hace es mostrarte cuáles aparecieron en lo que acabas de responder, y cuántas veces.</p>'
+  +'<p class="body rv" style="margin-bottom:14px">Ninguna de nosotras carga un solo traje. Los seis personajes se te presentaron exactamente la misma cantidad de veces y compitieron entre ellos el mismo número de veces, así que esto no es un porcentaje ni una estimación: es cuántas veces la elegiste tú, de las cinco veces que apareció.</p>'
   +'<p class="body rv" style="color:rgba(250,244,232,.68);margin-bottom:34px">Y algo que quiero dejar claro desde ya: la autoridad sobre tu vida eres tú, no esta página. Lo que te calce, quédatelo, y lo que no, déjalo pasar sin darle más vueltas.</p>'
   +'<div id="meters" class="rv">'+meters+'</div></div></div>'
   /* 4. quién es */
@@ -648,7 +803,7 @@ function rResult(){
   +acc("Las frases que dice por tu boca",chips(p.phrases),false)
   +acc("Por qué la terapia, los libros y los retiros no la tocaron",'<p class="body">'+THERAPY+'</p>',false)
   +(sec?acc("Tu personaje secundario: "+sec.name,'<p class="body" style="margin-bottom:16px">'+esc(sec.core)+'</p><p class="body">'+esc(sec.painHook)+'</p>',false):"")
-  +acc("El rol que aprendiste antes de poder elegir",'<p class="body" style="margin-bottom:8px"><strong style="color:var(--tinta)">'+esc(c.name)+'.</strong></p><p class="body" style="margin-bottom:16px">'+esc(c.desc)+'</p><p class="body">'+esc(c.press)+'</p>',false)
+  +(c?acc("El rol que aprendiste antes de poder elegir",'<p class="body" style="margin-bottom:8px"><strong style="color:var(--tinta)">'+esc(c.name)+'.</strong></p><p class="body" style="margin-bottom:16px">'+esc(c.desc)+'</p><p class="body">'+esc(c.press)+'</p>',false):"")
   +'<p class="body rv" style="margin-top:30px;font-size:21px;color:var(--tinta)">Y si mientras leías esto pensaste que exagero o que no es tan así, fíjate quién está buscando el argumento.</p>'
   +'</div></div></div>'
   /* 7. LOS CUATRO CUADRANTES */
