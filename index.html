@@ -140,7 +140,7 @@ img{display:block;max-width:100%;}
 .quad{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-top:1px solid var(--crema2);}
 .quad>.qbox{border-left:1px solid var(--crema2);}
 .quad>.qbox:first-child{border-left:none;}
-@media(max-width:900px){.quad{grid-template-columns:1fr;}
+@media(max-width:1060px){.quad{grid-template-columns:1fr;}
  .quad>.qbox{border-left:none;border-top:1px solid var(--crema2);}
  .quad>.qbox:first-child{border-top:none;}}
 .qbox{padding:38px 32px 36px;}
@@ -881,8 +881,8 @@ function rResult(){
   /* 7. LOS CUATRO CUADRANTES */
   +band(res.primaryKey,"auto",'<div class="wrap" style="padding:70px 26px">'
     +'<p class="kicker rv" style="color:var(--oroClaro);margin-bottom:14px">Cuarta parte</p>'
-    +'<h2 class="h2 rv" style="color:#fff">Lo que te dio y lo que te está cobrando</h2></div>')
-  +'<div class="light" style="padding:64px 0"><div class="wrap">'
+    +'<h2 class="h2 rv" style="color:#fff">Lo que te dio, lo que te cobra y lo que hay del otro lado</h2></div>')
+  +'<div class="light" style="padding:64px 0"><div class="wrapW" style="max-width:1180px;margin:0 auto">'
   +'<div class="quad rv">'
   +QB("I","Lo que sí te dio","Te dio",p.gaveLine||"",gaveB,"")
   +QB("II","Lo que te está quitando","Te quita",p.takesLine||"",takesB,takesNote)
