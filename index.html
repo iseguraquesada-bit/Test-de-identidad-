@@ -49,7 +49,7 @@ img{display:block;max-width:100%;}
 .linkback{background:none;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:19px;cursor:pointer;padding:8px 0;text-decoration:underline;text-underline-offset:4px;}
 
 /* ---------- tipografía ---------- */
-.kicker{font-size:17px;font-weight:500;letter-spacing:4.5px;text-transform:uppercase;color:var(--oro);}
+.kicker{font-size:18px;font-weight:500;letter-spacing:4.2px;text-transform:uppercase;color:var(--oro);}
 .h1{font-family:'Cormorant Garamond',serif;font-size:clamp(46px,9vw,80px);font-weight:600;line-height:1.03;letter-spacing:-.5px;}
 .h2{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,6.2vw,50px);font-weight:600;line-height:1.14;}
 .h3{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,38px);font-weight:600;line-height:1.24;}
@@ -127,10 +127,10 @@ img{display:block;max-width:100%;}
 .acc .accb-in{padding:0 2px 30px;}
 
 /* ---------- barra fija ---------- */
-.stick{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(12,29,46,.96);backdrop-filter:blur(9px);border-top:1px solid rgba(194,155,64,.4);padding:14px 18px;transform:translateY(120%);transition:transform .45s cubic-bezier(.2,.8,.2,1);}
+.stick{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#0C1D2E;box-shadow:0 -14px 30px rgba(12,29,46,.28);border-top:1px solid rgba(194,155,64,.45);padding:16px 18px;transform:translateY(120%);transition:transform .45s cubic-bezier(.2,.8,.2,1);}
 .stick.on{transform:none;}
 .stick .sin{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:18px;}
-.stick p{flex:1;font-size:19px;line-height:1.45;color:rgba(250,244,232,.9);}
+.stick p{flex:1;font-size:20px;line-height:1.45;color:rgba(250,244,232,.95);}
 .stick a{flex-shrink:0;max-width:290px;padding:17px 22px;font-size:19px;margin:0;}
 @media(max-width:640px){.stick p{display:none}.stick a{max-width:none}}
 
@@ -145,21 +145,22 @@ img{display:block;max-width:100%;}
  .quad>.qbox:first-child{border-top:none;}}
 .qbox{padding:38px 32px 36px;}
 .qnum{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--oro);line-height:1;margin-bottom:14px;}
-.qk{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--azul);margin-bottom:10px;font-weight:500;}
-.qh{font-family:'Cormorant Garamond',serif;font-size:33px;line-height:1.18;color:var(--tinta);margin-bottom:14px;}
-.qline{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;line-height:1.4;color:var(--azul);margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid var(--crema2);}
-.qn{font-size:19px;line-height:1.6;color:var(--muted);margin-bottom:18px;}
+.qk{font-size:16px;letter-spacing:3px;text-transform:uppercase;color:var(--azul);margin-bottom:10px;font-weight:500;}
+.qh{font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1.18;color:var(--tinta);margin-bottom:14px;}
+.qline{font-family:'Cormorant Garamond',serif;font-size:26px;font-style:italic;line-height:1.42;color:var(--tinta2);margin-bottom:24px;padding-bottom:22px;border-bottom:1px solid var(--crema2);}
+.qn{font-size:20px;line-height:1.65;color:var(--texto);margin-bottom:20px;}
 .ql{list-style:none;margin:0;padding:0;}
-.ql li{position:relative;padding-left:22px;margin-bottom:15px;font-size:20px;line-height:1.5;color:var(--texto);}
+.ql li{position:relative;padding-left:22px;margin-bottom:16px;font-size:21px;line-height:1.55;color:var(--texto);}
 .ql li:last-child{margin-bottom:0;}
 .ql li:before{content:"";position:absolute;left:0;top:12px;width:11px;height:1px;background:var(--oro);}
 /* el bloque aspiracional, el que sostiene todo */
 .qhero{margin-top:34px;border:1px solid var(--oro);border-radius:6px;background:linear-gradient(160deg,#FFFDF8 0%,rgba(194,155,64,.09) 100%);padding:52px 46px;}
-.qhero .qline{font-size:32px;font-style:normal;color:var(--tinta);border-bottom:none;padding-bottom:0;margin-bottom:32px;max-width:820px;}
+.qhero .qline{font-size:34px;font-style:normal;color:var(--tinta);border-bottom:none;padding-bottom:0;margin-bottom:34px;max-width:840px;}
+.qhero .ql li{font-size:22px;}
 .qhero .qh{font-size:40px;margin-bottom:20px;}
 .qhero .ql{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;}
 @media(max-width:820px){.qhero{padding:38px 26px}.qhero .ql{grid-template-columns:1fr}.qhero .qh{font-size:32px}.qhero .qline{font-size:26px}}
-@media(max-width:640px){.qh{font-size:29px}.ql li{font-size:21px}.qbox{padding:32px 22px}}
+@media(max-width:640px){.qh{font-size:30px}.qline{font-size:24px}.ql li{font-size:22px}.qbox{padding:32px 22px}}
 .dwn{width:1px;height:54px;margin:0 auto;background:linear-gradient(180deg,rgba(232,220,182,0),var(--oro));}
 .chip{background:var(--blanco);border-left:3px solid var(--oro);border-radius:3px;padding:20px 24px;margin-bottom:13px;}
 </style>
@@ -243,8 +244,8 @@ var CHARS={
     notKnew:"El control no nace de desconfiar de los demás, nace de una época en la que tú fuiste la única variable predecible. Por eso soltar no se siente como descansar, se siente como riesgo: tu sistema aprendió que relajarse es justo el momento en el que las cosas se caen. No estás exagerando, estás repitiendo un aprendizaje que un día te salvó.",
     costBlood:"Este personaje no te cobra de golpe, te cobra en cuotas tan pequeñas que se sienten normales, y las cobra en silencio mientras tú sostienes la vida de todos los demás.",
     costs:["Vivo cansada de una forma que el descanso ya no arregla","No puedo soltar algo sin sentir que se va a caer","Me irrito por cosas que sé que no son tan graves","Mi cuerpo lleva tiempo avisándome y yo lo sigo posponiendo","Me cuesta confiar, incluso en la gente que amo","Siento que sostengo a todos y que a mí no me sostiene nadie","No recuerdo la última vez que estuve tranquila sin estar pendiente de algo","Cuando por fin puedo parar, no sé cómo hacerlo"],
-    teaser3:"Hay tres momentos donde ella toma el volante sin pedirte permiso: cuando ibas a decir lo que pensabas y decide que mejor no, cuando algo te dolió y decide que no era tan grave, y cuando algo bueno te pasa y decide que no hay que contarlo mucho para que nadie se incomode.",
-    manifestations:"Ella cede aunque algo le duela, se minimiza en las conversaciones y contesta que todo está bien cuando no lo está. Habla bajito, no por timidez sino por costumbre, y después de cada conversación repasa en silencio todo lo que no dijo.",
+    teaser3:"Hay tres momentos donde ella toma el volante sin pedirte permiso: cuando alguien que amas decide algo sin consultarte y ella lo lee como una traición, cuando algo se sale del plan y activa el modo emergencia aunque no lo sea, y cuando estás a punto de descansar y te susurra que todavía no te lo has ganado.",
+    manifestations:"Ella no delega, porque está convencida de que nadie lo va a hacer igual. Se mete en todo, incluso en lo que no le corresponde, revisa lo que ya estaba bien y convierte cualquier imprevisto en una emergencia. Y cuando algo no sale como lo planeó no se queda callada, reorganiza el mundo entero hasta que vuelva a encajar.",
     phrases:"'Si no lo hago yo, nadie lo hará bien.' 'No puedo soltar, todo depende de mí.' 'Después descanso, ahora hay que resolver.' 'No puedo confiar del todo, ya me fallaron antes.'",
     futureBlock:"El control va a seguir cerrándote puertas, y con ellas las relaciones profundas, las decisiones valientes y los momentos de gozo real, porque nadie puede vivir libremente bajo supervisión constante, ni siquiera tú.",
     liberation:"Aquí va la verdad que nadie se ha atrevido a decirte: tú no controlas porque seas fuerte, controlas porque un día, siendo una niña, decidiste que si tú no sostenías el mundo el mundo se caía, y nadie llegó nunca a decirte que ese no era tu trabajo. Llevas décadas pagando una deuda que jamás fue tuya. Y lo más duro de ver es que las personas que amas no necesitan que las controles, necesitan que estés ahí: presente, tranquila y tuya. El día que sueltas el control no pierdes a nadie, te recuperas a ti, y eso es precisamente lo que el personaje nunca va a dejarte hacer sola, porque soltarlo significa su muerte."},
@@ -295,8 +296,8 @@ var CHARS={
     notKnew:"Callarte no es falta de carácter, es un reflejo. Tu cuerpo aprendió que ser vista traía consecuencias, y hoy anticipa el rechazo antes de que exista, a una velocidad que tu mente no alcanza a discutir. Por eso proponerte hablar más nunca alcanza: lo que hay que desmontar es la creencia de que aparecer es peligroso.",
     costBlood:"Este personaje no te cobra en escándalos, te cobra en lo que no dijiste, en lo que aceptaste y en lo que dejaste de intentar, y esa cuenta se paga en silencio durante años.",
     costs:["Me guardo lo que pienso para no incomodar y después me pesa","Digo que sí cuando por dentro estoy diciendo que no","Siento un resentimiento que no sé dónde poner","Me da miedo ocupar espacio, incluso donde me lo gané","La gente cercana no sabe realmente lo que siento","Hago mis sueños más pequeños antes de intentarlos","Me molesta que no me vean y a la vez me esfuerzo por no ser vista","Después de una conversación repaso todo lo que no dije"],
-    teaser3:"Este personaje te cobra un precio invisible todos los días, y lo pagas en las palabras que no dices, en los límites que no pones y en los sueños que achicaste para caber en la vida de otros.",
-    manifestations:"No dices lo que realmente piensas para no generar conflicto, cedes aunque algo te duela y te minimizas en las conversaciones. Hablas bajito, no por timidez sino por costumbre de no molestar.",
+    teaser3:"Hay tres momentos donde ella toma el volante sin pedirte permiso: cuando ibas a decir lo que pensabas y decide que mejor no, cuando algo te dolió y decide que no era tan grave, y cuando algo bueno te pasa y decide que no hay que contarlo mucho para que nadie se incomode.",
+    manifestations:"Ella cede aunque algo le duela, se minimiza en las conversaciones y contesta que todo está bien cuando no lo está. Habla bajito, no por timidez sino por costumbre, y después de cada conversación repasa en silencio todo lo que no dijo.",
     phrases:"'No quiero causar problemas.' 'Mejor no digo nada.' 'No es tan grave, yo puedo aguantar.' 'Si me muestro mucho, seguro me critican.'",
     futureBlock:"El resentimiento silencioso se va acumulando hasta que un día explota, o se convierte en algo que ya no puedes ignorar, y lo que te bloquea no es el mundo, eres tú eligiendo no aparecer.",
     liberation:"Esta es la revelación que el personaje nunca quiso que leyeras: nadie te está pidiendo que seas menos, la única persona que sigue firmando ese contrato eres tú, cada día, por miedo a un rechazo que pasó hace décadas y que sigues reviviendo como si fuera hoy. Aquella niña que era demasiado no tenía nada malo, le tocó gente que no supo recibirla, que es algo muy distinto. Hoy tienes algo que ella no tenía y es la capacidad de elegir: cada vez que te achicas le confirmas a esa niña que tenía razón en esconderse, y cada vez que ocupas tu lugar la liberas un poco más. Tu presencia nunca fue el problema, tu ausencia es lo que te está costando la vida."},
@@ -385,12 +386,12 @@ var CHARS={
 var ORDER=["controladora","salvadora","invisible","proveedora","exitosaVacia","espiritualReprimida"];
 
 /* ================= TEST =================
-   Cada personaje tiene EXACTAMENTE 5 afirmaciones, repartidas en 5 situaciones de vida
-   distintas, y todas se responden con la misma escala de tres niveles: sí vale 2,
-   a veces vale 1 y no vale 0. Entonces las seis compiten en un rango idéntico de 0 a 10.
-   Lo importante: aquí no se descarta ninguna respuesta. Decir que no también cuenta,
-   porque baja el puntaje de ese personaje en lugar de anular la pregunta.
-   Por eso el resultado no necesita ninguna corrección estadística: la suma es el puntaje. */
+   Diez situaciones de vida. En cada una hay tres afirmaciones, una por personaje, y hay
+   que elegir la que más se parece: no existe la opción de no elegir, porque cada pregunta
+   sin respuesta dejaba un hueco y el resultado terminaba calculado sobre datos incompletos.
+   Cada personaje aparece EXACTAMENTE en 5 de las 10 situaciones y se enfrenta a cada uno
+   de los otros EXACTAMENTE 2 veces, así que todos tienen las mismas oportunidades y el
+   porcentaje es literal: de las 5 veces que apareció, cuántas la elegiste. */
 var QS=[
   {id:1,type:"m",text:"Hoy, si te lo preguntas de verdad, ¿cómo te sientes con tu vida?",opts:[
     {text:"Cansada emocionalmente, aunque por fuera todo funcione.",mood:"cansancio_emocional",disp:2},
@@ -508,8 +509,8 @@ var STAT=(function(){
    Los empates se resuelven por cantidad de respuestas fuertes, después por la pregunta
    de qué cambiarías, después por la de infancia. Todo con números, nada arbitrario. */
 function scoreAll(answers){
-  var hits={},faced={},fuertes={};
-  ORDER.forEach(function(k){hits[k]=0;faced[k]=0;fuertes[k]=0;});
+  var hits={},faced={},won={};
+  ORDER.forEach(function(k){hits[k]=0;faced[k]=0;won[k]={};});
   var mood="",change="",age=0,origen="",bloques=0,disp=0,semilla=0;
   answers.forEach(function(a){
     semilla+=(a.qid||0)*3+(a.oi||0)*7;
@@ -517,11 +518,13 @@ function scoreAll(answers){
     if(!q)return;
     if(q.type==="r"){
       bloques++;
-      (q.items||[]).forEach(function(it,ix){
-        var v=(a.vals&&a.vals[ix]!==undefined&&a.vals[ix]!==null)?a.vals[ix]:0;
-        if(it.char in hits){hits[it.char]+=v;faced[it.char]+=2;if(v===2)fuertes[it.char]++;}
-        semilla+=v*(ix+2);
-      });
+      var presentes=(q.items||[]).map(function(it){return it.char;});
+      presentes.forEach(function(c){if(c in faced)faced[c]++;});
+      var elegido=(q.items[a.oi]||{}).char;
+      if(elegido&&(elegido in hits)){
+        hits[elegido]++;
+        presentes.forEach(function(c){if(c!==elegido)won[elegido][c]=(won[elegido][c]||0)+1;});
+      }
       return;
     }
     var o=q.opts?q.opts[a.oi]:null;if(!o)return;
@@ -545,9 +548,12 @@ function scoreAll(answers){
   var niveles=Object.keys(grupos).map(Number).sort(function(a,b){return b-a;});
   var sorted=[];
   niveles.forEach(function(h){
-    var g=grupos[h];
+    var g=grupos[h],pts={};
+    /* Cada par de personajes se enfrentó exactamente dos veces, así que entre empatados
+       gana quien ganó esos enfrentamientos directos. */
+    g.forEach(function(k){pts[k]=0;g.forEach(function(j){if(j!==k)pts[k]+=(won[k][j]||0);});});
     g.sort(function(a,b){
-      if(fuertes[b]!==fuertes[a])return fuertes[b]-fuertes[a];
+      if(pts[b]!==pts[a])return pts[b]-pts[a];
       var pa=CHG[change]===a?1:0,pb=CHG[change]===b?1:0;
       if(pa!==pb)return pb-pa;
       var oa=ORG[origen]===a?1:0,ob=ORG[origen]===b?1:0;
@@ -556,18 +562,18 @@ function scoreAll(answers){
     });
     sorted=sorted.concat(g);
   });
-  var priKey=sorted[0],maxP=faced[priKey]||10;
-  var secKey=(hits[sorted[1]]>=3&&hits[sorted[1]]>=hits[priKey]-2)?sorted[1]:null;
+  var priKey=sorted[0],maxP=faced[priKey]||5;
+  var secKey=(hits[sorted[1]]>=2&&hits[sorted[1]]>=hits[priKey]-1)?sorted[1]:null;
   var conPuntaje=sorted.filter(function(k){return hits[k]>0;});
-  var meters=(conPuntaje.length?conPuntaje:[priKey]).slice(0,3).map(function(k){
-    return{key:k,name:CHARS[k].name,hits:hits[k],den:faced[k]||10,
-      w:Math.max(8,Math.round(hits[k]/(faced[k]||10)*100))};});
+  var meters=(conPuntaje.length?conPuntaje:[priKey]).slice(0,2).map(function(k){
+    return{key:k,name:CHARS[k].name,hits:hits[k],den:faced[k]||5,
+      w:Math.max(8,Math.round(hits[k]/(faced[k]||5)*100))};});
   /* Si no reconoció ninguna frase de infancia, no le inventamos un origen. */
   var constKey=origen||"";
   /* Señal baja: si el personaje más alto apenas asoma, se lo decimos en vez de
      presentarle una lectura contundente que no se sostiene. */
-  var senal=hits[priKey]<=3?"baja":hits[priKey]<=6?"media":"clara";
-  var nivel=hits[priKey]>=8?"alta":hits[priKey]>=5?"media":"baja";
+  var senal=hits[priKey]<=1?"baja":hits[priKey]<=2?"media":"clara";
+  var nivel=hits[priKey]>=4?"alta":hits[priKey]>=3?"media":"baja";
   return{primaryKey:priKey,secondaryKey:secKey,constKey:constKey,
     primary:CHARS[priKey],secondary:secKey?CHARS[secKey]:null,constellation:CONST[constKey]||null,
     meters:meters,puntaje:hits[priKey],maxPuntaje:maxP,senal:senal,bloques:bloques,
@@ -721,15 +727,9 @@ function rHero(){
 function rQuiz(){
   var q=QS[S.qIdx],pct=Math.round(S.qIdx/QS.length*100),cuerpo="";
   if(q.type==="r"){
-    var prev=(S.answers[S.qIdx]&&S.answers[S.qIdx].vals)||[];
-    cuerpo='<p class="body" style="color:var(--muted);margin:-14px 0 26px">Responde cada una. Aquí no hay respuestas que se descarten: decir que no también cuenta.</p>'
-      +q.items.map(function(it,i){
-        var sel=prev[i];
-        return '<div class="ritem" id="ri-'+i+'"><p class="rtxt">'+esc(it.t)+'</p><div class="rbtns">'
-          +[["Sí, es así",2],["A veces",1],["No, para nada",0]].map(function(op){
-            return '<button type="button" class="rb'+(sel===op[1]?" on":"")+'" data-v="'+op[1]+'" onclick="II.rate('+i+','+op[1]+')">'+op[0]+'</button>';
-          }).join("")+'</div></div>';
-      }).join("");
+    cuerpo='<div style="display:flex;flex-direction:column;gap:13px">'
+      +q.items.map(function(it,i){return '<button class="opt" style="animation-delay:'+(i*.07+.05)+'s" onclick="II.pick('+i+',this)">'+esc(it.t)+'</button>';}).join("")
+      +'</div>';
   }else{
     cuerpo='<div style="display:flex;flex-direction:column;gap:13px">'
       +q.opts.map(function(o,i){return '<button class="opt" style="animation-delay:'+(i*.07+.05)+'s" onclick="II.pick('+i+',this)">'+esc(o.text)+'</button>';}).join("")
@@ -766,7 +766,7 @@ function rForm(){
   +'<div style="height:6px"></div>'
   +'<button class="btn" style="max-width:none" onclick="II.submitForm()">Ver mi resultado completo</button>'
   +'<p id="f-err" style="margin-top:14px;font-size:19px;color:#B0472F;text-align:center;display:none">Completa todos los campos para continuar.</p>'
-  +'<p style="margin-top:16px;font-size:18px;color:var(--muted);text-align:center">Te envío tu resultado y, en los días siguientes, algunas cartas para ayudarte a entenderlo. Puedes salirte cuando quieras.</p>'
+  +'<p style="margin-top:16px;font-size:19px;line-height:1.6;color:var(--texto);text-align:center">Te envío tu resultado y, en los días siguientes, algunas cartas para ayudarte a entenderlo. Puedes salirte cuando quieras.</p>'
   +'</div></div></div>');
 }
 
@@ -804,8 +804,9 @@ function rResult(){
     var n=m.hits!==undefined?m.hits:null, den=m.den||10;
     var pc=n===null?(m.pct||60):Math.round(n/den*100);
     var etq=pc+"%";
+    /* el número del medidor tiene que leerse sin esfuerzo */
     var wd=m.w!==undefined?m.w:(m.pct||60);
-    return '<div class="meter"><div class="mtop"><span class="mnm" style="color:#fff">'+esc(m.name)+'</span><span class="mpc" style="font-size:17px;letter-spacing:1.6px;text-transform:none">'+esc(etq)+'</span></div><div class="mbar"><i data-w="'+wd+'"></i></div></div>';}).join("");
+    return '<div class="meter"><div class="mtop"><span class="mnm" style="color:#fff">'+esc(m.name)+'</span><span class="mpc" style="font-size:22px;letter-spacing:.5px;text-transform:none">'+esc(etq)+'</span></div><div class="mbar"><i data-w="'+wd+'"></i></div></div>';}).join("");
 
   /* --- contenido; los personajes aún no reescritos usan sus campos anteriores como puente --- */
   var whoIs=p.whoIs||[p.core], birth=p.birth||[p.painHook];
@@ -872,7 +873,7 @@ function rResult(){
   +acc("Lo que hace en tu día a día",'<p class="body">'+esc(p.manifestations)+'</p>',false)
   +acc("Las frases que dice por tu boca",chips(p.phrases),false)
   +acc("Por qué la terapia, los libros y los retiros no la tocaron",'<p class="body">'+THERAPY+'</p>',false)
-  +(sec?acc("Tu personaje secundario: "+sec.name,'<p class="body" style="margin-bottom:16px">'+esc(sec.core)+'</p><p class="body">'+esc(sec.painHook)+'</p>',false):"")
+  +(sec?acc("Tu personaje secundario: "+sec.name,((sec.whoIs||[]).slice(0,2)).map(function(t){return '<p class="body" style="margin-bottom:16px">'+esc(t)+'</p>';}).join(""),false):"")
   +((c||p.rolLine)?acc(p.adultez?"El rol de fondo, y por qué esta fue la única salida que encontraste":"El rol que aprendiste antes de poder elegir",
       (p.rolLine?'<p class="body" style="margin-bottom:18px">'+esc(p.rolLine)+'</p>':"")
       +(c?'<p class="body" style="margin-bottom:8px"><strong style="color:var(--tinta)">'+esc(c.name)+'.</strong></p><p class="body" style="margin-bottom:16px">'+esc(c.desc)+'</p><p class="body">'+esc(c.press)+'</p>':""),false):"")
@@ -930,14 +931,14 @@ function rResult(){
        +'<a class="btn btn-line" style="max-width:380px" href="'+waUrl+'" target="_blank" rel="noreferrer" onclick="II.wa()">Escribirle a Ileana</a></div>')
     +'<div class="rv" style="margin-top:34px;padding-top:26px;border-top:1px solid rgba(250,244,232,.16)">'
     +'<a class="btn btn-line" style="max-width:340px" href="'+shareUrl+'" target="_blank" rel="noreferrer" onclick="II.shared()">Mandarle esto a una amiga por WhatsApp</a>'
-    +'<p style="margin-top:12px;font-size:18px;color:rgba(250,244,232,.6)">Se abre WhatsApp con el mensaje y el enlace ya listos.</p></div>'
+    +'<p style="margin-top:12px;font-size:19px;color:rgba(250,244,232,.75)">Se abre WhatsApp con el mensaje y el enlace ya listos.</p></div>'
     +'</div>')
   /* 11. NOTA DE CUIDADO */
   +'<div class="light" style="padding:64px 0"><div class="wrap">'
   +'<div class="rv" style="max-width:660px;margin:0 auto;text-align:center">'
   +'<div class="rule" style="margin:0 auto 24px"></div>'
-  +'<p class="body" style="color:var(--muted);margin-bottom:14px">Este diagnóstico es real y lo escribí con el mismo rigor con el que trabajo cada caso. Y como la que vive tu vida eres tú, quédate con todo lo que te calzó y deja pasar lo que no.</p>'
-  +'<p class="body" style="color:var(--muted)">Si algo de esto te movió más de lo que esperabas, no lo cargues sola. Cuando quieras compañía para mirarlo, aquí estoy.</p>'
+  +'<p class="body" style="color:var(--texto);margin-bottom:14px">Este diagnóstico es real y lo escribí con el mismo rigor con el que trabajo cada caso. Y como la que vive tu vida eres tú, quédate con todo lo que te calzó y deja pasar lo que no.</p>'
+  +'<p class="body" style="color:var(--texto)">Si algo de esto te movió más de lo que esperabas, no lo cargues sola. Cuando quieras compañía para mirarlo, aquí estoy.</p>'
   +'</div></div></div>'
   +foot()+'</div>';
   render(html,true);
